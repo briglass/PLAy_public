@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+ <head>
+ <script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization',
+       'version':'1','packages':['timeline']}]}"></script>
+       
+
+      
+<script type="text/javascript">
+google.setOnLoadCallback(function() {
+    drawChart(1);
+});
+
+function drawChart(testvar) {
+  var container = document.getElementById('example2.1');
+  var chart = new google.visualization.Timeline(container);
+  var dataTable = new google.visualization.DataTable();
+
+  dataTable.addColumn({ type: 'string', id: 'Term' });
+  dataTable.addColumn({ type: 'string', id: 'Name' });
+  dataTable.addColumn({ type: 'date', id: 'Start' });
+  dataTable.addColumn({ type: 'date', id: 'End' });
+
+    if(testvar==1){
+        dataTable.addRows([
+          [ 'Racing', 'Gran Turismo 5', new Date(2010, 12, 29), new Date(2013, 2, 3) ],
+          [ 'Fighting', 'Super Smash Brothers Brawl',      new Date(2009, 5, 3),  new Date(2014, 10, 3) ],
+          [ 'Action-Adventure', 'Grand Theft Auto IV',      new Date(2009, 5, 3),  new Date(2015, 5, 3) ],
+          [ 'Sports', 'FIFA 13',      new Date(2013, 12, 3),  new Date(2014, 12, 3) ],
+          [ 'Sports', 'FIFA 14',      new Date(2014, 12, 15),  new Date(2015, 5, 3) ],
+          [ 'Sandbox, Survival', 'Minecraft',      new Date(2009, 12, 3),  new Date(2011, 5, 3) ],
+          [ 'Online RPG', 'World of Warcraft',  new Date(2008, 2, 3),  new Date(2011, 5, 3) ]]);
+    }
+    else if (testvar==2)
+    {
+            dataTable.addRows([
+          [ 'RTS', 'Age of Empires II', new Date(2005, 12, 29), new Date(2007, 2, 3) ],
+          [ 'RTS', 'Rise of Nations',      new Date(2005, 5, 3),  new Date(2008, 10, 3) ],
+          [ 'RTS', 'StarCraft',      new Date(2005, 12, 3),  new Date(2011, 12, 3) ],
+          [ 'RTS', 'StarCraft II',      new Date(2010, 5, 3),  new Date(2015, 5, 3) ],          
+          [ 'RTS', 'Crusader Kings II',      new Date(2012, 12, 15),  new Date(2013, 5, 3) ],
+          [ 'Sports', 'NHL 11',      new Date(2010, 9, 3),  new Date(2011, 12, 3) ],
+          [ 'Sports', 'NHL 12',      new Date(2011, 9, 3),  new Date(2012, 12, 3) ],
+          [ 'Sports', 'NHL 13',      new Date(2012, 9, 3),  new Date(2013, 12, 3) ],
+          [ 'Sports', 'NHL 14',      new Date(2013, 9, 3),  new Date(2014, 12, 3) ],
+          [ 'Sports', 'NHL 15',      new Date(2014, 9, 3),  new Date(2015, 5, 3) ],
+          [ 'Survival horror', 'Dead Space 2',      new Date(2011, 3, 3),  new Date(2014, 5, 3) ]]);
+      }
+  else if (testvar==3)
+    {
+            dataTable.addRows([
+          [ 'Online RPG', 'World of Warcraft',  new Date(2008, 2, 3),  new Date(2015, 5, 3) ],
+          [ 'MOBA', 'League of Legends',      new Date(2009, 10, 27),  new Date(2014, 10, 3) ],
+          [ 'Classic', 'Donkey Kong',      new Date(2009, 5, 3),  new Date(2015, 5, 3) ],
+          [ 'Classic', 'PacMan',      new Date(2005, 5, 3),  new Date(2015, 5, 3) ],
+          [ 'Classic', 'QBert',      new Date(2005, 5, 3),  new Date(2015, 5, 3) ],
+          [ 'Classic', 'Marble Madness',      new Date(2005, 5, 3),  new Date(2015, 5, 3) ],
+          [ 'Sports', 'RBI Baseball II',  new Date(2005, 5, 3),  new Date(2015, 5, 3) ]]);
+          }
+  chart.draw(dataTable);
+
+}
+
+google.load('visualization', '1', {packages: ['corechart', 'line']});
+
+google.setOnLoadCallback(function() {
+    drawCurveTypes(2);
+});
+
+function drawCurveTypes(testvar) {
+      var data = new google.visualization.DataTable();
+      data.addColumn('date', 'Date');
+      data.addColumn('number', 'Perception');
+      data.addColumn('number', 'Learning');
+        data.addColumn('number', 'Attention');
+    
+    if(testvar==1){
+      data.addRows([
+[	new Date(2000, 1, 1)	,	90	,	93	,	76	]	,
+[	new Date(2001, 2, 2)	,	85	,	92	,	80	]	,
+[	new Date(2002, 3, 3)	,	95	,	95	,	78	]	,
+[	new Date(2003, 4, 4)	,	96	,	98	,	90	]	,
+[	new Date(2004, 5, 5)	,	101	,	92	,	98	]	,
+[	new Date(2005, 6, 6)	,	102	,	96	,	85	]	,
+[	new Date(2006, 7, 7)	,	118	,	95	,	86	]	,
+[	new Date(2007, 8, 8)	,	115	,	105	,	80	]	,
+[	new Date(2008, 9, 9)	,	105	,	106	,	95	]	,
+[	new Date(2009, 10, 10)	,	108	,	104	,	98	]	
+
+      ]);
+    } else if(testvar==2){
+         data.addRows([
+[	new Date(2000, 1, 1)	,	90	,	93	,	76	]	,
+[	new Date(2001, 2, 2)	,	85	,	92	,	80	]	,
+[	new Date(2002, 3, 3)	,	95	,	95	,	78	]	,
+[	new Date(2003, 4, 4)	,	96	,	98	,	90	]	,
+[	new Date(2004, 5, 5)	,	101	,	92	,	98	]	,
+[	new Date(2005, 6, 6)	,	102	,	96	,	85	]	,
+[	new Date(2006, 7, 7)	,	118	,	95	,	86	]	,
+[	new Date(2007, 8, 8)	,	115	,	105	,	80	]	,
+[	new Date(2008, 9, 9)	,	105	,	106	,	95	]	,
+[	new Date(2009, 10, 10)	,	108	,	104	,	98	]	
+
+      ]);     
+        
+        
+    }
+               
+      var options = {
+        hAxis: {
+          title: 'Date'
+        },
+        vAxis: {
+          title: 'Score'
+        },
+        series: {
+          0: {curveType: 'function', color: '#F3D3EB'},
+          1: {curveType: 'function', color: '#B2569E'},
+            2: {curveType: 'function', color: '#471A3F'},
+        }
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+    }
+  
+</script>  
+ 
+<br>
+<div class="row">
+    <div class="tag-box tag-box-v1 box-shadow shadow-effect-2">
+        
+        <div class="row margin-bottom-20">
+            <div class="col-md-4 text-center">
+                <img src="/static/img/userprofile/avatar/{{userp['Avatar']}}a.jpg" class="img-responsive img-circle img-thumbnail">
+            </div>
+             <div class="col-md-4">
+               <h1>{{userp['Nickname']}} <img src="/static/img/userprofile/badge/play_iq_logo_mark_100_{{userp['Badge']}}.png" width="15%"></h1>
+                <!--<h3>{{userp['Email']}}</h3>-->
+                <h5>Joined: {{userp['MemberSince']}}</h5>
+                <!--<h5><em>'{{userp['Quote']}}'</em></h5>-->
+                 
+            </div>
+            <div class="col-md-4">                
+                <button class="btn-u btn-block text-left" type="button"><i class="fa fa-gamepad"></i>&nbsp;&nbsp; Add New Game</button>
+                <button class="btn-u btn-block text-left" type="button"><i class="fa fa-birthday-cake"></i>&nbsp;&nbsp; Add Life Event</button>
+                <button class="btn-u btn-block text-left" type="button"><i class="fa fa-trophy"></i>&nbsp;&nbsp; Compare to Friend</button>
+                <button class="btn-u btn-block text-left" type="button"><i class="fa fa-flag"></i>&nbsp;&nbsp; Suggest Games</button>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="tag-box tag-box-v1 box-shadow rounded shadow-effect-1">
+                    <div class="row text-center">
+                        <h4><strong>Perception</strong></h4><hr>
+                        <div class="row text-center">
+                            <p style="font-size:60px;color:#d76cbb">{{userp['Pav']}}</p>
+                            <div class="col-md-8 col-md-offset-2">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-playiq" role="progressbar" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100" style="width: {{userp['Pcertainty']}}%">
+                                        {{userp['Pcertainty']}}% Certainty
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                        </div>  
+                        <div class="row text-center">
+                            <p style="font-size:20px;color:#F3D3EB">Best: {{userp['Phi']}}</p>                                
+                            <p style="font-size:20;color:#F3D3EB">Worst: {{userp['Plo']}}</p>
+                            <br>
+                        </div>                  
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="tag-box tag-box-v1 box-shadow rounded shadow-effect-1">
+                    <div class="row text-center">
+                        <h4><strong>Learning</strong></h4><hr>
+                        <div class="row text-center">
+                            <p style="font-size:60px;color:#d76cbb">{{userp['Lav']}}</p>
+                            <div class="col-md-8 col-md-offset-2">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-playiq" role="progressbar" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100" style="width: {{userp['Lcertainty']}}%">
+                                        {{userp['Lcertainty']}}% Certainty
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                        </div>  
+                        <div class="row text-center">
+                            <p style="font-size:20px;color:#F3D3EB">Best: {{userp['Lhi']}}</p>                                
+                            <p style="font-size:20;color:#F3D3EB">Worst: {{userp['Llo']}}</p>
+                            <br>
+                        </div>                      
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="tag-box tag-box-v1 box-shadow rounded shadow-effect-1">
+                    <div class="row text-center">
+                        <h4><strong>Attention</strong></h4><hr>
+                        <div class="row text-center">
+                            <p style="font-size:60px;color:#d76cbb">{{userp['Aav']}}</p>
+                            <div class="col-md-8 col-md-offset-2">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-playiq" role="progressbar" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100" style="width: {{userp['Acertainty']}}%">
+                                        {{userp['Acertainty']}}% Certainty
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                        </div>  
+                        <div class="row text-center">
+                            <p style="font-size:20px;color:#F3D3EB">Best: {{userp['Ahi']}}</p>                                
+                            <p style="font-size:20;color:#F3D3EB">Worst: {{userp['Alo']}}</p>
+                            <br>
+                            
+                        </div>                       
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+        
+        </div>
+        <div class="row">
+            <div id="example2.1" style="height: 300;"></div>
+        </div>
+    </div>
+</div>
+
+      
+{% endblock %}

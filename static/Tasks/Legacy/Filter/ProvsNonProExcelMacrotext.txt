@@ -1,0 +1,33 @@
+Private Sub CommandButton1_Click()
+
+Dim i As Integer 'column number
+Dim j As Integer 'row number
+
+
+For j = 3 To Sheets("Sheet2").Columns.Count 'Will run for number of columns, whether this is 250 or 1,000,000
+If (Sheets("Sheet2").Cells(2505, j).Value = 1) Then
+For i = 22 To 101
+    If (Sheets("Sheet2").Cells(i, j).Value < 6) Then
+    Sheets("Sheet2").Cells(2506, j).Value = Sheets("Sheet2").Cells(2506, j).Value + Sheets("Sheet2").Cells(i + 1120, j).Value
+    ElseIf (Sheets("Sheet2").Cells(i, j).Value > 5) Then
+    Sheets("Sheet2").Cells(2507, j).Value = Sheets("Sheet2").Cells(2507, j).Value + Sheets("Sheet2").Cells(i + 1120, j).Value
+    End If
+    Next i
+ElseIf (Sheets("Sheet2").Cells(2505, j).Value = 2) Then
+For i = 22 To 101
+    If (Sheets("Sheet2").Cells(i, j).Value < 6) Then
+    Sheets("Sheet2").Cells(2507, j).Value = Sheets("Sheet2").Cells(2507, j).Value + Sheets("Sheet2").Cells(i + 1120, j).Value
+    ElseIf (Sheets("Sheet2").Cells(i, j).Value > 5) Then
+    Sheets("Sheet2").Cells(2506, j).Value = Sheets("Sheet2").Cells(2506, j).Value + Sheets("Sheet2").Cells(i + 1120, j).Value
+    End If
+    Next i
+End If
+Next j
+
+'Calculating the percentage values
+Dim k As Integer 'Percentage calculator column
+For k = 3 To Sheets("Sheet2").Columns.Count 'Will run for number of columns, whether this is 250 or 1,000,000
+Sheets("Sheet2").Cells(2508, k).Value = ((Sheets("Sheet2").Cells(2506, k).Value) / 40) * 100
+Sheets("Sheet2").Cells(2509, k).Value = ((Sheets("Sheet2").Cells(2507, k).Value) / 40) * 100
+Next k
+End Sub

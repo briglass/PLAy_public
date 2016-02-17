@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<STYLE TYPE="text/css">
+TD{font-family: Arial; font-size: 8pt;}
+TH{font-family: Arial; font-size: 8pt;}
+</STYLE>
+
+<p>ANT:</p>
+
+<table border>
+  <thead>
+    <tr>
+        <th>#</th>
+        <th>User</th>
+        <th>DateTime</th>       
+        <th>Drift Rate</th>   
+        <th>Raw Data</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i_ANT in get_ANT %}
+    <tr>
+        <td>{{i_ANT.id}}</td>
+        <td>{{i_ANT.user_id}}</td>
+        <td nowrap>{{i_ANT.datetime}}</td>
+        <td>{{i_ANT.driftrate}}</td>
+        <td>{{i_ANT.rawdata}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<br><br>
+<p>PRC:</p>
+
+<table border>
+  <thead>
+    <tr>
+        <th>#</th>
+        <th>User</th>
+        <th>DateTime</th>
+        <th>Drift Rate</th>   
+        <th>Raw Data</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i_PRC in get_PRC %}
+    <tr>
+        <td>{{i_PRC.id}}</td>
+        <td>{{i_PRC.user_id}}</td>
+        <td nowrap>{{i_PRC.datetime}}</td>
+        <td>{{i_PRC.driftrate}}</td>
+        <td>{{i_PRC.rawdata}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<br><br>
+<p>LRN:</p>
+
+<table border>
+  <thead>
+    <tr>
+        <th>#</th>
+        <th>User</th>
+        <th>DateTime</th>
+        <th>Accuracy</th>   
+        <th>Raw Data</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i_LRN in get_LRN %}
+    <tr>
+        <td>{{i_LRN.id}}</td>
+        <td>{{i_LRN.user_id}}</td>
+        <td nowrap>{{i_LRN.datetime}}</td>
+        <td>{{i_LRN.accuracy}}</td>
+        <td>{{i_LRN.rawdata}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<br><br>
+<p>SYM:</p>
+
+<table border>
+  <thead>
+    <tr>
+        <th>#</th>
+        <th>User</th>
+        <th>DateTime</th>
+        <th>Accuracy</th>   
+        <th>Raw Data</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i_SYM in get_SYM %}
+    <tr>
+        <td>{{i_SYM.id}}</td>
+        <td>{{i_SYM.user_id}}</td>
+        <td nowrap>{{i_SYM.datetime}}</td>
+        <td>{{i_SYM.accuracy}}</td>
+        <td>{{i_SYM.rawdata}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

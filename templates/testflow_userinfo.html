@@ -1,0 +1,300 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row text-center">
+<br>
+<h1>Please provide the following information</h1>
+</div>
+<hr>
+<form  id="bigform" action="/testflow_userinfo" method="post" >
+    
+ <div class="row text-right margin-bottom-10">
+    <div class="col-lg-4">                            
+            <h5>Age (years)*:</h5>
+    </div>
+    <div class="col-lg-3">                
+        <input type="text" class="form-control" name="age" placeholder="Years old" value="{{ age_raw if age_raw != None }}">
+    </div>
+</div>
+
+<div class="row text-right">
+    <div class="col-lg-4">                            
+            <h5>Gender*:</h5>
+    </div>
+    <div class="col-lg-3 text-left">                
+                        <div class="radio">
+                    <label>
+                        <input type="radio" name="gender" value="male" {% if gender == 1 %}checked{% endif %}>
+                        Male
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="gender" value="female" {% if gender == 2 %}checked{% endif %}>
+                        Female
+                    </label>
+                </div>
+				<div class="radio">
+                    <label>
+                        <input type="radio" name="gender" value="prefernot" {% if gender == 0 %}checked{% endif %}>
+                        Prefer not to say
+                    </label>
+                </div>
+    </div>
+ </div>
+
+ <hr>
+
+
+ 
+ <div class="row text-right">
+    <div class="col-lg-4">                            
+            <h5>Primary Game*:</h5>
+    </div>
+    <div class="col-lg-4">    
+        <select class="form-control" name="primarygame" >
+        {% for game in config['EXPERTGAMECODES'] %}
+             <h4>     
+                <option value="{{game}}" {% if game_primary_id|int == loop.index0 %}selected{% endif %}> {{game}}</option>
+            </h4>
+        {% endfor %}  
+       </select>
+   </div>
+</div>
+
+{% if current_user.has_role('Mturkuser') %}
+<div class="row text-right margin-bottom-10">
+    <div class="col-lg-4">                            
+            
+    </div>
+    <div class="col-lg-4">                
+        <input type="text" class="form-control" name="game_primary_other" value="{{ game_primary_other if game_primary_other != None }}" placeholder="Other Game">		
+    </div>
+	
+</div>
+{% endif %}
+
+<div class="row text-right margin-bottom-10">
+    <div class="col-lg-4">                            
+            <h5>Years as a professional gamer*:</h5>
+    </div>
+    <div class="col-lg-4">                
+        <input type="text" class="form-control" name="year_pro_play" value="{{ year_pro_play if year_pro_play != None }}">
+		<h6><em>Input "0" if not a professional gamer.</em>
+            
+    </div>	
+</div>
+
+{% if current_user.has_role('Mturkuser') %}
+<div class="row text-left margin-bottom-10">
+<h5><em>
+    <strong>Professional game player</strong> = a player that at the moment is officially involved in a team and is actively participating at recognized professional tournaments and competitions in a specific PC game.
+</em></h5>
+</div>
+{% endif %}
+
+        
+<hr>
+
+<h4>Primary Game</h4>
+<div class="row text-right">
+    <div class="col-lg-8">                            
+        <h5>How many hours per week do you play this game?*</h5>
+    </div>
+    <div class="col-lg-4">  
+        <input type="text" class="form-control" name="game_primary_hoursweek" value="{{ game_primary_hoursweek if game_primary_hoursweek != None }}">
+    </div>
+</div>
+<div class="row text-right">
+    <div class="col-lg-8">                            
+        <h5>For how many years have you played this game?*</h5>
+    </div>
+    <div class="col-lg-4">  
+        <input type="text" class="form-control" name="game_primary_yearsplayed" value="{{ game_primary_yearsplayed if game_primary_yearsplayed != None }}">
+    </div>
+</div>
+<hr>   
+ <div class="row text-center">
+    <div class="col-lg-12">
+        <h3 style="color:red">You must fill in one of the following sections regarding your Primary Game, as well as information about your Secondary Game</h3>
+    </div>
+ </div>
+ 
+<hr>
+   <h4 {% if game_primary_id == 0 %}style="color:red"{% endif %}>If DotA 2 or League of Legends:</h4>
+ <div class="row text-right">
+    <div class="col-lg-8">                            
+            <h5>Enter your Current solo MMR:</h5>
+    </div>
+    <div class="col-lg-4">                
+        <input type="text"  class="form-control"  name="specific_dota2_mmr" placeholder="" value="{{ specific_dota2_mmr if specific_dota2_mmr != None }}">
+    </div>
+</div>
+
+{% if current_user.has_role('Mturkuser') %}
+<div class="row text-right">
+    <div class="col-lg-8">                            
+        <h5>Please enter your favorite hero(es):</h5>
+    </div>
+    <div class="col-lg-4">  
+        <input type="text" class="form-control" name="specific_dota_hero" value="{{ specific_dota_hero if specific_dota_hero != None }}">
+    </div>
+</div>
+{% endif %}
+
+<hr>
+<!---
+ <div class="row text-right">
+    <div class="col-lg-8">                            
+            <h5>If StarCraft II, enter your World Championship Standing (WCS) points:</h5>
+    </div>
+    <div class="col-lg-4">                
+        <input type="text"  class="form-control" name="specific_starcraft2_wcspoitns" placeholder="" value="{{ specific_starcraft2_wcspoitns if specific_starcraft2_wcspoitns != None }}">
+    </div>
+</div>
+--->
+<h4 {% if game_primary_id == 2 %}style="color:red"{% endif %}>If StarCraft (either Brood War or StarCraft II):</h4>
+
+<div class="row text-right">
+    <div class="col-lg-8">                            
+            
+            <h5>Select the name of your current Battle.net League:</h5>
+    </div>
+    <div class="col-lg-4">                
+                <select class="form-control" name="specific_starcraft2_battlenetleague" >
+        {% for league in config['BATTLENETLEAGUES'] %}
+             <h4>                     
+                <option value="{{league}}" {% if specific_starcraft2_battlenetleague_id|int == loop.index0 %}selected{% endif %}> {{league}}</option>
+            </h4>
+        {% endfor %}
+       </select>
+       <h5><input type="text"  class="form-control" name="specific_starcraft2_battlenetleague_other" placeholder="Other League" value="{{ specific_starcraft2_battlenetleague if specific_starcraft2_battlenetleague_id == 0 }}"></h5>
+    </div>
+</div>
+<div class="row text-right">
+    <div class="col-lg-8">                            
+        <h5>Insert the complete name of your Battle.net Division:</h5>
+    </div>
+    <div class="col-lg-4">  
+        <input type="text" class="form-control" name="specific_starcraft2_battlenetdivision" value="{{ specific_starcraft2_battlenetdivision if specific_starcraft2_battlenetdivision != None }}">
+    </div>
+</div>
+
+{% if current_user.has_role('Mturkuser') %}
+<div class="row text-right">
+    <div class="col-lg-8">                            
+        <h5>Please list the races in order of preference (favorite to least favorite):</h5>
+    </div>
+    <div class="col-lg-4">  
+        <input type="text" class="form-control" name="specific_starcraft_races" value="{{ specific_starcraft_races if specific_starcraft_races != None }}">
+    </div>
+</div>
+{% endif %}
+
+<hr>
+
+<!---
+ <div class="row text-right">    
+    <div class="col-lg-8">                            
+            <h5>If Counter-Strike, enter your Current Team Rating:</h5>
+    </div>
+    <div class="col-lg-4 ">                
+        <input type="text"  class="form-control"  name="specific_counterstrike_teamrating" placeholder="" value="{{ specific_counterstrike_teamrating if specific_counterstrike_teamrating != None }}">
+    </div>
+</div>
+--->
+<h4 {% if game_primary_id == 3 or game_primary_id == 5 or game_primary_id == 8 %}style="color:red"{% endif %}>If Counter-Strike (either GO or Source):</h4>
+
+<div class="row text-right">
+    <div class="col-lg-8">        
+        <h5>If Counter-Strike, select your Current Skill Group:</h5>
+    </div>
+    <div class="col-lg-4">                
+                <select class="form-control" name="specific_counterstrike_skillgroup" >
+        {% for skillgroup in config['COUNTERSTRIKESKILLGROUP'] %}
+             <h4>                     
+                <option value="{{skillgroup}}" {% if specific_counterstrike_skillgroup_id|int == loop.index0 %}selected{% endif %}> {{skillgroup}}</option>
+            </h4>
+        {% endfor %}
+       </select>
+       <h5><input type="text"  class="form-control" name="specific_counterstrike_skillgroup_other" placeholder="Other Skill Group" value="{{ specific_counterstrike_skillgroup if specific_counterstrike_skillgroup_id == 0 }}"></h5>
+    </div>
+</div>
+
+{% if current_user.has_role('Mturkuser') %}
+<div class="row text-right">
+    <div class="col-lg-8">                            
+        <h5>Please enter your weapon of choice:</h5>
+    </div>
+    <div class="col-lg-4">  
+        <input type="text" class="form-control" name="specific_counterstrike_weapon" value="{{ specific_counterstrike_weapon if specific_counterstrike_weapon != None }}">
+    </div>
+</div>
+{% endif %}
+
+<hr>
+{% if current_user.has_role('Mturkuser') %}
+<h4 {% if game_primary_other != None %}style="color:red"{% endif %}>If any Other:</h4>
+<div class="row text-right">
+    <div class="col-lg-8">                            
+        <h5>Please enter your game score / level / or other performance measure:</h5>
+    </div>
+    <div class="col-lg-4">  
+        <input type="text" class="form-control" name="game_primary_other_level" value="{{ game_primary_other_level if game_primary_other_level != None }}">
+    </div>
+</div>
+<div class="row text-right">
+    <div class="col-lg-8">                            
+        <h5>Please enter the reason you prefer this game over others:</h5>
+    </div>
+    <div class="col-lg-4">  
+        <input type="text" class="form-control" name="game_primary_other_reason" value="{{ game_primary_other_reason if game_primary_other_reason != None }}">
+    </div>
+</div>
+
+{% endif %}
+<hr> 
+
+<h4>Secondary Game</h4>
+<div class="row text-right">
+    <div class="col-lg-8">                            
+        <h5>What game do you play second most often?*</h5>
+    </div>
+    <div class="col-lg-4">  
+        <input type="text" class="form-control" name="game_secondary" value="{{ game_secondary if game_secondary != None }}">
+    </div>
+</div>
+<div class="row text-right">
+    <div class="col-lg-8">                            
+        <h5>How many hours per week do you play this secondary game?*</h5>
+    </div>
+    <div class="col-lg-4">  
+        <input type="text" class="form-control" name="game_secondary_hoursweek" value="{{ game_secondary_hoursweek if game_secondary_hoursweek != None }}">
+    </div>
+</div>
+<div class="row text-right">
+    <div class="col-lg-8">                            
+        <h5>For how many years have you played this secondary game?*</h5>
+    </div>
+    <div class="col-lg-4">  
+        <input type="text" class="form-control" name="game_secondary_yearsplayed" value="{{ game_secondary_yearsplayed if game_secondary_yearsplayed != None }}">
+    </div>
+</div>
+
+<hr>  
+            
+    <input type="submit" name="submitButton" class="btn-u btn-brd-hover  btn-u-playiq2" value="Submit Information"></input>
+        
+    </table>
+	
+	
+<div>
+<h6>*Required fields</h6>
+</div>
+</form>
+
+
+
+
+{% endblock %}

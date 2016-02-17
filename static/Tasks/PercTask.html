@@ -1,0 +1,903 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script>
+var currentTrial = 0;
+var startTrialTime = 0;
+var trialRunning = false;
+var respReady = false;
+var img1set = ['filterimages/2_0/0a.jpg',
+    'filterimages/2_0/1a.jpg',
+    'filterimages/2_0/2a.jpg',
+    'filterimages/2_0/3a.jpg',
+    'filterimages/2_0/4a.jpg',
+    'filterimages/2_0/5a.jpg',
+    'filterimages/2_0/6a.jpg',
+    'filterimages/2_0/7a.jpg',
+    'filterimages/2_0/8a.jpg',
+    'filterimages/2_0/9a.jpg',
+    'filterimages/2_2/0a.jpg',
+    'filterimages/2_2/1a.jpg',
+    'filterimages/2_2/2a.jpg',
+    'filterimages/2_2/3a.jpg',
+    'filterimages/2_2/4a.jpg',
+    'filterimages/2_2/5a.jpg',
+    'filterimages/2_2/6a.jpg',
+    'filterimages/2_2/7a.jpg',
+    'filterimages/2_2/8a.jpg',
+    'filterimages/2_2/9a.jpg',
+    'filterimages/2_4/0a.jpg',
+    'filterimages/2_4/1a.jpg',
+    'filterimages/2_4/2a.jpg',
+    'filterimages/2_4/3a.jpg',
+    'filterimages/2_4/4a.jpg',
+    'filterimages/2_4/5a.jpg',
+    'filterimages/2_4/6a.jpg',
+    'filterimages/2_4/7a.jpg',
+    'filterimages/2_4/8a.jpg',
+    'filterimages/2_4/9a.jpg',
+    'filterimages/2_6/0a.jpg',
+    'filterimages/2_6/1a.jpg',
+    'filterimages/2_6/2a.jpg',
+    'filterimages/2_6/3a.jpg',
+    'filterimages/2_6/4a.jpg',
+    'filterimages/2_6/5a.jpg',
+    'filterimages/2_6/6a.jpg',
+    'filterimages/2_6/7a.jpg',
+    'filterimages/2_6/8a.jpg',
+    'filterimages/2_6/9a.jpg',
+    'filterimages/4_0/0a.jpg',
+    'filterimages/4_0/1a.jpg',
+    'filterimages/4_0/2a.jpg',
+    'filterimages/4_0/3a.jpg',
+    'filterimages/4_0/4a.jpg',
+    'filterimages/4_0/5a.jpg',
+    'filterimages/4_0/6a.jpg',
+    'filterimages/4_0/7a.jpg',
+    'filterimages/4_0/8a.jpg',
+    'filterimages/4_0/9a.jpg',
+    'filterimages/4_2/0a.jpg',
+    'filterimages/4_2/1a.jpg',
+    'filterimages/4_2/2a.jpg',
+    'filterimages/4_2/3a.jpg',
+    'filterimages/4_2/4a.jpg',
+    'filterimages/4_2/5a.jpg',
+    'filterimages/4_2/6a.jpg',
+    'filterimages/4_2/7a.jpg',
+    'filterimages/4_2/8a.jpg',
+    'filterimages/4_2/9a.jpg',
+    'filterimages/4_4/0a.jpg',
+    'filterimages/4_4/1a.jpg',
+    'filterimages/4_4/2a.jpg',
+    'filterimages/4_4/3a.jpg',
+    'filterimages/4_4/4a.jpg',
+    'filterimages/4_4/5a.jpg',
+    'filterimages/4_4/6a.jpg',
+    'filterimages/4_4/7a.jpg',
+    'filterimages/4_4/8a.jpg',
+    'filterimages/4_4/9a.jpg',
+    'filterimages/6_0/0a.jpg',
+    'filterimages/6_0/1a.jpg',
+    'filterimages/6_0/2a.jpg',
+    'filterimages/6_0/3a.jpg',
+    'filterimages/6_0/4a.jpg',
+    'filterimages/6_0/5a.jpg',
+    'filterimages/6_0/6a.jpg',
+    'filterimages/6_0/7a.jpg',
+    'filterimages/6_0/8a.jpg',
+    'filterimages/6_0/9a.jpg',
+    'filterimages/6_2/0a.jpg',
+    'filterimages/6_2/1a.jpg',
+    'filterimages/6_2/2a.jpg',
+    'filterimages/6_2/3a.jpg',
+    'filterimages/6_2/4a.jpg',
+    'filterimages/6_2/5a.jpg',
+    'filterimages/6_2/6a.jpg',
+    'filterimages/6_2/7a.jpg',
+    'filterimages/6_2/8a.jpg',
+    'filterimages/6_2/9a.jpg',
+    'filterimages/8_0/0a.jpg',
+    'filterimages/8_0/1a.jpg',
+    'filterimages/8_0/2a.jpg',
+    'filterimages/8_0/3a.jpg',
+    'filterimages/8_0/4a.jpg',
+    'filterimages/8_0/5a.jpg',
+    'filterimages/8_0/6a.jpg',
+    'filterimages/8_0/7a.jpg',
+    'filterimages/8_0/8a.jpg',
+    'filterimages/8_0/9a.jpg',
+    'filterimages/2_0/10a.jpg',
+    'filterimages/2_0/11a.jpg',
+    'filterimages/2_0/12a.jpg',
+    'filterimages/2_0/13a.jpg',
+    'filterimages/2_0/14a.jpg',
+    'filterimages/2_0/15a.jpg',
+    'filterimages/2_0/16a.jpg',
+    'filterimages/2_0/17a.jpg',
+    'filterimages/2_0/18a.jpg',
+    'filterimages/2_0/19a.jpg',
+    'filterimages/2_2/10a.jpg',
+    'filterimages/2_2/11a.jpg',
+    'filterimages/2_2/12a.jpg',
+    'filterimages/2_2/13a.jpg',
+    'filterimages/2_2/14a.jpg',
+    'filterimages/2_2/15a.jpg',
+    'filterimages/2_2/16a.jpg',
+    'filterimages/2_2/17a.jpg',
+    'filterimages/2_2/18a.jpg',
+    'filterimages/2_2/19a.jpg',
+    'filterimages/2_4/10a.jpg',
+    'filterimages/2_4/11a.jpg',
+    'filterimages/2_4/12a.jpg',
+    'filterimages/2_4/13a.jpg',
+    'filterimages/2_4/14a.jpg',
+    'filterimages/2_4/15a.jpg',
+    'filterimages/2_4/16a.jpg',
+    'filterimages/2_4/17a.jpg',
+    'filterimages/2_4/18a.jpg',
+    'filterimages/2_4/19a.jpg',
+    'filterimages/2_6/10a.jpg',
+    'filterimages/2_6/11a.jpg',
+    'filterimages/2_6/12a.jpg',
+    'filterimages/2_6/13a.jpg',
+    'filterimages/2_6/14a.jpg',
+    'filterimages/2_6/15a.jpg',
+    'filterimages/2_6/16a.jpg',
+    'filterimages/2_6/17a.jpg',
+    'filterimages/2_6/18a.jpg',
+    'filterimages/2_6/19a.jpg',
+    'filterimages/4_0/10a.jpg',
+    'filterimages/4_0/11a.jpg',
+    'filterimages/4_0/12a.jpg',
+    'filterimages/4_0/13a.jpg',
+    'filterimages/4_0/14a.jpg',
+    'filterimages/4_0/15a.jpg',
+    'filterimages/4_0/16a.jpg',
+    'filterimages/4_0/17a.jpg',
+    'filterimages/4_0/18a.jpg',
+    'filterimages/4_0/19a.jpg',
+    'filterimages/4_2/10a.jpg',
+    'filterimages/4_2/11a.jpg',
+    'filterimages/4_2/12a.jpg',
+    'filterimages/4_2/13a.jpg',
+    'filterimages/4_2/14a.jpg',
+    'filterimages/4_2/15a.jpg',
+    'filterimages/4_2/16a.jpg',
+    'filterimages/4_2/17a.jpg',
+    'filterimages/4_2/18a.jpg',
+    'filterimages/4_2/19a.jpg',
+    'filterimages/4_4/10a.jpg',
+    'filterimages/4_4/11a.jpg',
+    'filterimages/4_4/12a.jpg',
+    'filterimages/4_4/13a.jpg',
+    'filterimages/4_4/14a.jpg',
+    'filterimages/4_4/15a.jpg',
+    'filterimages/4_4/16a.jpg',
+    'filterimages/4_4/17a.jpg',
+    'filterimages/4_4/18a.jpg',
+    'filterimages/4_4/19a.jpg',
+    'filterimages/6_0/10a.jpg',
+    'filterimages/6_0/11a.jpg',
+    'filterimages/6_0/12a.jpg',
+    'filterimages/6_0/13a.jpg',
+    'filterimages/6_0/14a.jpg',
+    'filterimages/6_0/15a.jpg',
+    'filterimages/6_0/16a.jpg',
+    'filterimages/6_0/17a.jpg',
+    'filterimages/6_0/18a.jpg',
+    'filterimages/6_0/19a.jpg',
+    'filterimages/6_2/10a.jpg',
+    'filterimages/6_2/11a.jpg',
+    'filterimages/6_2/12a.jpg',
+    'filterimages/6_2/13a.jpg',
+    'filterimages/6_2/14a.jpg',
+    'filterimages/6_2/15a.jpg',
+    'filterimages/6_2/16a.jpg',
+    'filterimages/6_2/17a.jpg',
+    'filterimages/6_2/18a.jpg',
+    'filterimages/6_2/19a.jpg',
+    'filterimages/8_0/10a.jpg',
+    'filterimages/8_0/11a.jpg',
+    'filterimages/8_0/12a.jpg',
+    'filterimages/8_0/13a.jpg',
+    'filterimages/8_0/14a.jpg',
+    'filterimages/8_0/15a.jpg',
+    'filterimages/8_0/16a.jpg',
+    'filterimages/8_0/17a.jpg',
+    'filterimages/8_0/18a.jpg',
+    'filterimages/8_0/19a.jpg']; //first image set
+var img2set = ['filterimages/2_0/0b.jpg',
+    'filterimages/2_0/1b.jpg',
+    'filterimages/2_0/2b.jpg',
+    'filterimages/2_0/3b.jpg',
+    'filterimages/2_0/4b.jpg',
+    'filterimages/2_0/5b.jpg',
+    'filterimages/2_0/6b.jpg',
+    'filterimages/2_0/7b.jpg',
+    'filterimages/2_0/8b.jpg',
+    'filterimages/2_0/9b.jpg',
+    'filterimages/2_2/0b.jpg',
+    'filterimages/2_2/1b.jpg',
+    'filterimages/2_2/2b.jpg',
+    'filterimages/2_2/3b.jpg',
+    'filterimages/2_2/4b.jpg',
+    'filterimages/2_2/5b.jpg',
+    'filterimages/2_2/6b.jpg',
+    'filterimages/2_2/7b.jpg',
+    'filterimages/2_2/8b.jpg',
+    'filterimages/2_2/9b.jpg',
+    'filterimages/2_4/0b.jpg',
+    'filterimages/2_4/1b.jpg',
+    'filterimages/2_4/2b.jpg',
+    'filterimages/2_4/3b.jpg',
+    'filterimages/2_4/4b.jpg',
+    'filterimages/2_4/5b.jpg',
+    'filterimages/2_4/6b.jpg',
+    'filterimages/2_4/7b.jpg',
+    'filterimages/2_4/8b.jpg',
+    'filterimages/2_4/9b.jpg',
+    'filterimages/2_6/0b.jpg',
+    'filterimages/2_6/1b.jpg',
+    'filterimages/2_6/2b.jpg',
+    'filterimages/2_6/3b.jpg',
+    'filterimages/2_6/4b.jpg',
+    'filterimages/2_6/5b.jpg',
+    'filterimages/2_6/6b.jpg',
+    'filterimages/2_6/7b.jpg',
+    'filterimages/2_6/8b.jpg',
+    'filterimages/2_6/9b.jpg',
+    'filterimages/4_0/0b.jpg',
+    'filterimages/4_0/1b.jpg',
+    'filterimages/4_0/2b.jpg',
+    'filterimages/4_0/3b.jpg',
+    'filterimages/4_0/4b.jpg',
+    'filterimages/4_0/5b.jpg',
+    'filterimages/4_0/6b.jpg',
+    'filterimages/4_0/7b.jpg',
+    'filterimages/4_0/8b.jpg',
+    'filterimages/4_0/9b.jpg',
+    'filterimages/4_2/0b.jpg',
+    'filterimages/4_2/1b.jpg',
+    'filterimages/4_2/2b.jpg',
+    'filterimages/4_2/3b.jpg',
+    'filterimages/4_2/4b.jpg',
+    'filterimages/4_2/5b.jpg',
+    'filterimages/4_2/6b.jpg',
+    'filterimages/4_2/7b.jpg',
+    'filterimages/4_2/8b.jpg',
+    'filterimages/4_2/9b.jpg',
+    'filterimages/4_4/0b.jpg',
+    'filterimages/4_4/1b.jpg',
+    'filterimages/4_4/2b.jpg',
+    'filterimages/4_4/3b.jpg',
+    'filterimages/4_4/4b.jpg',
+    'filterimages/4_4/5b.jpg',
+    'filterimages/4_4/6b.jpg',
+    'filterimages/4_4/7b.jpg',
+    'filterimages/4_4/8b.jpg',
+    'filterimages/4_4/9b.jpg',
+    'filterimages/6_0/0b.jpg',
+    'filterimages/6_0/1b.jpg',
+    'filterimages/6_0/2b.jpg',
+    'filterimages/6_0/3b.jpg',
+    'filterimages/6_0/4b.jpg',
+    'filterimages/6_0/5b.jpg',
+    'filterimages/6_0/6b.jpg',
+    'filterimages/6_0/7b.jpg',
+    'filterimages/6_0/8b.jpg',
+    'filterimages/6_0/9b.jpg',
+    'filterimages/6_2/0b.jpg',
+    'filterimages/6_2/1b.jpg',
+    'filterimages/6_2/2b.jpg',
+    'filterimages/6_2/3b.jpg',
+    'filterimages/6_2/4b.jpg',
+    'filterimages/6_2/5b.jpg',
+    'filterimages/6_2/6b.jpg',
+    'filterimages/6_2/7b.jpg',
+    'filterimages/6_2/8b.jpg',
+    'filterimages/6_2/9b.jpg',
+    'filterimages/8_0/0b.jpg',
+    'filterimages/8_0/1b.jpg',
+    'filterimages/8_0/2b.jpg',
+    'filterimages/8_0/3b.jpg',
+    'filterimages/8_0/4b.jpg',
+    'filterimages/8_0/5b.jpg',
+    'filterimages/8_0/6b.jpg',
+    'filterimages/8_0/7b.jpg',
+    'filterimages/8_0/8b.jpg',
+    'filterimages/8_0/9b.jpg',
+    'filterimages/2_0/10a.jpg',
+    'filterimages/2_0/11a.jpg',
+    'filterimages/2_0/12a.jpg',
+    'filterimages/2_0/13a.jpg',
+    'filterimages/2_0/14a.jpg',
+    'filterimages/2_0/15a.jpg',
+    'filterimages/2_0/16a.jpg',
+    'filterimages/2_0/17a.jpg',
+    'filterimages/2_0/18a.jpg',
+    'filterimages/2_0/19a.jpg',
+    'filterimages/2_2/10a.jpg',
+    'filterimages/2_2/11a.jpg',
+    'filterimages/2_2/12a.jpg',
+    'filterimages/2_2/13a.jpg',
+    'filterimages/2_2/14a.jpg',
+    'filterimages/2_2/15a.jpg',
+    'filterimages/2_2/16a.jpg',
+    'filterimages/2_2/17a.jpg',
+    'filterimages/2_2/18a.jpg',
+    'filterimages/2_2/19a.jpg',
+    'filterimages/2_4/10a.jpg',
+    'filterimages/2_4/11a.jpg',
+    'filterimages/2_4/12a.jpg',
+    'filterimages/2_4/13a.jpg',
+    'filterimages/2_4/14a.jpg',
+    'filterimages/2_4/15a.jpg',
+    'filterimages/2_4/16a.jpg',
+    'filterimages/2_4/17a.jpg',
+    'filterimages/2_4/18a.jpg',
+    'filterimages/2_4/19a.jpg',
+    'filterimages/2_6/10a.jpg',
+    'filterimages/2_6/11a.jpg',
+    'filterimages/2_6/12a.jpg',
+    'filterimages/2_6/13a.jpg',
+    'filterimages/2_6/14a.jpg',
+    'filterimages/2_6/15a.jpg',
+    'filterimages/2_6/16a.jpg',
+    'filterimages/2_6/17a.jpg',
+    'filterimages/2_6/18a.jpg',
+    'filterimages/2_6/19a.jpg',
+    'filterimages/4_0/10a.jpg',
+    'filterimages/4_0/11a.jpg',
+    'filterimages/4_0/12a.jpg',
+    'filterimages/4_0/13a.jpg',
+    'filterimages/4_0/14a.jpg',
+    'filterimages/4_0/15a.jpg',
+    'filterimages/4_0/16a.jpg',
+    'filterimages/4_0/17a.jpg',
+    'filterimages/4_0/18a.jpg',
+    'filterimages/4_0/19a.jpg',
+    'filterimages/4_2/10a.jpg',
+    'filterimages/4_2/11a.jpg',
+    'filterimages/4_2/12a.jpg',
+    'filterimages/4_2/13a.jpg',
+    'filterimages/4_2/14a.jpg',
+    'filterimages/4_2/15a.jpg',
+    'filterimages/4_2/16a.jpg',
+    'filterimages/4_2/17a.jpg',
+    'filterimages/4_2/18a.jpg',
+    'filterimages/4_2/19a.jpg',
+    'filterimages/4_4/10a.jpg',
+    'filterimages/4_4/11a.jpg',
+    'filterimages/4_4/12a.jpg',
+    'filterimages/4_4/13a.jpg',
+    'filterimages/4_4/14a.jpg',
+    'filterimages/4_4/15a.jpg',
+    'filterimages/4_4/16a.jpg',
+    'filterimages/4_4/17a.jpg',
+    'filterimages/4_4/18a.jpg',
+    'filterimages/4_4/19a.jpg',
+    'filterimages/6_0/10a.jpg',
+    'filterimages/6_0/11a.jpg',
+    'filterimages/6_0/12a.jpg',
+    'filterimages/6_0/13a.jpg',
+    'filterimages/6_0/14a.jpg',
+    'filterimages/6_0/15a.jpg',
+    'filterimages/6_0/16a.jpg',
+    'filterimages/6_0/17a.jpg',
+    'filterimages/6_0/18a.jpg',
+    'filterimages/6_0/19a.jpg',
+    'filterimages/6_2/10a.jpg',
+    'filterimages/6_2/11a.jpg',
+    'filterimages/6_2/12a.jpg',
+    'filterimages/6_2/13a.jpg',
+    'filterimages/6_2/14a.jpg',
+    'filterimages/6_2/15a.jpg',
+    'filterimages/6_2/16a.jpg',
+    'filterimages/6_2/17a.jpg',
+    'filterimages/6_2/18a.jpg',
+    'filterimages/6_2/19a.jpg',
+    'filterimages/8_0/10a.jpg',
+    'filterimages/8_0/11a.jpg',
+    'filterimages/8_0/12a.jpg',
+    'filterimages/8_0/13a.jpg',
+    'filterimages/8_0/14a.jpg',
+    'filterimages/8_0/15a.jpg',
+    'filterimages/8_0/16a.jpg',
+    'filterimages/8_0/17a.jpg',
+    'filterimages/8_0/18a.jpg',
+    'filterimages/8_0/19a.jpg']; //second image set
+var PImgOrd = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,
+    25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,
+    47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,
+    69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,
+    91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,
+    110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,
+    132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,
+    147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,
+    169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,
+    191,192,193,194,195,196,197,198,199]; //array for dictating order of presentation
+var respVar = []; //answer array for responses
+var PercReact = [];  //RT response array
+var PSameDiff = []; //array for evaluating correct response
+var respCor = []; // correct response array
+var PCorCount = 0;
+var instCount = 1;
+var numTrials = 200; //total trial number
+var PIti = 0;
+
+function shuffle(array) {
+    var counter = array.length, temp, index;
+
+    // While there are elements in the array
+    while (counter > 0) {
+        // Pick a random index
+        index = Math.floor(Math.random() * counter);
+
+        // Decrease counter by 1
+        counter--;
+
+        // And swap the last element with it
+        temp = array[counter];
+        array[counter] = array[index];
+        array[index] = temp;
+    }
+
+    return array;
+}
+shuffle(PImgOrd);
+
+for(var i=0;i<200;i++){
+    if(PImgOrd[i]<100){
+        PSameDiff[i]=1;
+    }else if(PImgOrd[i]>=100){
+        PSameDiff[i]=2;
+    }
+}
+
+var ticker =0;
+function preLoad(arrayOfImages) {
+    $(arrayOfImages).each(function(){
+        $('.preload').attr('src', this);
+        // Alternatively you could use:
+        // (new Image()).src = this;
+    });
+    //for(i= 0; i = arrayOfImages.length;i++){
+    //    $('.preload').attr('src', arrayOfImages[i]);
+    //}
+    ticker++;
+}
+
+//preLoad(img1set);
+//preLoad(img2set);
+
+$(document).ready(function() {
+	$('#submitButton').hide();
+    w = window.innerWidth;//total width in pixels
+    h = window.innerHeight;//total height in pixels
+    $('#body').width(w + 'em').height(h + 'em');//fixing body to screen size (and container as it's 100% of body)
+    //$(document).bind('keyup', 'space', StartTrial);
+	//$(document).bind('keydown', 'Right arrow', PressedSame);
+	//$(document).bind('keydown', 'Left arrow', PressedDifferent);
+    $(document).keydown(function( event ) {
+        if (event.which == 37) {
+            PressedSame();
+        }else if (event.which == 39) {
+            PressedDifferent();
+        }
+    });
+    $('#inst1').show();
+    $('#startTrial').hide();
+    $('#submitting').hide();
+    $('#contButton').hide();
+    $('#p3').hide();
+    $('#p2').hide();
+    $('#p1').hide();
+    $('#Tinst').hide();
+    //$('#Score').hide();
+    preLoad(img1set);
+    preLoad(img2set);
+    if(ticker==2){
+        $('#contButton').show();
+    }
+});
+
+function PressedSame() {
+	if (!trialRunning) {
+        return;
+    }
+    if (!respReady){
+        return;
+    }
+	//$('#t' + currentTrial + '_response').val("same");
+	respVar.push(1);
+    if (PSameDiff[currentTrial]==1){
+        respCor.push(1);
+        PCorCount++;
+    }else if(PSameDiff[currentTrial]==2){
+        respCor.push(0);
+    }
+    if (respReady){
+        respReady = false;
+        NextTrial();
+    }
+}
+
+function PressedDifferent() {
+	if (!trialRunning) {
+		return;
+	}
+    if (!respReady){
+        return;
+    }
+	//$('#t' + currentTrial + '_response').val("diff");
+	respVar.push(2);
+    if (PSameDiff[currentTrial]==1){
+        respCor.push(0);
+    }else if(PSameDiff[currentTrial]==2){
+        respCor.push(1);
+        PCorCount++;
+    }
+    if (respReady){
+        respReady = false;
+        NextTrial();
+    }
+
+}
+
+function NextTrial() {
+    if (!trialRunning) {
+        return;
+    }
+    trialRunning = false;
+
+	var currentTime = new Date().getTime();
+	var RT = currentTime - startTrialTime;
+	PIti = 2000 - RT;
+	//$('#t' + currentTrial + '_rt').val(RT);
+	PercReact.push(RT);
+	if (PIti <0){
+        $('#t1_d2').hide();
+        $('#LImg').hide();
+        $('#RImg').hide();
+        currentTrial++;
+		StartTrial();
+	
+	}else if (PIti > 0){
+		setTimeout(function () {
+            $('#t1_d2').hide();
+            $('#LImg').hide();
+            $('#RImg').hide();
+			currentTrial++;
+			StartTrial();
+        }, PIti);
+	}
+}
+
+function Continue(){
+    if (instCount==1){
+        $('#inst1').hide();
+        $('#inst2a').show();
+        instCount++;
+    }else if (instCount==2){
+        $('#inst2a').hide();
+        $('#inst2b').show();
+        instCount++;
+    }else if (instCount==3){
+        $('#inst2b').hide();
+        $('#startTrial').show();
+        $('#inst3').show();
+        $('#contButton').hide();
+        instCount++;
+    }
+    //Can add in the submit function here if continue is re-shown once trials end
+}
+
+function Submit() {
+    //In here needs to be the relevant submission aspects, and window closure / re-directs
+    $('#submitting').hide();
+    var Tag = "PRC";
+    var datOne;
+    var DatScore = String(Pv_EZ);
+    datOne = String(respVar) + "," + String(PercReact) + "," + String(PSameDiff) + "," + String(PImgOrd) + "," + String(respCor) + "," + String(PCorProp) + "," + String(PPc) + "," + String(PMRT) + "," + String(PVRT) + "," + String(Pv_EZ);
+
+    $.ajax({
+        url: '/taskinputjs',
+        type: 'post',
+        data: {taskName: Tag, taskScore: DatScore, taskData: datOne}
+    }).done(function (data) {
+        console.log(data);
+        Redirect('/results')
+    });
+
+}
+
+function getData(){
+    //var url = "http://example.com/script.php?var1=value2&var2=value2";
+    //var www : WWW = new WWW (url);
+
+// wait for request to complete yield www;
+
+// and check for errors
+// if (www.error == null) {
+// request completed! }
+// else {
+// something wrong!
+// Debug.Log("WWW Error: "+ www.error); }
+}
+
+function StartCount(){
+    $('#inst3').hide();
+    $('#startTrial').hide();
+    $('#p3').show();
+    setTimeout(function () {
+        $('#p3').hide();
+        $('#p2').show();
+    }, 1000);
+    setTimeout(function () {
+        $('#p2').hide();
+        $('#p1').show();
+    }, 2000);
+    setTimeout(function () {
+        $('#p1').hide();
+        StartTrial();
+        $('#Tinst').show();
+    }, 3000);
+}
+
+function StartTrial() {
+	if (trialRunning) {
+		return;
+	}
+    if (respReady){
+        return;
+    }
+
+
+    if (currentTrial >= numTrials) {//end of trials
+        $('#fix').hide();
+        $('#submitting').show();
+        $('#ty').show();
+        $('#Tinst').hide();
+        PCorProp = PCorCount / currentTrial;
+        EZCalc();
+        document.getElementById("Score").innerHTML = "Your Score: "+String(EZ_Disp);
+        $('#Score').show();
+    } else {
+        $('#fix').show();
+        $('#inst3').hide();
+        $('#startTrial').hide();
+        $('#t1_d1').attr('src', img1set[PImgOrd[currentTrial]]);
+        $('#t1_d2').attr('src', img2set[PImgOrd[currentTrial]]);
+        setTimeout(function () {
+            $('#fix').hide();
+            $('#t1_d1').show();
+        }, 200);//ITI
+
+        setTimeout(function () {
+            $('#t1_d1').hide();
+            $('#fix').show();
+        }, 300);
+
+        setTimeout(function () {
+            $('#fix').hide();
+            $('#t1_d2').show();
+            $('#LImg').show();
+            $('#RImg').show();
+            startTrialTime = new Date().getTime();
+            trialRunning = true;
+            respReady = true;
+        }, 1200);
+
+
+    }
+}
+
+function EZCalc(){
+    RTtotal1 = 0;
+    RTtotal1count=0;
+    RTtotal2 = 0;
+    RTtotal2count=0;
+//Proportion of responses correct
+    Pc = PCorProp;
+//Mean RT calc
+    for (i=0; i<(PercReact.length-1); i++){
+        if (PercReact[i] < 2000){
+            RTtotal1 = RTtotal1 + PercReact[i];
+            RTtotal1count++;
+        }
+    }
+    MRT1 = (RTtotal1/RTtotal1count);
+    MRT = MRT1 / 1000;
+//Reaction time variance
+    for (i=0; i<(PercReact.length-1); i++){
+        if (PercReact[i] < 2000){
+            RTtotal2 = RTtotal2 + (((PercReact[i]) - MRT1)*((PercReact[i]) - MRT1));
+            RTtotal2count++;
+        }
+    }
+    VRT1 = (RTtotal2/(RTtotal2count-1));
+    VRT = VRT1 / 1000;
+//Now ready to start diffusion model calculations
+//Sign value
+    if((Pc-0.5)>0){
+        ezsign = 1;
+    }else if((Pc-0.5)==0){
+        ezsign = 0;
+    }else if((Pc-0.5)<0){
+        ezsign = -1;
+    }
+//Edge correction
+    if(Pc==1){
+        Pc = (1 - (1/(2 * PercReact.length)));
+    }
+//Central Calc
+    var s = 0.1;
+    var s2 = s * s;
+    var L = Math.log((Pc / (1-Pc)));
+    var xx = L * ((L * (Pc * Pc))-(L * Pc) + Pc-0.5) / VRT;
+    var v = ezsign * s * Math.pow(xx,(1 / 4));
+    var a = s2 * Math.log(Pc / (1-Pc)) / v;
+    var yy = -v * a / s2;
+    var MDT = (a / (2 * v)) * (1-Math.exp(yy)) / (1+Math.exp(yy));
+    var Ter = (MRT-MDT);
+    v_EZ = v;
+//Final variable assignments
+    PPc = Pc;
+    PVRT = VRT;
+    PMRT = MRT;
+    Pv_EZ = v_EZ;
+    EZ_Disp = (Math.round((v_EZ*1000)))/1000;//displayed drift rate
+}
+
+function Redirect (url) {
+    var ua        = navigator.userAgent.toLowerCase(),
+            isIE      = ua.indexOf('msie') !== -1,
+            version   = parseInt(ua.substr(4, 2), 10);
+
+    // Internet Explorer 8 and lower
+    if (isIE && version < 9) {
+        var link = document.createElement('a');
+        link.href = url;
+        document.body.appendChild(link);
+        link.click();
+    }
+
+    // All other browsers
+    else { window.location.href = url; }
+}
+
+</script>
+<style>
+
+#container {
+    position: relative;
+    background-color: #999999;
+    width: 100%;
+    height: 100%;
+    vertical-align:middle;
+}
+
+.displays {
+    position: relative;
+    display: none;
+    top:calc(50% - 400px/2);
+    left:calc(50% - 401px/2);
+    vertical-align:middle;
+    text-align:center;
+}
+
+.displayed {
+    position: relative;
+    display: none;
+    top:calc(50% - 500px/2);
+    left:calc(50% - 601px/2);
+    vertical-align:middle;
+}
+
+.lftImg {
+    position: absolute;
+    display: none;
+    bottom:10%;
+    left:20%;
+}
+
+.rightImg {
+    position: absolute;
+    display: none;
+    bottom:10%;
+    right:20%;
+}
+
+#startTrial {
+    position: absolute;
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    bottom:5%;
+    right:5%;
+    font-weight: bold;
+    color: black;
+    font-size: 14pt;
+}
+
+#submitting {
+    position: absolute;
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    bottom:5%;
+    right:5%;
+    font-weight: bold;
+    color: black;
+    font-size: 14pt;
+}
+
+#contButton {
+    position: absolute;
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    bottom:5%;
+    right:5%;
+    font-weight: bold;
+    color: black;
+    font-size: 14pt;
+}
+
+.p4 {
+    position: absolute;
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    left: 50%;
+    bottom: 10%;
+    width:200px;
+    height:20px;
+    font-weight: bold;
+    text-align: center;
+    vertical-align:middle;
+    color: black;
+    font-size: 20pt;
+}
+
+.p3 {
+    position: absolute;
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    top:calc(50% - 105px/2);
+    left:calc(50% - 395px/2);
+    width:401px;
+    height:20px;
+    font-weight: bold;
+    text-align: center;
+    vertical-align:middle;
+    color: black;
+    font-size: 30pt;
+}
+
+.p6 {
+    position: absolute;
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    left: calc(50% - 340px/2);
+    top: 10%;
+    width:340px;
+    height:20px;
+    text-align: center;
+    vertical-align:middle;
+    color: white;
+    font-size: 18pt;
+}
+
+</style>
+<body style="background-color:#999999">
+<div id="container">
+ <input id="contButton" type="button" name="contButton" value="Continue" onclick="Continue();">
+ <input id="startTrial" type="button" name="startTrial" value="Start" onclick="StartCount();">
+ <input id="submitting" type="button" name="submitting" value="Next" onclick="Submit();">
+ <img class="displays" id="t1_d1" src="" style="width:401px;height:400px;">
+ <img class="displays" id="t1_d2" src="" style="width:401px;height:400px;">
+ <img class="displayed" id="inst1" src="instfiles/PinstA.JPG" style="width:601px;height:409px;">
+ <img class="displayed" id="inst2a" src="instfiles/Pinst2a.JPG" style="width:601px;height:466px;">
+ <img class="displayed" id="inst2b" src="instfiles/Pinst2b.JPG" style="width:601px;height:461px;">
+ <img class="displayed" id="inst3" src="instfiles/Pinst3.JPG" style="width:601px;height:254px;">
+ <img class="displayed" id="ty" src="instfiles/TY.JPG" style="width:601px;height:279px;">
+ <img class="displays" id="fix" src="filterimages/fixation.jpg" style="width:401px;height:400px;">
+ <img class="lftImg" id="LImg" src="instfiles/PLeft.JPG">
+ <img class="rightImg" id="RImg" src="instfiles/PRight.JPG">
+ <img class="preload" style="display:none"/>
+ <p class="p3" id="p3">3</p>
+ <p class="p3" id="p2">2</p>
+ <p class="p3" id="p1">1</p>
+ <p class="p4" id="Score"></p>
+ <p class="p6" id="Tinst">Did a red rectangle rotate?</p>
+</div>
+</body>

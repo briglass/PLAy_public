@@ -1,0 +1,19 @@
+<p>Welcome {{ user.email }}!</p>
+
+{% if security.confirmable %}
+<p>You can confirm your email through the link below:</p>
+
+<p><a href="{{ confirmation_link }}">Confirm my account</a></p>
+
+<hr>
+<h1>Welcome to <a href="www.playiq.com">PlayIQ!</a></h1>
+
+<h3>We will notify you when your account is activated.</h3>
+<h4>If you haven't already, gain early access by pledging support on <a href="https://www.kickstarter.com/projects/1544012120/playiq-cognition-and-gaming">Kickstarter!</a><h4>
+<hr>
+<h4>Can video gaming alter your brain and enhance your mental skills? How do you stack up to the competition? PLAyIQ quantifies and tracks how your mental abilities change as a result of gaming. PLAyIQ makes personalized recommendations about which games are best for you. By joining PLAyIQ, you also contribute to science by helping to advance our understanding of how experiences shape the brain.</h4>
+<h4>We are a group of scientists passionate about gaming and cognitive science. For several years, we have been researching the cognitive benefits of gaming. As members of Generation Atari 2600, we have watched gaming grow in popularity and are eager to fully understand its impact on how we Perceive, Learn, and Attend through PLAyIQ.</h4>
+<hr>
+<small>2014 &copy; PlayIQ. ALL Rights Reserved.</small>
+
+{% endif %}

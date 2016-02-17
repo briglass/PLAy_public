@@ -1,0 +1,158 @@
+<html>
+  <head>
+    {% if title %}
+    <title>{{title}} - PLAy-IQ</title>
+    {% else %}
+    <title>PLAy-IQ</title>
+    {% endif %}
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+	<div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="../" class="navbar-brand"><img src="static/img/play_iq_logo_horz_sm.png"  width="70%"></a>
+		  
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav">
+            
+			
+            <li>
+              <a href="../help/">Help</a>
+            </li>
+			
+            <li>
+              <a href="http://news.bootswatch.com">Blog</a>
+            </li>
+          
+			  {% if current_user.is_authenticated() %}
+          
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Take a Test<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-header">Basic</li>
+              <li><a href="#">Perception</a></li>
+              <li><a href="/task_ant">Attention</a></li>
+              <li><a href="#">Learning</a></li>
+              <li class="divider"></li>
+              <li class="dropdown-header">Premium</li>
+              <li><a href="#">Buy more!</a></li>
+              
+            </ul>
+          </li>
+		  {% endif %}
+		  
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            {% if current_user.is_authenticated() %}
+               <li><a href="/account">{{ current_user.nickname or current_user.email }}</a></li>              
+
+              <li><a href="{{ url_for('security.logout') }}">Logout</a></li>
+            {% else %}
+              <li><a href="{{ url_for('security.login') }}">Login</a></li>
+              <li><a href="{{ url_for('security.register') }}">Register</a></li>              
+            {% endif %}
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+<p>
+    <!-- Bootstrap -->
+
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">	
+	
+	 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>-->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/static/js/bootstrap.min.js"></script>
+	
+	<!-- Custom style -->
+	<style>			
+		body {
+		  background: #000000; 
+		  padding: 100px 3%;
+		  text: #000;
+		}
+		
+		a:link {
+		color: #d76cbb;}
+		
+		.btn-primary { border-color: #b05899; background-color: #d76cbb;}
+
+		.btn-primary:hover { border-color: #d76cbb; background-color: #b05899; }
+		
+		.panel-primary > .panel-heading {
+		  background-image: -webkit-linear-gradient(top, #b05899 0%, #d76cbb 100%);
+		  background-image:         linear-gradient(to bottom, #b05899 0%, #d76cbb 100%);
+		  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff428bca', endColorstr='#ff357ebd', GradientType=0);
+		  background-repeat: repeat-x;
+		}
+
+	</style>
+	
+  </head>
+  <body>
+   
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+    {% for message in messages %}
+        <li>{{ message }} </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+   
+<br>
+<div class="row">
+	<div class="col-lg-6">   
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+			<h3 class="panel-title">Company Information</h3>
+			</div>
+
+			<div class="panel-body">
+				Who are we?<br>
+				What do we do?<br>
+				What do we want?<br>
+				When can we do it?<br>
+				How can we do it when we want to?<br>
+				When can we do what we want to do when we want how we want it?<br>
+			</div>
+		</div>
+	</div>
+		<div class="col-lg-6">   
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+			<h3 class="panel-title">Get Involved</h3>
+			</div>
+
+			<div class="panel-body">
+				Who are we?<br>
+				What do we do?<br>
+				What do we want?<br>
+				When can we do it?<br>
+				How can we do it when we want to?<br>
+				When can we do what we want to do when we want how we want it?<br>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+ 
+</html>

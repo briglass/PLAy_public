@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+ 
+    <script src="static/lean-slider/scripts/modernizr-2.6.1.min.js"></script>
+   
+	<script src="static/lean-slider/lean-slider.js"></script>
+    <link rel="stylesheet" href="static/lean-slider/lean-slider.css" type="text/css" />
+    <link rel="stylesheet" href="static/lean-slider/sample-styles.css" type="text/css" />
+
+	<style>
+.bgSizeContain {
+  height: 200px;
+  background-image: url('static/img/stock/pink_bg.png');
+  background-size: contain;
+  border: 2px solid darkgray;
+  color: #000; text-shadow: 1px 1px 0 #fff;
+}
+</style>
+
+<div class="row">
+<div class="text-center">
+    
+{% if current_user.is_authenticated() %}
+    <div class="page-header" id="banner">
+	<p><h1>Welcome, {{ current_user.nickname or 'Anonymous Gamer' }}</h1></p>
+	</div>
+	
+    <p>Registered at: {{ current_user.confirmed_at }}</p>
+    <p><a href="/results">Check out your Results</a></p>
+{% else %}
+
+	<div class="jumbotron">
+	  <h1>Odds are, you are a gamer.</h1>
+	  <p>But, what kind of gamer are you? How does gaming fit into your lifestyle and mental wellbeing?</p>
+	  <p><a href="/register"" class="btn btn-primary">Join - Show us what you got</a></p>
+	  <p>or</p>
+    <p><a href="/login">Login</a></p>
+	</div>
+
+	<div class="slider-wrapper">
+        <div id="slider">
+            <div class="slide1">
+                <img src="static/img/stock/g01.jpg" alt="" />
+            </div>
+            <div class="slide2">
+                <img src="static/img/stock/g02.jpg" alt="" />
+            </div>
+            <div class="slide3">
+                <img src="static/img/stock/g03.jpg" alt="" />
+            </div>
+            <div class="slide4">
+                <img src="static/img/stock/g04.jpg" alt="" />
+            </div>
+        </div>
+        <div id="slider-direction-nav"></div>
+        <div id="slider-control-nav"></div>
+    </div>
+    
+    <script type="text/javascript">
+    $(document).ready(function() {
+        var slider = $('#slider').leanSlider({
+            directionNav: '#slider-direction-nav',
+            controlNav: '#slider-control-nav'
+        });
+    });
+    </script>
+	
+	 <div class="jumbotron">
+	  <h2>Where do you fit into the Gaming Ecosystem?</h2>
+	  <p>These days, gamers come in all shapes, sizes, ages, and genders!</p>
+	  <p>Gaming can be intense and fun, but also frustrating. What does this mean for you?</p>
+	</div>	
+	
+	<div class="bgSizeContain">	
+	 <p><h3>Track your gaming. Track your brain.</h3></p>
+	 <p><h4>Start playing a new game recently?</h4><p>
+	 <p><h4>What kinds of games do you play?</h4><p>
+	</div>
+
+	
+	 <br>
+	<div class="jumbotron">
+	<img src="static/img/play_iq_logo_square_400.png" width="200px"></a>
+	  <h2>Check us out on <a href="kickstarter.com">Kickstarter</a>.</h2>
+	  <p>Let's get the party started</p>
+	</div>
+	
+{% endif %}
+
+</div>
+</div>
+
+<div class="row">
+<div class="text-center">
+<a class="twitter-timeline" href="https://twitter.com/playiqcom" data-widget-id="504707996417413120">Tweets by @playiqcom</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+   </div>
+{% endblock %}

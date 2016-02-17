@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block content %}
+ 	
+<!-- Begin Content -->
+<div class="col-md-9">
+
+	{% if current_user.is_authenticated() %}
+	<div class="margin-bottom-20">				
+		<p><h1>Welcome, {{ current_user.nickname or 'Anonymous Gamer' }}</h1></p>
+			
+		<p>Registered at: {{ current_user.confirmed_at }}</p>
+		<p><a href="/results">Check out your Results</a></p>
+	</div>
+	{% endif %}
+	
+	
+	<div class="row">
+		<!--Title Block-->				
+		<div class="col-md-12 margin-bottom-30" >
+			<div class="service">
+				
+				<div class="desc">					
+				<h1><a href="/"><i class="fa fa-arrow-circle-left"></i></a><a href="/">Home</a></h1>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="headline"><h2>Science Blog</h2></div>							
+							<p><h3> Here, we summarize the latest findings from the ever-expanding neuroscience of video gaming.</h3></p>
+						</div>
+						<div class="col-md-6">
+							<iframe width="350" height="200" src="//www.youtube.com/embed/9t5SpDkuupY" frameborder="0" allowfullscreen></iframe>
+						</div>					
+					</div>
+				
+				<br>
+					<a href="/"><i class="fa fa-arrow-circle-left"></i> Home</a>
+				</div>				
+			</div>	
+		</div>
+		<!-- End Title block -->	
+		
+		<!-- Story Block -->
+		<div class="col-md-12">
+			<div class="funny-boxes funny-boxes-top-playiq">
+				<div class="row">
+					<div class="col-md-8">
+						<h2><font color="471A3F" <ul><strong>Rewiring Attention</strong></ul></font> / Peterson & Litchfield, 2014</h2>
+						<blockquote>
+							<p><em>"Video gaming has been shown to affect your cognitive abilities. If you haven't found it yet, keep looking. Don't settle. As with all matters of the heart, you'll know when you find it. And, like any great relationship, it just gets better and better as the years roll on"</em></p>
+							<small><em>Peterson & Litchfield, 2014</em></small>
+						</blockquote>  
+						<p>This research is interesting because it is very cool. You can read about it here at the science blog. It is really interesting, and we think you should pay attention to it. This is where you can find all sorts of interesting information from the emerging neuroscience of video gaming</p>					
+						<a href="/"><i class="fa fa-arrow-circle-left"></i> Home</a>
+					</div>
+					<div class="col-md-4 funny-boxes-img">
+						<img class="img-responsive" src="/static/img/stock/6.jpg" alt="">
+						<!--<span class="magazine-badge magazine-badge-playiq">Rewiring Attention</span>-->
+						<ul class="list-unstyled fa-fixed">
+						   <li><i class="fa fa-tag"></i> Attention, Learning</li>
+						   <li><i class="fa fa-book"></i> Journal of Psychoanalytic Gaming</li>
+						   <li><i class="fa fa-map-marker"></i> St. Louis University</li>
+						</ul>
+					</div>
+				</div>                            
+			</div>
+				
+		</div>
+		<!-- End Story Block -->
+		
+		<!-- Story Block -->
+		<div class="col-md-12" align="center"><img src="/static/img/play_iq_logo_mark_100.png" width="6%"><br><br></div>
+		<div class="col-md-12">
+			<div class="funny-boxes funny-boxes-top-playiq">
+				<div class="row">
+					<div class="col-md-8">
+						<h2><font color="471A3F" <ul><strong>Rewiring Attention</strong></ul></font> / Peterson & Litchfield, 2014</h2>
+						<blockquote>
+							<p><em>"Video gaming has been shown to affect your cognitive abilities. If you haven't found it yet, keep looking. Don't settle. As with all matters of the heart, you'll know when you find it. And, like any great relationship, it just gets better and better as the years roll on"</em></p>
+							<small><em>Peterson & Litchfield, 2014</em></small>
+						</blockquote>  
+						<p>This research is interesting because it is very cool. You can read about it here at the science blog. It is really interesting, and we think you should pay attention to it. This is where you can find all sorts of interesting information from the emerging neuroscience of video gaming</p>					
+						<a href="/"><i class="fa fa-arrow-circle-left"></i> Home</a>
+					</div>
+					<div class="col-md-4 funny-boxes-img">
+						<img class="img-responsive" src="/static/img/stock/7.jpg" alt="">
+						<!--<span class="magazine-badge magazine-badge-playiq">Rewiring Attention</span>-->
+						<ul class="list-unstyled fa-fixed">
+						   <li><i class="fa fa-tag"></i> Attention, Learning</li>
+						   <li><i class="fa fa-book"></i> Journal of Psychoanalytic Gaming</li>
+						   <li><i class="fa fa-map-marker"></i> St. Louis University</li>
+						</ul>
+					</div>
+				</div>                            
+			</div>
+				
+		</div>
+		<!-- End Story Block -->
+		
+		<!-- Story Block -->
+		<div class="col-md-12" align="center"><img src="/static/img/play_iq_logo_mark_100.png" width="6%"><br><br></div>
+		<div class="col-md-12">
+			<div class="funny-boxes funny-boxes-top-playiq">
+				<div class="row">
+					<div class="col-md-8">
+						<h2><font color="471A3F" <ul><strong>Rewiring Attention</strong></ul></font> / Peterson & Litchfield, 2014</h2>
+						<blockquote>
+							<p><em>"Video gaming has been shown to affect your cognitive abilities. If you haven't found it yet, keep looking. Don't settle. As with all matters of the heart, you'll know when you find it. And, like any great relationship, it just gets better and better as the years roll on"</em></p>
+							<small><em>Peterson & Litchfield, 2014</em></small>
+						</blockquote>  
+						<p>This research is interesting because it is very cool. You can read about it here at the science blog. It is really interesting, and we think you should pay attention to it. This is where you can find all sorts of interesting information from the emerging neuroscience of video gaming</p>					
+						<a href="/"><i class="fa fa-arrow-circle-left"></i> Home</a>
+					</div>
+					<div class="col-md-4 funny-boxes-img">
+						<img class="img-responsive" src="/static/img/stock/8.jpg" alt="">
+						<!--<span class="magazine-badge magazine-badge-playiq">Rewiring Attention</span>-->
+						<ul class="list-unstyled fa-fixed">
+						   <li><i class="fa fa-tag"></i> Attention, Learning</li>
+						   <li><i class="fa fa-book"></i> Journal of Psychoanalytic Gaming</li>
+						   <li><i class="fa fa-map-marker"></i> St. Louis University</li>
+						</ul>
+					</div>
+				</div>                            
+			</div>
+				
+		</div>
+		<!-- End Story Block -->
+		
+		{% for story in stories %}
+		asdf
+		<h1>{{story.title}}</h1>
+		<h2>{{story.content}}<h2>
+		{% endfor %}
+	</div>
+			
+</div>
+
+	
+		<!--End Info Block-->
+	</div>
+	<!-- End Magazine Mini News and Info Block -->
+
+
+	
+	
+</div>
+<!-- End Content -->
+
+
+	
+
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+	
+<div class="row">
+<div class="text-center">
+    <h1>Attention Task</h1>
+        
+    <p><a href="static/Tasks/ANT/Attentiontask.html" class="btn btn-default">GO</a></p>
+  <br>
+</div>
+</div>
+
+	  
+<div class="panel panel-default">
+  <div class="panel-body">
+          
+      <ul class="nav nav-tabs" style="margin-bottom: 15px;">
+      <li class="active"><a href="#home" data-toggle="tab">What is Attention?</a></li>
+      <li class=""><a href="#profile" data-toggle="tab">My Attention History</a></li>
+      <li class="disabled"><a>Compare With Friend (Premium)</a></li>
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+          More Options <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="#dropdown1" data-toggle="tab">Option</a></li>
+          <li class="divider"></li>
+          <li><a href="#dropdown2" data-toggle="tab">Another Option</a></li>
+        </ul>
+      </li>
+    </ul>
+    <div id="myTabContent" class="tab-content">
+      <div class="tab-pane fade active in" id="home">
+        <p>Attention is the behavioral and cognitive process of selectively concentrating on one aspect of the environment while ignoring other things. Attention has also been referred to as the allocation of processing resources.
+        <p>Attention is one of the most intensely studied topics within psychology, cognitive neuroscience and neuropsychology. Attention remains a major area of investigation within education, psychology, neuroscience and neuropsychology. Areas of active investigation involve determining the source of the signals that generate attention, the effects of these signals on the tuning properties of sensory neurons, and the relationship between attention and other behavioral and cognitive processes like working memory and vigilance. A relatively new body of research, which expands upon earlier research within neuropsychology, is investigating the diagnostic symptoms associated with traumatic brain injuries and their effects on attention. Attention also has variational differences among differing cultures.</p>    
+        <p>The relationships between attention and consciousness are complex enough that they have warranted perennial philosophical exploration. Such exploration is both ancient and continually relevant, as it can have effects in fields ranging from mental health and the study of disorders of consciousness to artificial intelligence and its domains of research and development.</p>
+    </p>
+      </div>
+      <div class="tab-pane fade" id="profile">
+        <p>Here is your history!</p>
+      </div>
+      <div class="tab-pane fade" id="dropdown1">
+        <p>Cool</p>
+      </div>
+      <div class="tab-pane fade" id="dropdown2">
+        <p>Neat</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row text-center">
+    <h1>Welcome!</h1>
+
+    <h3>Please take the following tests in order. When you complete them all, we will notify you that your HIT is complete.</h3>
+</div>
+
+<hr>
+    <div class="row text-center">
+
+       <div class="col-md-2">
+            <img src="static/img/flashlogo.jpg">
+        </div>
+        <div class="col-md-10">
+            <h3>WARNING: You must enable <strong><a style="color:red" href="http://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager.html">Adobe Flash</a></strong> and disable any pop-up blockers. If you need to change your settings to do so, please restart your computer before completing the tests. If Flash is not fully enabled, your data will not save.</h3>
+        </div>
+    </div>
+    <hr>
+
+    <div class="row text-center margin-bottom-20">
+        <div class="col-md-4 col-md-offset-1">
+            <div class="row text-center">
+                {% if expert_info_completed == None %}
+                   <a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="{{url_for('testflow_userinfo') }}">Initial Questionnaire</a>               
+                {% else %}
+                    <a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="{{url_for('testflow_userinfo') }}">Edit Questionnaire</a>  
+                    
+                {% endif %}
+                <!--<button class="btn btn-u btn-u-playiq2 btn-u-lg btn-block disabled" type="button" disabled="disabled">Perceptual Ability</button>-->
+            </div>
+        </div>
+        <div class="col-md-6">
+            {% if expert_info_completed == True %}
+                <h4>Complete!</h4>
+            {% else %}
+                <h4>Please complete this section first.</h4>
+            {% endif %}
+        </div>
+    </div>
+
+    <hr>
+    
+    {% if expert_info_completed == None %}
+    
+    {% else %}
+        <div class="row text-center margin-bottom-20">
+            <div class="col-md-4 col-md-offset-1">
+                <div class="row text-center">
+                        <!--<a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="static/Tasks/Filter/PerceptiontaskT.html">Perceptual Skill</a>-->
+                        <a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="https://www.ucl.ac.uk/lagnado-lab/experiments/tdp/ProjectX/PerceptiontaskT.html">Perceptual Skill</a>
+                   </div>
+            </div>
+         
+            <div class="col-md-6">
+                <h4>Aptitude for rapid change identification in the visual field, critical for the successful detection of targets in high speed environments</h4>
+
+            </div>
+        </div>
+        <hr>
+        <div class="row text-center margin-bottom-20">
+            <div class="col-md-4 col-md-offset-1">
+                <div class="row text-center">
+                        <!--<a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="static/Tasks/SymSpan/SymSpntaskT.html">Attention Capacity</a>               -->
+                        <a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="https://www.ucl.ac.uk/lagnado-lab/experiments/tdp/ProjectX/SymSpntaskT.html">Attention Capacity</a>               
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h4>Capability to identify and retain critical information under pressure, essential for all top competitive players</h4>
+
+            </div>
+        </div>
+            <hr>
+        <div class="row text-center margin-bottom-20">
+            <div class="col-md-4 col-md-offset-1">
+                <div class="row text-center">
+                        <!--<a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="static/Tasks/Learning/LearningtaskT.html">Learning Ability</a>-->
+                        <a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="https://www.ucl.ac.uk/lagnado-lab/experiments/tdp/ProjectX/LearningtaskT.html">Learning Ability</a>
+                    </div>
+            </div>
+            <div class="col-md-6">
+                <h4>Power to form quick associations between previously unseen objects. A critical element of successful strategy adaptation</h4>
+
+            </div>
+        </div>
+           <hr>
+        <div class="row text-center margin-bottom-20">
+            <div class="col-md-4 col-md-offset-1">
+                <div class="row text-center">
+                        <!--<a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="static/Tasks/ANT/AttentiontaskT.html">Focus</a>-->
+                        <a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="https://www.ucl.ac.uk/lagnado-lab/experiments/tdp/ProjectX/AttentiontaskT.html">Focus</a>
+                    </div>
+            </div>
+            <div class="col-md-6">
+                <h4>Ability to make fast and accurate judgements, ignoring distractions and maintaining this focus over long periods of time. Necessary for high performance and error reduction throughout entire game durations</h4>
+
+            </div>
+        </div>
+           <hr>
+   {% endif %}
+    
+    
+{% endblock %}

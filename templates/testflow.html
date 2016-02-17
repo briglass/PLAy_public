@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row text-center">
+    <h1>Welcome!</h1>
+
+    <h3>Please take the following tests -- when you complete one, the next one will unlock</h3>
+</div>
+
+<hr>
+
+{% if current_user.has_role('Expertuser') or UsingQupZilla == 1 %}
+    <h3>Thank you for using QupZilla!</h3>
+
+    <hr>
+
+    <div class="row text-center">
+
+       <div class="col-md-2">
+            <img src="static/img/flashlogo.jpg">
+        </div>
+        <div class="col-md-10">
+            <h3>WARNING: You must enable <strong><a style="color:red" href="http://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager.html">Adobe Flash</a></strong> and disable any pop-up blockers. If you need to change your settings to do so, please restart your computer before completing the tests. If Flash is not fully enabled, your data will not save.</h3>
+        </div>
+    </div>
+    <hr>
+
+    <div class="row text-center margin-bottom-20">
+        <div class="col-md-4 col-md-offset-1">
+            <div class="row text-center">
+                {% if expert_info_completed == None %}
+                   <a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="{{url_for('testflow_userinfo') }}">Initial Questionnaire</a>               
+                {% else %}
+                    <a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="{{url_for('testflow_userinfo') }}">Edit Questionnaire</a>  
+                    
+                {% endif %}
+                <!--<button class="btn btn-u btn-u-playiq2 btn-u-lg btn-block disabled" type="button" disabled="disabled">Perceptual Ability</button>-->
+            </div>
+        </div>
+        <div class="col-md-6">
+            {% if expert_info_completed == True %}
+                <h4>Complete!</h4>
+            {% else %}
+                <h4>Please complete this section first.</h4>
+            {% endif %}
+        </div>
+    </div>
+
+    <hr>
+    <div class="row text-center margin-bottom-20">
+        <div class="col-md-4 col-md-offset-1">
+            <div class="row text-center">
+                {% if expert_info_completed == None %}
+                    <button class="btn btn-u btn-u-playiq2 btn-u-lg btn-block disabled" type="button" disabled="disabled">Perceptual Skill</button>                
+                    <!--<a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="static/Tasks/Filter/PerceptiontaskFULLG.html">Perceptual Skill</a>-->
+                    <!--<a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="static/Tasks/Filter/PerceptiontaskSHORTG.html">Perceptual Skill short</a>-->
+                {% else %}
+                    <a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="static/Tasks/Filter/PerceptiontaskFULLG.html">Perceptual Skill</a>
+                    <!--<a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="static/Tasks/Filter/PerceptiontaskSHORTG.html">Perceptual Skill short</a>-->
+                {% endif %}
+                <!--<button class="btn btn-u btn-u-playiq2 btn-u-lg btn-block disabled" type="button" disabled="disabled">Perceptual Ability</button>-->
+                {% if user_PRC|count > 0 %}
+                    <h4>{{'%0.3f' | format(user_PRC[0].driftrate|float)}}</h4>
+                    {% if user_PRC_prct != None %}
+                        <h4>Percentile: {{user_PRC_prct}}</h4>
+                    {% endif %}
+                {% else %}
+                    <h5>Results will appear here when completed.</h5>
+                {% endif %}
+            </div>
+        </div>
+     
+        <div class="col-md-6">
+            <h4>Aptitude for rapid change identification in the visual field, critical for the successful detection of targets in high speed environments</h4>
+
+        </div>
+    </div>
+    <hr>
+    <div class="row text-center margin-bottom-20">
+        <div class="col-md-4 col-md-offset-1">
+            <div class="row text-center">
+                {% if user_PRC|count == 0 %}
+                    <button class="btn btn-u btn-u-playiq2 btn-u-lg btn-block disabled" type="button" disabled="disabled">Attention Capacity</button>
+                    <!--<a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="static/Tasks/SymSpan/SymSpntaskG.html">Attention Capacity</a>-->
+                {% else %}
+                    <a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="static/Tasks/SymSpan/SymSpntaskG.html">Attention Capacity</a>
+                {% endif %}  
+                {% if user_SYM|count > 0 %}
+                    <h4>{{'%0.3f' | format(user_SYM[0].accuracy|float)}}</h4>
+                    {% if user_SYM_prct != None %}
+                        <h4>Percentile: {{user_SYM_prct}} </h4>
+                    {% endif %}
+                {% else %}
+                    <h5>Results will appear here when completed.</h5>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4>Capability to identify and retain critical information under pressure, essential for all top competitive players</h4>
+
+        </div>
+    </div>
+        <hr>
+    <div class="row text-center margin-bottom-20">
+        <div class="col-md-4 col-md-offset-1">
+            <div class="row text-center">
+                {% if user_SYM|count == 0 %}
+                    <button class="btn btn-u btn-u-playiq2 btn-u-lg btn-block disabled" type="button" disabled="disabled">Learning Ability</button>
+                   <!-- <a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="static/Tasks/Learning/LearningtaskFULLG.html">Learning Ability</a>-->
+                    <!--<a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="static/Tasks/Learning/LearningtaskSHORTG.html">Learning Ability short</a>-->
+                {% else %}
+                    <a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="static/Tasks/Learning/LearningtaskFULLG.html">Learning Ability</a>
+                    <!--<a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="static/Tasks/Learning/LearningtaskSHORTG.html">Learning Ability short</a>-->
+                {% endif %}     
+                {% if user_LRN|count > 0 %}
+                    <h4>{{'%0.3f' | format(user_LRN[0].accuracy|float)}}</h4>
+                    {% if user_LRN_prct != None %}
+                        <h4>Percentile: {{user_LRN_prct}}</h4>
+                    {% endif %}
+                {% else %}
+                    <h5>Results will appear here when completed.</h5>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4>Power to form quick associations between previously unseen objects. A critical element of successful strategy adaptation</h4>
+
+        </div>
+    </div>
+       <hr>
+    <div class="row text-center margin-bottom-20">
+        <div class="col-md-4 col-md-offset-1">
+            <div class="row text-center">
+                {% if user_LRN|count == 0 %}
+                    <button class="btn btn-u btn-u-playiq2 btn-u-lg btn-block disabled" type="button" disabled="disabled">Focus</button>
+                    <!--<a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="static/Tasks/ANT/AttentiontaskFULLG.html">Focus</a>-->
+                    <!--<a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="static/Tasks/ANT/AttentiontaskSHORTG.html">Focus short</a>-->
+                {% else %}
+                    <a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="static/Tasks/ANT/AttentiontaskFULLG.html">Focus</a>
+                   <!-- <a class="btn-u btn-u-lg btn-brd btn-brd-hover btn-block btn-u-playiq2" type="button" href="static/Tasks/ANT/AttentiontaskSHORTG.html">Focus short</a>-->
+                {% endif %}  
+                {% if user_ANT|count > 0 %}
+                    <h4>{{'%0.3f' | format(user_ANT[0].driftrate|float)}}</h4>
+                    {% if user_ANT_prct != None %}
+                        <h4>Percentile: {{user_ANT_prct}}</h4>
+                    {% endif %}
+                {% else %}
+                    <h5>Results will appear here when completed.</h5>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4>Ability to make fast and accurate judgements, ignoring distractions and maintaining this focus over long periods of time. Necessary for high performance and error reduction throughout entire game durations</h4>
+
+        </div>
+    </div>
+       <hr>
+   
+   {% if user_ANT|count > 0 %}
+   <div class="row text-center margin-bottom-20">
+        <div class="row text-center">
+            <h3><em>Thank you for completing the tests!</em></h3>
+            <h3>Your code is: <strong>{{ mturk_code }}<strong></h3>
+        </div>
+    </div>
+    {% endif %}
+    
+{% else %}
+    <h4>You are not using QupZilla. Please <a href="http://www.qupzilla.com/">install QupZilla</a> in order to access the Test Flow. Thank you!</h4>
+    <h5>Your System Information: {{user_agent.string}}</h5>
+{% endif %}
+
+    
+{% endblock %}

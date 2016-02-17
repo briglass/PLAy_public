@@ -1,0 +1,470 @@
+
+{% if config['UCALLOW'] == False %}
+	
+	<body> 
+		<div align="center">
+			<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+			<img id="logo-header" src="/static/img/play_iq_logo_square.png"  width="25%" alt="Logo">
+			<font color="d76cbb">
+				<p><h4>Coming Soon</h4></p>
+			</font>
+		</div> 
+	</body> 
+
+{% else %}
+
+<html>
+<head>
+
+    {% if title %}
+    <title>{{title}} - PlayIQ</title>
+    {% else %}
+    <title>PlayIQ</title>
+    {% endif %}
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>-->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+	<script src="/static/js/jquery-1.10.2.min.js"></script>
+
+	
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/static/js/bootstrap.min.js"></script>
+		
+	<!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Favicon -->
+    <link rel='shortcut icon' type='image/x-icon' href='/static/img/favicon.ico'/>
+
+    <!-- CSS Global Compulsory -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <!-- CSS Implementing Plugins -->
+    <link rel="stylesheet" href="/static/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="/static/plugins/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/static/plugins/fancybox/source/jquery.fancybox.css">  
+
+    <!-- CSS Page Style   -->  
+    <link rel="stylesheet" href="/static/css/blog_magazine.css">
+		
+	 <!-- CSS Page Style -->    
+    <link rel="stylesheet" href="/static/css/feature_timeline2.css">
+
+    <!-- CSS Theme -->    
+    <link rel="stylesheet" href="/static/css/themes/light.css" id="style_color">
+    <link rel="stylesheet" href="/static/lean-slider/lean-slider.css" type="text/css" />
+    <link rel="stylesheet" href="/static/lean-slider/sample-styles.css" type="text/css" />
+	
+    <!-- CSS Global Compulsory -->
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <!-- CSS Implementing Plugins -->
+    <link rel="stylesheet" href="/static/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="/static/plugins/font-awesome/css/font-awesome.min.css">
+
+    <!-- CSS Customization -->
+    <link rel="stylesheet" href="/static/css/custom.css">
+	
+    <link rel="stylesheet" href="/static/plugins/ladda-buttons/css/custom-lada-btn.css">
+    <link rel="stylesheet" href="/static/css/plugins/hover-effect/css/custom-hover-effects.css">
+ 
+ 
+	    <!--=== Header ===-->    
+    <div class="header header-v1">
+        <!-- Topbar -->
+        <div class="topbar-v1 margin-bottom-20">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-unstyled top-v1-contacts">
+                            <li>
+                                <i class="fa fa-envelope"></i> Email: <a href="mailto:info@playiq.com">info@playiq.com</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-6">
+                        <ul class="list-unstyled top-v1-data">
+                            <li><a href="../"><i class="fa fa-home"></i></a></li>                            
+							{% if current_user.is_authenticated() %}
+							   <li><a href="//account">{{ current_user.nickname or current_user.email }}</a></li>              
+
+							  <li><a href="{{ url_for('security.logout') }}">Logout</a></li>
+							{% else %}
+							  <li><a href="{{ url_for('security.login') }}">Login</a></li>
+							  <li><a href="{{ url_for('security.register') }}">Register</a></li>              
+							{% endif %}
+                        </ul>
+                    </div>
+                </div>        
+            </div>
+        </div>
+        <!-- End Topbar -->
+    
+	
+        <!-- Navbar -->
+        <div class="navbar navbar-default " role="navigation">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="fa fa-bars"></span>
+                    </button>
+                    <a class="navbar-brand" href="../">
+                        <img id="logo-header" src="/static/img/play_iq_logo_horz_sm.png"  width="100%" alt="Logo">
+                    </a>
+                </div>
+				
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-responsive-collapse">
+                    <ul class="nav navbar-nav">
+                        				
+						{% if current_user.is_authenticated() %}				
+											
+						{% endif %}
+						                        
+                        <!-- Investors 
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                                Investors
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Mission Statement</a></li>
+								<li><a href="#">Why Invest?</a></li>
+                                <li><a href="#">Our Past & Future</a></li>
+                            </ul>
+                        </li>
+                        End Investors -->
+
+						<!-- About -->
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                                 About
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Who we are</a></li>
+                                <li><a href="#">What we do</a></li>
+                            </ul>
+                        </li>
+                        <!-- End About -->
+						
+                        <!-- Site News -->
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                                 Site News
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Most Recent Post</a></li>
+                                <li><a href="#">Archive</a></li>
+                            </ul>
+                        </li>
+                        <!-- End Site News -->
+
+                        <!-- Science -->
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                                Science
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Gaming and the Brain</a></li>
+                                <li><a href="#">How you're helping</a></li>
+                                <li><a href="#">Blog</a></li>
+                            </ul>
+                        </li>                    
+                        <!-- End Science -->
+
+                        <!-- Search Block
+                        <li>
+                            <i class="search fa fa-search search-btn"></i>
+                            <div class="search-open">
+                                <div class="input-group animated fadeInDown">
+                                    <input type="text" class="form-control" placeholder="Search">
+                                    <span class="input-group-btn">
+                                        <button class="btn-u" type="button">Go</button>
+                                    </span>
+                                </div>
+                            </div>    
+                        </li>
+                        End Search Block -->
+                    </ul>
+                </div><!--/navbar-collapse-->
+            </div>    
+        </div>            
+        <!-- End Navbar -->
+    </div>
+    <!--=== End Header ===-->   
+	
+<p>
+
+	
+	
+</head>
+  
+  
+<body>
+   
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+    {% for message in messages %}
+        <li>{{ message }} </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+	
+	    <!--=== Content Part ===-->
+    <div class="container content">
+	
+        <div class="row magazine-page">
+		
+			<!-- Begin Sidebar -->			
+            <div class="col-md-3">
+					
+					<!-- Begin Sidebar Menu -->
+					<div class="row margin-bottom-10">
+						<ul class="list-group sidebar-nav-v1" id="sidebar-nav">
+						
+							<!-- Get PLAy-IQ -->
+							<li class="list-group-item list-toggle">                   
+								<a data-toggle="collapse" data-parent="#sidebar-nav" href="#collapse-playiq"><big><i class="fa fa-puzzle-piece"></i>  Get Your <div id="playiqtxt" class="col"></div> </big></a>
+								<ul id="collapse-playiq" class="collapse">
+									<li><a href="/feature_playiq"><i class="fa fa-eye"></i> Perception</a></li>
+									<li><a href="/feature_playiq"><i class="fa fa-gavel"></i> Learning</a></li>
+									<li><a href="/feature_playiq"><i class="fa fa-flash"></i> Attention</a></li>
+									<!-- <li><a href="/task_ant"><i class="fa fa-flash"></i> Attention</a></li> -->
+								</ul>
+							</li>
+							<!-- End Get PLAy-IQ -->
+
+							<!-- Track Results -->
+							<li class="list-group-item list-toggle">
+								<a data-toggle="collapse" data-parent="#sidebar-nav" href="#collapse-track"><big><i class="fa fa-bar-chart"></i> Track Results</big></a>
+								<ul id="collapse-track" class="collapse">
+									<li><a href="#"><i class="fa fa-dashboard"></i> Overview</a></li>
+									<li>                          
+										<a href="#"><i class="fa fa-line-chart"></i> Trends &amp; Forecast</a>
+									</li>
+								</ul>
+							</li>
+							<!-- End Track Results -->
+
+							<!-- Compare Compete-->
+							<li class="list-group-item list-toggle">                   
+								<a class="accordion-toggle" href="#collapse-cc" data-toggle="collapse"><big><i class="fa fa-trophy"></i> Compare &amp; Compete</big></a>
+								<ul id="collapse-cc" class="collapse">
+									<li>
+										<a href="#"><i class="fa fa-sliders"></i> Comparison Dashboard</a>
+									</li>
+									<li><a href="#"><i class="fa fa-sort-amount-desc"></i> Leaderboards</a></li>
+									<li><a href="#"><i class="fa fa-male"></i> Challenge a Friend</a></li>
+								</ul>
+							</li>
+							<!-- End Compare Compete-->
+
+							<!-- Increase your PLAy IQ -->
+							<li class="list-group-item list-toggle">
+								<a data-toggle="collapse" data-parent="#sidebar-nav" href="#collapse-increase"><big><i class="fa fa-fighter-jet"></i> Increase <font face="Monospace">PlayIQ</font></big></a>
+								<ul id="collapse-increase" class="collapse">
+									<li><a href="#"><i class="fa fa-plus-circle"></i> How to increase your score</a></li>
+									<li><a href="#"><i class="fa fa-rocket"></i> Games to meet your target</a></li>
+								</ul>
+							</li>
+							<!-- End Recommender System -->
+							
+							<!-- Recommender System -->
+							<li class="list-group-item list-toggle">
+								<a data-toggle="collapse" data-parent="#sidebar-nav" href="#collapse-recommender"><big><i class="fa fa-flag"></i> Game-Brain Matcher</big></a>
+								<ul id="collapse-recommender" class="collapse">
+									<li><a href="#"><i class="fa fa-arrow-circle-right"></i> Games that suit your <font face="Monospace">PlayIQ</font></a></li>
+									<li><a href="#"><i class="fa fa-arrow-circle-left"></i> Games that should challenge you</a></li>
+								</ul>
+							</li>
+							<!-- End Recommender System -->
+							
+							<!-- Profile -->
+							<li class="list-group-item list-toggle">                   
+								<a data-toggle="collapse" data-parent="#sidebar-nav" href="#collapse-profile"><big><i class="fa fa-gamepad"></i> Profile</big></a>
+								<ul id="collapse-profile" class="collapse">
+								<li><a href="#"><i class="fa fa-sort-amount-desc"></i> Preferences</a></li>
+									<li><a href="#"><i class="fa fa-thumbs-up"></i> Rate Games</a></li>
+									<li><a href="#"><i class="fa fa-history"></i> Gaming History</a></li>																		
+									<li><a href="#"><i class="fa fa-child"></i> Life Event Log</a></li>									
+									<li><a href="#"><i class="fa fa-smile-o"></i> Goals &amp; Milestones</a></li>
+								</ul>
+							</li>
+							<!-- End Profile-->
+							
+						</ul>
+					</div>
+					<!-- End Sidebar Menu -->	
+					
+					<!-- PlayIQ Score Display
+
+					<div class="row" text-align="center">
+						
+						<div class="panel panel-playiq">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"> <font color="F3D3EB"><i class="fa fa-bar-chart"></i> Your PlayIQ</font></h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row pie-progress-charts">
+									<div class="inner-pchart ">
+										<div class="circle" id="circle-1"></div>
+									</div> 
+								</div>
+								<div class="row pie-progress-charts">
+									<div class="inner-pchart col-md-4">
+										<div class="circle" id="circle-2"></div>
+										<p>Perception</p>
+									</div>       
+									<div class="inner-pchart col-md-4">
+										<div class="circle" id="circle-3"></div>
+										<p>Learning</p>
+									</div>
+									<div class="inner-pchart col-md-4">
+										<div class="circle" id="circle-4"></div>
+										<p>Attention</p>
+									</div>
+								</div>
+                            </div>
+                        </div>						
+					</div>
+					
+					End PlayIQ Score Display -->
+
+                <!-- Social Icons -->
+                <div class="magazine-sb-social margin-bottom-35">
+                    <div class="headline headline-md"><h2>Social</h2></div>
+                    <ul class="social-icons social-icons-color">
+                        <li><a href="#" data-original-title="Feed" class="social_rss"></a></li>
+                        <li><a href="#" data-original-title="Facebook" class="social_facebook"></a></li>
+                        <li><a href="#" data-original-title="Twitter" class="social_twitter"></a></li>
+                        <li><a href="#" data-original-title="Goole Plus" class="social_googleplus"></a></li>
+                        <li><a href="#" data-original-title="Wordpress" class="social_wordpress"></a></li>
+                    </ul>
+                    <div class="clearfix"></div>     
+                </div>
+                <!-- End Social Icons -->
+				
+				
+				{% if request.path == "/" %}
+					<!-- Twitter -->
+					<div align="center">
+						<!-- <div class="headline headline-md"><h2>Twitter</h2></div> -->
+						<a class="twitter-timeline" data-dnt="true" href="https://twitter.com/playiqcom" data-widget-id="534721452562317313">Tweets by @playiqcom</a>
+						<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+					</div>								
+					<!-- End Twitter -->
+				{% endif %}
+				
+            </div>
+            <!-- End Sidebar -->
+			
+			<!-- <a rel="curl-bottom-right" class="btn-u btn-u-sea curl-bottom-right">Curl Bottom Right</a> -->
+    {% block content %}{% endblock %}
+   
+        </div>
+    </div><!--/container-->     
+    <!-- End Content Part -->
+	
+<br>
+
+
+    <!--=== Footer ===-->
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-md-12">
+                    <!-- Contact Us -->
+                    <div class="headline"><h2>Contact Us</h2></div> 
+                    <address class="md-margin-bottom-40">
+                        25, Lorem Lis Street, Orange <br />
+                        California, US <br />
+                        Phone: 800 123 3456 <br />
+                        Fax: 800 123 3456 <br />
+                        Email: <a href="mailto:info@anybiz.com" class="">info@anybiz.com</a>
+                    </address>
+                    <!-- End Contact Us -->
+
+                </div><!--/col-md-4-->
+            </div>
+        </div> 
+    </div><!--/footer-->
+    <!--=== End Footer ===-->
+
+    <!--=== Copyright ===-->
+    <div class="copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">                     
+                    <p>
+                        2014 &copy; PLAy-IQ. ALL Rights Reserved. 
+                        <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="/devlogout">Developer Logout</a>
+                    </p>
+                </div>
+                <div class="col-md-6">  
+                    <a href="../">
+                        <img class="pull-right" id="logo-footer" src="/static/img/play_iq_logo_mark_100.png" alt="">
+                    </a>
+                </div>
+            </div>
+        </div> 
+    </div><!--/copyright--> 
+    <!--=== End Copyright ===-->
+	
+	
+<!-- JS Global Compulsory -->           
+
+<script src="/static/lean-slider/scripts/modernizr-2.6.1.min.js"></script>
+<script src="/static/lean-slider/lean-slider.js"></script>
+<!-- <script type="text/javascript" src="/static/js/jquery-1.10.2.min.js"></script> -->
+<script type="text/javascript" src="/static/js/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap.min.js"></script> 
+<!-- JS Implementing Plugins -->           
+<script type="text/javascript" src="/static/plugins/back-to-top.js"></script>
+<script type="text/javascript" src="/static/plugins/fancybox/source/jquery.fancybox.pack.js"></script>
+<script type="text/javascript" src="/static/plugins/counter/waypoints.min.js"></script>
+<script type="text/javascript" src="/static/plugins/counter/jquery.counterup.min.js"></script> 
+<script type="text/javascript" src="/static/plugins/circles-master/circles.js"></script>
+<script type="text/javascript" src="/static/plugins/Tabslet-master/jquery.tabslet.min.js"></script>
+<!-- JS Page Level -->           
+<script type="text/javascript" src="/static/js/app.js"></script>
+<script type="text/javascript" src="/static/js/plugins/circles-master.js"></script>
+
+<script type="text/javascript">
+
+		$( "#playiqtxt" ).load( "/static/playiqtxt.html" );
+</script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        
+		
+		App.init();
+        App.initCounter();
+		
+    });
+	
+</script>
+
+
+
+
+
+</body>
+ 
+</html>
+
+{% endif %}

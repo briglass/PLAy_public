@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+ 	
+<!-- Begin Content -->
+<div class="col-md-9">
+
+	{% if current_user.is_authenticated() %}
+	<div class="margin-bottom-20">				
+		<p><h1>Welcome, {{ current_user.nickname or 'Anonymous Gamer' }}</h1></p>
+			
+		<p>Registered at: {{ current_user.confirmed_at }}</p>
+		<p><a href="/results">Check out your Results</a></p>
+	</div>
+	{% endif %}
+	
+	
+	<div class="row">
+		<!--Title Block-->				
+		<div class="col-md-12">
+			<div class="service">
+				
+				<div class="desc">					
+				<h1><a href="/"><i class="fa fa-arrow-circle-left"></i></a><a href="/">Home</a></h1>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="headline"><h2><font face="Monospace">PlayIQ</font> - Your Gaming Brain Score</h2></div>							
+							<p><h3>Keyboards, mouses, RAM, and video cards are great -- but <strong>Your Brain</strong> is the ultimate piece of <strong>Gaming Hardware</strong></h3></p>
+						</div>
+						<div class="col-md-6">
+							<iframe width="350" height="200" src="//www.youtube.com/embed/9t5SpDkuupY" frameborder="0" allowfullscreen></iframe>
+						</div>					
+					</div>
+	
+					<!-- Dropcaps -->                
+                    <br>
+                    <p><span class="dropcap">K</span><h5>eyboards, mouses, RAM, and video cards are great -- but your brain is the ultimate piece of Gaming Hardware. keep you established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem, Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text</h5></p>
+
+					<p><h5>Established fact that a reader will be distracted by the readable content of a page when looking at its layout. It's gonna be cool when you get your <font face="Monospace">PlayIQ</font>. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem, Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text</h5></p>
+					<!-- Dropcaps -->
+				
+				<br>
+					<a href="/"><i class="fa fa-arrow-circle-left"></i> Home</a>
+				</div>
+			</div>	
+		</div>
+		<!-- End Title block -->	
+				
+
+
+		
+	</div>
+			
+</div>
+
+	
+		<!--End Info Block-->
+	</div>
+	<!-- End Magazine Mini News and Info Block -->
+
+
+	
+	
+</div>
+<!-- End Content -->
+
+
+	
+
+{% endblock %}

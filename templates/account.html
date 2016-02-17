@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% block content %}
+<STYLE TYPE="text/css">
+TD{font-family: Arial; font-size: 8pt;}
+TH{font-family: Arial; font-size: 8pt;}
+</STYLE>
+
+    
+<div class="row">
+						
+				{% if current_user.is_authenticated() %}
+				<div class="col-lg-12">
+					<div class="funny-boxes funny-boxes-top-playiq">
+						<div class="row">
+							<div class="col-md-10">
+								<h1>Welcome, {{ current_user.nickname or current_user.email }}</h1>
+								{% if current_user.has_role('User') or current_user.has_role('Expertuser') or current_user.has_role('Mturkuser')   %}
+                                {% else %}
+                                    <h4>We will notify you when your account is activated.</h4>
+                                {% endif %}
+								<!-- <h4>If you haven't already, gain early access by pledging support on <a href="https://www.kickstarter.com/projects/1544012120/playiq-cognition-and-gaming">Kickstarter!</a><h4> 
+								
+								<a href="https://www.kickstarter.com/projects/1544012120/playiq-cognition-and-gaming"><img src="/static/img/Kickstarter_button_tran.png" alt=""></a><br></h4>			-->
+							
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="margin-bottom-20">				
+					</p>
+						
+				</div>
+				{% endif %}	
+
+	
+
+
+<div class="row text-center" >  
+    <div class="col-lg-12">
+    {% if current_user.has_role('Expertuser')%}
+            <!-- Enter the Test Flow -->
+            <p><a class="btn-u btn-brd btn-block btn-brd-hover  btn-u-playiq2 " type="button" href="/testflow">ENTER THE TEST FLOW</a> </p>
+            <!-- End Enter the Test Flow -->
+    {% endif %}
+    
+    {% if  current_user.has_role('Mturkuser')%}
+            <!-- Enter the Test Flow -->
+            <p><a class="btn-u btn-brd btn-block btn-brd-hover  btn-u-playiq2 " type="button" href="/testflow_mturk">ENTER THE TEST FLOW</a> </p>
+            <!-- End Enter the Test Flow -->
+    {% endif %}
+    
+    {% if current_user.has_role('User') %}
+    <p><a class="btn-u btn-brd btn-block btn-brd-hover  btn-u-playiq2 " type="button" href="/results">TAKE THE TESTS</a>    </p>
+
+        <p><strong>{{ current_user.email }}</strong></p>
+        <p>Nickname: {{ current_user.nickname }}</p>
+        <p>Registered at: {{ current_user.confirmed_at }}</p>
+        <p>Favorite color: {{ current_user.favcolor }}</p>
+
+        <p><a href="/user_edit">[Edit]</a></p>
+
+    {% endif %}
+    </div>
+</div>
+
+<h1>Have a Promo Code?</h1>
+<form  id="bigform" action="/promocode" method="post" >
+    <input type="text" class="form-control" name="promocode_attempt" placeholder="Promo Code"> </input>
+    <input type="submit" name="submitButton" class="btn-u btn-brd btn-brd-hover  btn-u-playiq2" value="Submit Promo Code"></input>
+    {% if current_user.has_role('Admin') %}
+    <br><input type="submit" name="submitButton" class="btn-danger" value="Remove Promo Code"></input>(Admin only can see this)
+    {% endif %}
+</form>
+<hr>
+
+</div>
+
+<div class="row">
+
+    {% if current_user.has_role('Admin') %}
+    <h1><strong>ADMINISTRATOR TOOLS</strong></h1>
+    <form  id="bigform" action="/assignroles" method="post" >
+        <input type="text" class="form-control" name="username_to_assign" placeholder="email address"> </input>
+        <input type="text" class="form-control" name="role_to_assign"  placeholder="role"></input>
+        <input type="submit" name="submitButton" class="btn-success" value="Assign Role"></input>
+        <input type="submit" name="submitButton" class="btn-danger" value="Remove Role"></input>
+    </form>
+    <form  id="bigform" action="/createuser" method="post" >
+        <input type="text" class="form-control" name="username_to_create" placeholder="email address"> </input>
+        <input type="password" class="form-control" name="password_to_create"  placeholder="password (leave blank if deleting user)"></input>
+        <input type="submit" name="submitButton" class="btn-success" value="Create User"></input>
+        <input type="submit" name="submitButton" class="btn-danger" value="Delete User"></input>
+    </form>
+    <ul>
+        <li><a href="/DBbackup">Backup Database to Amazon AWS S3 bucket</a></li>
+        <li><a href="/assignroles">Assign roles (only use locally)</a></li>
+        <li><a href="/createroles">Create roles (only use locally)</a></li>
+    </ul>
+
+    <h2>User list:</h2>
+    <table border>
+        <tr>
+            <th>Count</th>
+            <th>User ID</th>
+            <th>Email</th>
+            <th>Confirmation Date</th>
+            <th>Roles</th>
+            <th>Promo Codes</th>
+            <th>Has Expert Info</th>
+            <th>MTurk Completion</th>
+        </tr>
+        {% for usr in userlist %}
+        <tr>
+            <td><font color="#E1E1E1">{{loop.index}}</font></td>
+            <td>{{ userlist_userid[loop.index0] }}</td>
+            <td>{{ usr }}</td>
+            <td nowrap>{{ userlist_datetime[loop.index0] }}</td>
+            <td>{{ userlist_roles[loop.index0] }}</td>
+            <td>{{ userlist_promocodes[loop.index0] }}</td>
+            <td>{{ userlist_expertinfo[loop.index0] }}</td>
+            <td>{{ userlist_mturkcompletioncodes[loop.index0] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Expert User Info:</h2>
+
+    {% if current_user.email == "briglass@gmail.com" %}
+    <form  id="bigform" action="/deleteexpertuserinfo" method="post" >
+        <input type="text" class="form-control" name="row_to_delete" placeholder="ID of Row to delete"> </input>
+        <input type="submit" name="submitButton" class="btn-danger" value="Delete Row"></input>
+    </form>
+    {% endif %}
+
+    <table border >
+    <thead><tr>				
+    <th>    Count </th>
+    <th>	id	</th>		
+    <th>	age	</th>		
+    <th>	gender	</th>		
+    <th>	year_pro_play	</th>		
+    <th>	game_primary	</th>		
+    <th>	game_primary_id	</th>		
+    <th>	game_primary_hoursweek	</th>		
+    <th>	game_primary_yearsplayed	</th>		
+    <th>    game_primary_other</th>		
+    <th>    game_primary_other_level</th>		
+    <th>    game_primary_other_reason</th>		
+    <th>	game_secondary	</th>		
+    <th>	game_secondary_id	</th>		
+    <th>	game_secondary_hoursweek	</th>		
+    <th>	game_secondary_yearsplayed	</th>		
+    <th>	specific_dota2_mmr	</th>		
+    <th>	specific_dota_hero	</th>		
+    <!-- <th>	specific_starcraft2_wcspoitns	</th>		
+    <th>	specific_counterstrike_teamrating	</th>		-->
+    <th>	specific_starcraft2_battlenetleague	</th>	
+    <th>	specific_starcraft2_battlenetleague_id	</th>	
+    <th> specific_starcraft2_battlenetdivision </th>
+    <th> specific_starcraft_races </th>
+    <th>	specific_counterstrike_skillgroup	</th>	
+    <th>	specific_counterstrike_skillgroup_id	</th>	
+    <th>	specific_counterstrike_weapon	</th>	
+    <th>	datetime	</th>		
+    <th>	user_id	</th>		
+    </tr></thead>	    			
+                    
+    <tbody>				
+    {% for i_expert in get_userinfo_expert %}				
+    <tr>				
+    <td><font color="#E1E1E1">{{loop.index}}</font></td>
+    <td>	{{i_expert.id}}	</td>
+    <td>	{{i_expert.age}}	</td>
+    <td>	{{i_expert.gender}}	</td>
+    <td>	{{i_expert.year_pro_play}}	</td>
+    <td nowrap>	{{i_expert.game_primary}}	</td>
+    <td>	{{i_expert.game_primary_id}}	</td>
+    <td>	{{i_expert.game_primary_hoursweek}}	</td>
+    <td>	{{i_expert.game_primary_yearsplayed}}	</td>
+    <td>	{{i_expert.game_primary_other}}	</td>
+    <td>	{{i_expert.game_primary_other_level}}	</td>
+    <td>	{{i_expert.game_primary_other_reason}}	</td>
+    <td nowrap>	{{i_expert.game_secondary}}	</td>
+    <td>	{{i_expert.game_secondary_id}}	</td>
+    <td>	{{i_expert.game_secondary_hoursweek}}	</td>
+    <td>	{{i_expert.game_secondary_yearsplayed}}	</td>
+    <td>	{{i_expert.specific_dota2_mmr}}	</td>
+    <td>	{{i_expert.specific_dota_hero}}	</td>
+    <!-- <td>	{{i_expert.specific_starcraft2_wcspoitns}}	</td>
+    <td>	{{i_expert.specific_counterstrike_teamrating}}	</td>-->
+    <td>	{{i_expert.specific_starcraft2_battlenetleague}}	</td>
+    <td>	{{i_expert.specific_starcraft2_battlenetleague_id}}	</td>
+    <td>	{{i_expert.specific_starcraft2_battlenetdivision}}	</td>
+    <td>	{{i_expert.specific_starcraft_races}}	</td>
+    <td>	{{i_expert.specific_counterstrike_skillgroup}}	</td>
+    <td>	{{i_expert.specific_counterstrike_skillgroup_id}}	</td>
+    <td>	{{i_expert.specific_counterstrike_weapon}}	</td>
+    <td nowrap>	{{i_expert.datetime}}	</td>
+    <td>	{{i_expert.user_id}}	</td>
+    </tr>				
+    {% endfor %}				
+    </tbody>				
+
+    </table>
+</div>
+{% endif %}
+
+
+{% endblock %}

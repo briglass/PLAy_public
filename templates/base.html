@@ -1,0 +1,675 @@
+
+<html>
+<head>
+
+    {% if title %}
+    <title>{{title}} - PlayIQ</title>
+    {% else %}
+    <title>PlayIQ</title>
+    {% endif %}
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>-->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+	
+	<script type="text/javascript" src="/static/js/jquery-1.10.2.min.js"></script>
+
+    
+	<!-- Scrollbar -->
+	<script type="text/javascript" src="/static/js/jquery.slimscroll.js"></script>
+	
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!--<script src="/static/js/bootstrap.js"></script>-->
+	
+	<!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Favicon -->
+    <link rel='shortcut icon' type='image/x-icon' href='/static/img/favicon.ico'/>
+
+    <!-- CSS Global Compulsory -->
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <!-- CSS Implementing Plugins -->
+    <link rel="stylesheet" href="/static/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="/static/plugins/font-awesome/css/font-awesome.min.css">
+
+    <!-- CSS Theme -->    
+    <link rel="stylesheet" href="/static/css/themes/light.css" id="style_color">
+	
+    <!-- CSS Customization -->
+    <link rel="stylesheet" href="/static/css/custom.css">
+	
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-62727545-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+	    <!--=== Header ===-->    
+    <div class="header header-v1">
+        <!-- Topbar -->
+        {% if request.MOBILE %}
+            <div class="topbar-v1">
+        {% else %}
+            <div class="topbar-v1 margin-bottom-20">
+        {% endif %}
+            <div class="container">
+                <div class="row">
+                    {% if request.MOBILE == False %}
+                        <div class="col-md-6">
+                            <ul class="list-unstyled top-v1-contacts">
+                                <li>
+                                    <i class="fa fa-envelope"></i> Email: <a href="mailto:playiq.com@gmail.com">playiq.com@gmail.com</a>
+                                </li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                    <div class="col-md-6">
+                        <ul class="list-unstyled top-v1-data">
+							
+						<li>
+							<div class="fb-like" data-href="https://www.facebook.com/pages/Play-IQ/385889351579934" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>						
+						</li>
+						
+						<li>
+							<a class="twitter-share-button"
+							  href="https://twitter.com/share"
+							  data-url="http://www.playiq.com"
+							  data-via="playiqcom"
+							   >
+							Tweet
+							</a>
+							<script>
+							window.twttr=(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return;js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);t._e=[];t.ready=function(f){t._e.push(f);};return t;}(document,"script","twitter-wjs"));
+							</script>
+						</li>
+                            <!-- <li><a href="../"><i class="fa fa-home"></i></a></li> -->
+							{% if current_user.is_authenticated() %}
+							   <li><a href="/account">{{ current_user.nickname or current_user.email }}</a></li>              
+
+							  <li><a href="{{ url_for('security.logout') }}">Logout</a></li>
+							{% else %}
+                             {% if request.MOBILE %}<br>{% endif %}
+							  <li><a href="{{ url_for('security.login') }}">Login</a></li>
+							  <li><a href="{{ url_for('security.register') }}">Register</a></li> 
+																
+							{% endif %}
+                        </ul>
+						
+                    </div>
+                </div>        
+            </div>
+        </div>
+        <!-- End Topbar -->
+    
+        
+        <!-- Navbar 
+        <div class="row text-center">
+            <a class="navbar-brand" href="../">
+                <img id="logo-header" src="/static/img/play_iq_logo_horz_sm.png"  alt="Logo">
+            </a>
+        </div>-->
+        <div class="navbar navbar-default " role="navigation">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="fa fa-bars"></span>
+                    </button>
+                    <a class="navbar-brand" href="../">
+                        <img id="logo-header" src="/static/img/play_iq_logo_horz_sm.png"  width="100%" alt="Logo">						
+                    </a>
+                </div>
+				{% if showsidebar is defined %}
+					{% if showsidebar == 1 %}
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                
+                <div class="collapse navbar-collapse navbar-responsive-collapse">
+                    <ul class="nav navbar-nav">
+                        				
+						{% if current_user.is_authenticated() %}				
+											
+						{% endif %}
+						
+                        <!-- Investors 
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                                Investors
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Mission Statement</a></li>
+								<li><a href="#">Why Invest?</a></li>
+                                <li><a href="#">Our Past & Future</a></li>
+                            </ul>
+                        </li>
+                        End Investors -->
+					{% if current_user.has_role('User') %}						
+                            <!-- Take a Test -->
+                            <a class="btn-u btn-brd btn-brd-hover  btn-u-playiq2 " type="button" href="/results">TAKE THE TESTS</a>                        
+                            <!-- End Take a Test -->											
+                    {% else %}
+					
+							<!-- Take a Demo -->
+                            <a class="btn-u btn-brd btn-brd-hover  btn-u-playiq2 " type="button" href="/demo1">TRY A DEMO</a>                        
+                            <!-- End Take a Demo -->
+					{% endif %}
+                    
+                    {% if current_user.has_role('Expertuser') %}
+                            <!-- Enter the Test Flow -->
+                            <a class="btn-u btn-brd btn-brd-hover  btn-u-playiq2 " type="button" href="/testflow">ENTER THE TEST FLOW</a>                        
+                            <!-- End Enter the Test Flow -->
+                    {% endif %}
+                    
+                    {% if current_user.has_role('Mturkuser') %}
+                            <!-- Enter the Test Flow -->
+                            <a class="btn-u btn-brd btn-brd-hover  btn-u-playiq2 " type="button" href="/testflow_mturk">ENTER THE TEST FLOW</a>                        
+                            <!-- End Enter the Test Flow -->
+                    {% endif %}
+        
+						<!-- About -->
+                        
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                                About
+                            </a>
+                            
+                                <ul class="dropdown-menu">
+                                    <li><!-- End New Sidebar Menu -->
+                                        <ul class="nav nav-pills nav-stacked"  id="myTab"> 
+                                            <li><a href="#tab-about-who" data-toggle="tab">Who we are</a></li>
+                                            <li><a href="#tab-about-what" data-toggle="tab">What we do</a></li>                                        
+                                        </ul>
+                                    </li>
+                                </ul>
+                        </li>        
+                        
+                        <!-- End About -->
+						
+                        <!-- Science -->
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                                Science
+                            </a>
+                            <ul class="dropdown-menu">
+								<li><!-- End New Sidebar Menu -->
+									<ul class="nav nav-pills nav-stacked"  id="myTab"> 
+										<li><a href="#tab-science-gab" data-toggle="tab">Gaming and the Brain</a></li>
+										<li><a href="#tab-science-blog" data-toggle="tab">Blog</a></li>
+									</ul>
+								</li>
+                            </ul>
+                        </li>                    
+                        <!-- End Science -->
+					{% endif %}
+				{% endif %}
+                            
+                        <!-- Search Block
+                        <li>
+                            <i class="search fa fa-search search-btn"></i>
+                            <div class="search-open">
+                                <div class="input-group animated fadeInDown">
+                                    <input type="text" class="form-control" placeholder="Search">
+                                    <span class="input-group-btn">
+                                        <button class="btn-u" type="button">Go</button>
+                                    </span>
+                                </div>
+                            </div>    
+                        </li>
+                        End Search Block -->
+                    </ul>
+                </div><!--/navbar-collapse-->
+			
+			
+            </div>    
+        </div>            
+        <!-- End Navbar -->
+    </div>
+
+    <!--=== End Header ===-->   
+	
+	
+	
+</head>
+  
+
+<body>
+  
+   <div id="fb-root"></div>
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=289417540386&version=v2.0";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+	</script>
+
+	    <!--=== Content Part ===-->
+    <div class="container content">
+	
+	<div class="row">
+		{% with messages = get_flashed_messages() %}
+		{% if messages %}
+		<ul>
+		{% for message in messages %}
+			<!--<li>{{ message }} </li>-->
+			
+			<div class="alert alert-warning fade in alert-dismissable">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+				<strong>{{ message }}</strong>
+			</div>
+					
+		{% endfor %}
+		</ul>
+		{% endif %}
+		{% endwith %}
+	</div>
+
+        <div class="row">
+		{% if showsidebar is defined %}
+		{% if showsidebar == 1 %}
+			<!-- Begin Sidebar -->			
+            <div class="col-md-3">
+					
+				<!-- Begin New Sidebar Menu -->				
+				<ul class="nav nav-pills nav-stacked" id="myTab"> 
+					
+					<li class="active"><a href="#tab-playiq" data-toggle="tab"><i class="fa fa-puzzle-piece"></i> PlayIQ</a></li>
+					<li><a href="#tab-perception" data-toggle="tab">&mdash; <i class="fa fa-eye"></i> Perception</a></li>
+					<li><a href="/#tab-learning" data-toggle="tab">&mdash; <i class="fa fa-gavel"></i> Learning</a></li>
+					<li><a href="#tab-attention" data-toggle="tab">&mdash; <i class="fa fa-flash"></i> Attention</a></li>
+					
+					<li><a href="#tab-track" data-toggle="tab"><i class="fa fa-bar-chart"></i> Track Results</a></li>
+					<li><a href="#tab-compare" data-toggle="tab"><i class="fa fa-trophy"></i> Compare &amp; Compete</a></li>
+					<li><a href="#tab-gamebrain" data-toggle="tab"><i class="fa fa-flag"></i> Game-Brain Matcher</a></li>   
+                    
+				</ul>   
+				
+                <!-- Social Icons 
+                <div class="magazine-sb-social margin-bottom-35">
+				
+				
+                    <div class="headline headline-md"><h2>Social</h2></div>
+                    <ul class="social-icons social-icons-color">
+						<li>
+							
+						</li>
+                        <li><a href="#" data-original-title="Feed" class="social_rss"></a></li>
+                        <li><a href="#" data-original-title="Facebook" class="social_facebook"></a></li>
+                        <li><a href="#" data-original-title="Twitter" class="social_twitter"></a></li>
+                        <li><a href="#" data-original-title="Goole Plus" class="social_googleplus"></a></li>
+                        <li><a href="#" data-original-title="Wordpress" class="social_wordpress"></a></li>
+                    </ul>
+                    <div class="clearfix"></div>     
+                </div>
+                 End Social Icons -->
+				
+					<!-- Twitter -->
+					
+                    {% if request.MOBILE %}                        
+                        <!--<a href="https://twitter.com/playiqcom" class="twitter-follow-button" data-show-count="false">Follow @playiqcom</a>
+                        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                        <br>-->                        
+                    {% else %}
+                        <div align="center">
+                            <!-- <div class="headline headline-md"><h2>Twitter</h2></div> -->
+                            <a class="twitter-timeline" data-dnt="true" href="https://twitter.com/playiqcom" data-widget-id="534721452562317313">Tweets by @playiqcom</a>
+                            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>                    
+                        </div>	
+                    {% endif %}
+                    <!-- End Twitter -->				
+
+				
+            </div>
+            <!-- End Sidebar -->
+		{% endif %}
+		{% endif %}
+			<!-- <a rel="curl-bottom-right" class="btn-u btn-u-sea curl-bottom-right">Curl Bottom Right</a> -->
+   
+   
+   <div class="col-md-9">
+   
+   <!-- POPUP TABS -->
+			<!-- Tab v3 -->
+			
+			<div class="row tab-v3">
+			
+					<div class="tab-content" id="myTab">
+						<div class="tab-pane fade in active" id="tab-playiq">
+						
+						</div>
+						<div class="tab-pane fade in" id="tab-perception">
+                            {% if request.MOBILE %}<div class="row text-center">{% endif %}
+                                <img alt="" {% if request.MOBILE %}class="img-width-200" {% else %} class="pull-left lft-img-margin img-width-200" {% endif %} src="static/img/stock/g1.jpg"> 
+                            {% if request.MOBILE %}</div>{% endif %}
+							<h2><a href="../"><img src="/static/img/play_iq_logo_mark_100.png" width="6%"></a> Perception</h2>		
+							<div class="funny-boxes funny-boxes-top-playiq">
+								<div class="row">
+									<div class="col-md-10">
+										<h4>Our perceptual abilities allow us to rapidly detect changes and identify objects in our environment. Gaming experience may alter our basic perceptual abilities. Using PLAy’s perception test, you can gauge how your abilities change over time. </h4>							
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane fade in" id="tab-learning">
+                            {% if request.MOBILE %}<div class="row text-center">{% endif %}
+                                <img alt="" {% if request.MOBILE %}class="img-width-200" {% else %} class="pull-left lft-img-margin img-width-200" {% endif %} src="static/img/stock/G2.jpg"> 
+                            {% if request.MOBILE %}</div>{% endif %}
+							<h2><a href="../"><img src="/static/img/play_iq_logo_mark_100.png" width="6%"></a> Learning</h2>	
+							<div class="funny-boxes funny-boxes-top-playiq">
+								<div class="row">
+									<div class="col-md-10">
+										<h4>Our learning abilities allow us to adapt to changes in our environment and master associations between objects and events. Successful gamers quickly learn which situations are beneficial and which are harmful. Gaming experience may alter our basic learning abilities. Using PLAy’s learning test, you can gauge how your abilities change over time.</h4>					
+									</div>
+								</div>
+							</div>												
+						</div>
+						<div class="tab-pane fade in" id="tab-attention">
+                            {% if request.MOBILE %}<div class="row text-center">{% endif %}
+                                <img alt="" {% if request.MOBILE %}class="img-width-200" {% else %} class="pull-left lft-img-margin img-width-200" {% endif %} src="static/img/stock/G3.jpg"> 
+                            {% if request.MOBILE %}</div>{% endif %}
+							<h2><a href="../"><img src="/static/img/play_iq_logo_mark_100.png" width="6%"></a> Attention</h2>	
+							<div class="funny-boxes funny-boxes-top-playiq">
+								<div class="row">
+									<div class="col-md-10">
+										<h4>Our attentional abilities allow us to focus on what is crucial and minimize harmful distractions.  Attention makes it possible to follow a conversation in a restaurant by blocking out the chatter at the next table. Gaming experience may alter our basic attentional abilities. Using PLAy’s attention test, you can gauge how your abilities change over time.</h4>			
+									</div>
+								</div>
+							</div>							
+
+						</div>
+						<div class="tab-pane fade in" id="tab-track">                            
+                            {% if request.MOBILE %}<div class="row text-center">{% endif %}
+                                <img alt="" {% if request.MOBILE %}class="img-width-200" {% else %} class="pull-left lft-img-margin img-width-200" {% endif %} src="static/img/stock/G4.jpg"> 
+                            {% if request.MOBILE %}</div>{% endif %}
+							<h2><a href="../"><img src="/static/img/play_iq_logo_mark_100.png" width="6%"></a> Track Results</h2>
+							<div class="funny-boxes funny-boxes-top-playiq">
+								<div class="row">
+									<div class="col-md-12" align="center">
+										<h3><p><a href="{{ url_for('security.register') }}">Register Now for Free</a> and stay tuned for enhanced features!</p></h3>				
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane fade in" id="tab-compare">
+                            {% if request.MOBILE %}<div class="row text-center">{% endif %}
+                                <img alt="" {% if request.MOBILE %}class="img-width-200" {% else %} class="pull-left lft-img-margin img-width-200" {% endif %} src="static/img/stock/G5.jpg"> 
+                            {% if request.MOBILE %}</div>{% endif %}
+							<h2><a href="../"><img src="/static/img/play_iq_logo_mark_100.png" width="6%"></a> Compare &amp; Compete</h2>		
+							<div class="funny-boxes funny-boxes-top-playiq">
+								<div class="row">
+									<div class="col-md-12" align="center">
+										<h3><p><a href="{{ url_for('security.register') }}">Register Now for Free</a> and stay tuned for enhanced features!</p></h3>						
+									</div>
+								</div>
+							</div>										
+						</div>
+                        
+						<div class="tab-pane fade in" id="tab-gamebrain">
+                            {% if request.MOBILE %}<div class="row text-center">{% endif %}
+                                <img alt="" {% if request.MOBILE %}class="img-width-200" {% else %} class="pull-left lft-img-margin img-width-200" {% endif %} src="static/img/stock/G6.jpg"> 
+                            {% if request.MOBILE %}</div>{% endif %}
+							<h2><a href="../"><img src="/static/img/play_iq_logo_mark_100.png" width="6%"></a> Game-Brain Matcher</h2>		
+							<div class="funny-boxes funny-boxes-top-playiq">
+								<div class="row">
+									<div class="col-md-12" align="center">
+										<h3><p><a href="{{ url_for('security.register') }}">Register Now for Free</a> and stay tuned for enhanced features!</p></h3>					
+									</div>
+								</div>
+							</div>											
+						</div>
+
+						<div class="tab-pane fade in" id="tab-about-who">
+							<!--<img alt="" class="pull-left lft-img-margin img-width-200" src="static/img/stock/6.jpg"> -->
+							
+							{% if request.MOBILE %}<div class="row">{% endif %}
+                                <img alt="" class="pull-left lft-img-margin img-responsive" src="static/img/who/team.jpg"> 
+                            {% if request.MOBILE %}</div>{% endif %}
+							
+							<h2><a href="../"><img src="/static/img/play_iq_logo_mark_100.png" width="6%"></a> Who We Are</h2>		
+							
+							<div class="funny-boxes funny-boxes-top-playiq">
+								<div class="row">
+                                    <div class="col-md-12">
+                                        <h4>We are a group of scientists passionate about gaming and cognitive science. For several years, we have been researching the cognitive benefits of gaming. As members of Generation Atari 2600, we have watched gaming grow in popularity and are eager to fully understand its impact on how we Perceive, Learn, and Attend through PLAyIQ.</h4>
+                                    </div>
+                                </div>
+							</div>	
+							
+						</div>
+						
+						<div class="tab-pane fade in" id="tab-about-what">
+							<img alt="" class="pull-left lft-img-margin" src="static/img/what.jpg"> 
+							<h2><a href="../"><img src="/static/img/play_iq_logo_mark_100.png" width="6%"></a> What We Do</h2>
+							<div class="funny-boxes funny-boxes-top-playiq">
+								<div class="row">
+                                    <div class="col-md-12">
+                                        <h4>Can video gaming alter your brain and enhance your mental skills? How do you stack up to the competition? PLAyIQ quantifies and tracks how your mental abilities change as a result of gaming. PLAyIQ makes personalized recommendations about which games are best for you. By joining PLAyIQ, you also contribute to science by helping to advance our understanding of how experiences shape the brain.</h4>		
+                                    </div>
+                                </div>
+							</div>	
+																	
+						</div>
+						<div class="tab-pane fade in" id="tab-science-blog">
+						<h2>Science Blog</h2>
+							<div id="scroll-science-blog">
+							<!-- Story Block -->
+								<div class="funny-boxes funny-boxes-top-playiq">
+									<div class="row">
+										<div class="col-md-8">
+											<h2><font color="471A3F" <ul><strong>Gaming Genre and Cognition</strong></ul></font> / Dobrowolski, et al., 2015</h2>
+											<blockquote>
+												<p><em>"We investigated an important aspect of this ﬁeld that has not yet been empirically addressed: the role of video game genre. Our comparison of two video game player groups of speciﬁc genres (ﬁrst-person shooter and real-time strategy) indicates that cognitive abilities (measured by task switching and multiple object tracking) may be differentially enhanced depending on the genre of video game being played."</em></p>
+												<small><em><a href="http://www.sciencedirect.com/science/article/pii/S074756321400661X" target="_blank">Dobrowolski, Hanusz, Sobczyka, Skorko, & Wiatrow, 2015</a></em></small>
+											</blockquote>
+											<p>Often, video game research just clumps all Gamers together into one category: Video Game Players. This resarch is interesting because it pits First Person Shooter gamers against Real-Time Strategy gamers. It turns out that while both sets of gamers have faster processing speed than a control group of Non-Gamers, the Real-Time Strategy gamers had even faster reaction time speeds in a visual processing task. It is critical to understand how different types of video games have different effects on human cognition, and that's exactly our goal here at PlayIQ.</p>					
+										</div>
+										<div class="col-md-4 funny-boxes-img">
+											<a href="http://www.gameinformer.com/b/features/archive/2012/12/27/tracking-the-popularity-of-videogame-genre.aspx" target="_blank"><img class="img-responsive" src="/static/img/scienceblog/genre.jpg" alt=""></a>
+											
+											<!--<span class="magazine-badge magazine-badge-playiq">Rewiring Attention</span>-->
+											<ul class="list-unstyled fa-fixed">
+											   <li><i class="fa fa-tag"></i> Genre, FPS, RTS, Visual Attention</li>
+											   <li><i class="fa fa-book"></i> Computers in Human Behavior</li>
+											   <li><i class="fa fa-map-marker"></i> Polish Academy of Sciences</li>
+											   <li><i class="fa fa-map-marker"></i> Jagiellonian University</li>
+											</ul>
+										</div>
+									</div>                            
+								</div>
+									
+							<!-- End Story Block -->
+				
+							<!-- Story Block -->
+							<div class="col-md-12" align="center"><a href="../"><img src="/static/img/play_iq_logo_mark_100.png" width="6%"></a><br><br></div>
+							
+								<div class="funny-boxes funny-boxes-top-playiq">
+									<div class="row">
+										<div class="col-md-8">
+											<h2><font color="471A3F" <ul><strong>Super Mario & Brain Plasticity</strong></ul></font> / K&uuml;hn, et al., 2013</h2>
+											<blockquote>
+												<p><em>"Video game training augments GM in brain areas crucial for spatial navigation, strategic planning, working memory and motor performance going along with evidence for behavioral changes of navigation strategy. The presented video game training could therefore be used to counteract known risk factors for mental disease such as smaller hippocampus and prefrontal cortex volume in, for example, post-traumatic stress disorder, schizophrenia and neurodegenerative disease."</em></p>
+											
+												<small><em><a href="http://www.nature.com/mp/journal/v19/n2/full/mp2013120a.html" target="_blank">K&uuml;hn, Gleich, Lorenz, Lindenberger, & Gallinat, 2013</a></em></small>
+											</blockquote>  
+											<p>Playing Super Mario 64 can actually increase your brain volume! In this study, people played about 50 minutes per day for a total of 50 hours (in Super Mario lingo, that's an average of 37.4 Stars total). Using fMRI, the researchers found increased gray matter volume in the hippocampus -- a part of the brain responsible for memory functioning. At PlayIQ, we are interested in finding out psychological changes for all different types of video games.</p>					
+											
+										</div>
+										<div class="col-md-4 funny-boxes-img">
+											<img class="img-responsive" src="/static/img/scienceblog/mario64.jpg" alt="">
+											<!--<span class="magazine-badge magazine-badge-playiq">Rewiring Attention</span>-->
+											<ul class="list-unstyled fa-fixed">
+											   <li><i class="fa fa-tag"></i> Brain Volume, Nintendo, Memory</li>
+											   <li><i class="fa fa-book"></i> Journal of Molecular Psychiatry</li>
+											   <li><i class="fa fa-map-marker"></i> Max Planck Institute</li>
+											   <li><i class="fa fa-map-marker"></i> Charit&eacute; University</li>
+											   <li><i class="fa fa-map-marker"></i> Humboldt Universit&auml;t zu Berlin</li>
+											</ul>
+										</div>
+									</div>                            
+								</div>
+							</div>
+							<script>
+							$('#scroll-science-blog').slimScroll({
+								position: 'right',
+								height: '400px',
+								railVisible: true,
+								alwaysVisible: true
+							});
+						</script>
+						
+						<!-- End Story Block -->
+						</div>
+
+						<div class="tab-pane fade in" id="tab-science-gab">
+						<h2>Gaming and the Brain</h2>
+							<div id="scroll-science-gab">
+							<!-- Story Block -->
+                                <div class="funny-boxes funny-boxes-top-playiq">
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                
+                                                <h4>One possibility is that gamers are akin to mental athletes who increase their mental fitness through play. It's common sense that physical exercise improves physical fitness. For example, regular training runs should improve endurance in a variety of sports, whereas weight training should increase strength.</h4>
+                                                <div class="col-md-12" align="center"><a href="../"><img src="/static/img/play_iq_logo_mark_100.png" width="6%"></a><br><br></div>
+                                                <h4>One exciting scientific question is whether video gaming "exercise" is analogous to physical exercise. If so, more regular and intense gaming should lead to the largest mental improvements. However, like physical exercise, any gaming should be better than no gaming at all.</h4>
+                                                <div class="col-md-12" align="center"><a href="../"><img src="/static/img/play_iq_logo_mark_100.png" width="6%"></a><br><br></div>
+                                                <h4>Continuing the analogy to physical exercise, certain types of games may be better suited toward enhancing particular mental skills. For example, playing real-time strategy games like StarCraft may increase attentional but not perceptual abilities. The P, L, and A in PlayIQ are drawn from three mental components, Perception, Learning, and Attention.  These three mental components are critical to success in gaming, as well as non-gaming endeavours.</h4>
+                                                <div class="col-md-12" align="center"><a href="../"><img src="/static/img/play_iq_logo_mark_100.png" width="6%"></a><br><br></div>
+                                                <h4>At PlayIQ, we evaluate how gaming alters our mental abilities by examining performance patterns across thousands of players. We aim to provide gamers with the best tools to track their cognitive changes, compare their performance to others, and to identify the games and training regimens that are best for reaching their objectives.</h4>
+                                                <div class="col-md-12" align="center"><a href="../"><img src="/static/img/play_iq_logo_mark_100.png" width="6%"></a><br><br></div>	
+                                                <h4>Further Reading:</h4>
+                                                <blockquote>
+                                                    <p>Bavelier D, Green CS, Pouget A, Schrater P (2012) <a href="http://www.ncbi.nlm.nih.gov/pubmed/22715883">Brain plasticity through the life span: Learning to learn and action video games</a>. Neuroscience 35: 391–416. doi: 10.1146/annurev-neuro-060909-152832 </p>
+
+                                                    <p>Feng J, Spence I, Pratt J (2007) <a href="http://www.ncbi.nlm.nih.gov/pubmed/17894600">Playing an action game reduces gender differences in spatial cognition</a>. Psychological Science 18: 850–855. doi: 10.1111/j.1467-9280.2007.01990.x </p>
+
+                                                    <p>Glass, B.D., Maddox, W.T., & Love, B.C. (2013). <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0070350">Real-Time Strategy Game Training: Emergence of a Cognitive Flexibility Trait</a>. PLOS ONE, 8(8), e70350. </p>
+                                                    <div class="col-md-12" align="center"><a href="../"><img src="/static/img/play_iq_logo_mark_100.png" width="6%"></a><br><br></div>
+                                                </blockquote>
+
+                                        </div>
+                                    </div>
+                                </div>
+									
+							<!-- End Story Block -->
+				
+							
+                                <script>
+                                    $('#scroll-science-gab').slimScroll({
+                                        position: 'right',
+                                        height: '400px',
+                                        railVisible: true,
+                                        alwaysVisible: true
+                                    });
+                                </script>
+						
+                            </div>
+						
+                        </div>                                    
+				</div>          
+			</div>
+		
+	<!-- END POPUP TABS -->
+	
+ {% block content %}{% endblock %}
+ 
+ 
+	</div>
+
+	</div>
+    </div><!--/container-->     
+    <!-- End Content Part -->
+    <!--=== Footer ===-->
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-md-12">
+                    <!-- Contact Us 
+                    <div class="headline"><h2>Contact Us</h2></div> 
+					
+                    <address class="md-margin-bottom-40">
+                        25, Lorem Lis Street, Orange <br />
+                        California, US <br />
+                        Phone: 800 123 3456 <br />
+                        Fax: 800 123 3456 <br />
+                        Email: <a href="mailto:info@anybiz.com" class="">info@anybiz.com</a>
+                    </address>
+                     End Contact Us -->
+
+                </div><!--/col-md-4-->
+            </div>
+        </div> 
+    </div><!--/footer-->
+    <!--=== End Footer ===-->
+
+    <!--=== Copyright ===-->
+    <div class="copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">                     
+                    <p>
+                        2014 &copy; PlayIQ. ALL Rights Reserved. 1418.02.11.2015
+                        <!--<a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> |  <a href="/devlogout">Developer Logout</a> -->
+                    </p>
+					<a href="http://flask.pocoo.org/"><img src="http://flask.pocoo.org/static/badges/flask-powered.png" border="0" alt="Flask powered" title="Flask powered"></a>
+                </div>
+                <div class="col-md-6">  
+                    <a href="../">
+                        <img class="pull-right" id="logo-footer" src="/static/img/play_iq_logo_mark_100.png" alt="">
+						
+                    </a>					
+                </div>
+				
+            </div>
+        </div> 
+    </div><!--/copyright--> 
+    <!--=== End Copyright ===-->
+	
+	
+<!-- JS Global Compulsory -->           
+
+<script src="/static/lean-slider/scripts/modernizr-2.6.1.min.js"></script>
+<script src="/static/lean-slider/lean-slider.js"></script>
+<!-- <script type="text/javascript" src="/static/js/jquery-1.10.2.min.js"></script> -->
+<script type="text/javascript" src="/static/js/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap.min.js"></script> 
+<!-- JS Implementing Plugins -->           
+<script type="text/javascript" src="/static/plugins/back-to-top.js"></script>
+<script type="text/javascript" src="/static/plugins/fancybox/source/jquery.fancybox.pack.js"></script>
+<script type="text/javascript" src="/static/plugins/counter/waypoints.min.js"></script>
+<script type="text/javascript" src="/static/plugins/counter/jquery.counterup.min.js"></script> 
+<script type="text/javascript" src="/static/plugins/circles-master/circles.js"></script>
+
+	
+<!-- JS Page Level -->           
+<script type="text/javascript" src="/static/js/app.js"></script>
+<script type="text/javascript" src="/static/js/plugins/circles-master.js"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        App.init();
+        App.initCounter();
+        CirclesMaster.initCirclesMaster1();
+        CirclesMaster.initCirclesMaster2();
+    });
+</script>
+
+
+</body>
+ 
+</html>

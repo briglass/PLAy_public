@@ -1,0 +1,655 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script>
+var currentTrial = 0;
+var startTrialTime = 0;
+var trialRunning = false;
+var respReady = false;
+var img1set = ['ANTimages/cue types/no cue.jpg',
+    'ANTimages/cue types/center cue.jpg',
+    'ANTimages/cue types/double cue.jpg',
+    'ANTimages/cue types/upper spatial.jpg',
+    'ANTimages/cue types/lower spatial.jpg']; //Cue image set
+var img2set = ['ANTimages/target types/lower neut left.jpg',
+    'ANTimages/target types/lower neut right.jpg',
+    'ANTimages/target types/upper neut left.jpg',
+    'ANTimages/target types/lower neut right.jpg',
+    'ANTimages/target types/lower cong left.jpg',
+    'ANTimages/target types/lower cong right.jpg',
+    'ANTimages/target types/upper cong left.jpg',
+    'ANTimages/target types/upper cong right.jpg',
+    'ANTimages/target types/lower incon left.jpg',
+    'ANTimages/target types/lower incon right.jpg',
+    'ANTimages/target types/upper incon left.jpg',
+    'ANTimages/target types/upper incon right.jpg']; //Target image set
+var respVar = []; //answer array for responses
+var AttenReact = [];  //RT response array
+var respCor = []; // correct response array
+var instCount = 1;
+var numTrials = 300; //total trial number
+var AIti = 0;
+
+$(document).ready(function() {
+    $('#submitButton').hide();
+    w = window.innerWidth;//total width in pixels
+    h = window.innerHeight;//total height in pixels
+    $('#body').width(w + 'em').height(h + 'em');//fixing body to screen size (and container as it's 100% of body)
+    //$(document).bind('keyup', 'space', StartTrial);
+    //$(document).bind('keyup', 'Right arrow', PressedRight);
+    //$(document).bind('keyup', 'Left arrow', PressedLeft);
+    $(document).keydown(function( event ) {
+        if (event.which == 37) {
+            PressedLeft();
+        }else if (event.which == 39) {
+            PressedRight();
+        }
+    });
+    $('#inst1').show();
+    $('#startTrial').hide();
+    $('#submitting').hide();
+    $('#contButton').hide();
+    $('#p3').hide();
+    $('#p2').hide();
+    $('#p1').hide();
+    $('#Tinst').hide();
+    preLoad(img1set);
+    preLoad(img2set);
+    if(ticker==2){
+        $('#contButton').show();
+    }
+});
+
+function shuffle(array) {
+    var counter = array.length, temp, index;
+
+    // While there are elements in the array
+    while (counter > 0) {
+        // Pick a random index
+        index = Math.floor(Math.random() * counter);
+
+        // Decrease counter by 1
+        counter--;
+
+        // And swap the last element with it
+        temp = array[counter];
+        array[counter] = array[index];
+        array[index] = temp;
+    }
+
+    return array;
+}
+var ticker = 0;
+function preLoad(arrayOfImages) {
+    $(arrayOfImages).each(function(){
+        $('.preload').attr('src', this); 
+		//$('<img/>')[0].src = this;
+        // Alternatively you could use:
+        // (new Image()).src = this;
+    });
+    ticker++;
+}
+
+//preLoad(img1set);
+//preLoad(img2set);
+//Set up for Atten randomization
+var ATOrderOrig = [0,1,2,3,4,5,6,7,8,9,10,11];var ATOrderOrig1 = [0,1,2,3,4,5,6,7,8,9,10,11];var ATOrderOrig2 = [0,1,2,3,4,5,6,7,8,9,10,11];
+var ATOrderOrig3 = [0,1,2,3,4,5,6,7,8,9,10,11];var ATOrderOrig4 = [0,1,2,3,4,5,6,7,8,9,10,11];//60 total
+var ATOrderOrig5 = [0,1,2,3,4,5,6,7,8,9,10,11];var ATOrderOrig6 = [0,1,2,3,4,5,6,7,8,9,10,11];var ATOrderOrig7 = [0,1,2,3,4,5,6,7,8,9,10,11];
+var ATOrderOrig8 = [0,1,2,3,4,5,6,7,8,9,10,11];var ATOrderOrig9 = [0,1,2,3,4,5,6,7,8,9,10,11];var ATOrderOrig10 = [0,1,2,3,4,5,6,7,8,9,10,11];
+var ATOrderOrig11 = [0,1,2,3,4,5,6,7,8,9,10,11];var ATOrderOrig12 = [0,1,2,3,4,5,6,7,8,9,10,11];var ATOrderOrig13 = [0,1,2,3,4,5,6,7,8,9,10,11];
+var ATOrderOrig14 = [0,1,2,3,4,5,6,7,8,9,10,11];//180
+var ATOrderOrig15 = [0,1,2,3,4,5,6,7,8,9,10,11];var ATOrderOrig16 = [0,1,2,3,4,5,6,7,8,9,10,11];var ATOrderOrig17 = [0,1,2,3,4,5,6,7,8,9,10,11];
+var ATOrderOrig18 = [0,1,2,3,4,5,6,7,8,9,10,11];var ATOrderOrig19 = [0,1,2,3,4,5,6,7,8,9,10,11];var ATOrderOrig20 = [0,1,2,3,4,5,6,7,8,9,10,11];
+var ATOrderOrig21 = [0,1,2,3,4,5,6,7,8,9,10,11];var ATOrderOrig22 = [0,1,2,3,4,5,6,7,8,9,10,11];var ATOrderOrig23 = [0,1,2,3,4,5,6,7,8,9,10,11];
+var ATOrderOrig24 = [0,1,2,3,4,5,6,7,8,9,10,11];//300
+shuffle(ATOrderOrig);shuffle(ATOrderOrig1);shuffle(ATOrderOrig2);shuffle(ATOrderOrig3);shuffle(ATOrderOrig4);
+shuffle(ATOrderOrig5);shuffle(ATOrderOrig6);shuffle(ATOrderOrig7);shuffle(ATOrderOrig8);shuffle(ATOrderOrig9);
+shuffle(ATOrderOrig10);shuffle(ATOrderOrig11);shuffle(ATOrderOrig12);shuffle(ATOrderOrig13);shuffle(ATOrderOrig14);
+shuffle(ATOrderOrig15);shuffle(ATOrderOrig16);shuffle(ATOrderOrig17);shuffle(ATOrderOrig18);shuffle(ATOrderOrig19);
+shuffle(ATOrderOrig20);shuffle(ATOrderOrig21);shuffle(ATOrderOrig22);shuffle(ATOrderOrig23);shuffle(ATOrderOrig24);
+var ATOrder = ATOrderOrig.concat(ATOrderOrig1,ATOrderOrig2,ATOrderOrig3,ATOrderOrig4,ATOrderOrig5,ATOrderOrig6,ATOrderOrig7,ATOrderOrig8,ATOrderOrig9,ATOrderOrig10,ATOrderOrig11,ATOrderOrig12,ATOrderOrig13,ATOrderOrig14,ATOrderOrig15,ATOrderOrig16,ATOrderOrig17,ATOrderOrig18,ATOrderOrig19,ATOrderOrig20,ATOrderOrig21,ATOrderOrig22,ATOrderOrig23,ATOrderOrig24);
+var ATarNeut = [0,1,2,3];
+var ATarCong = [4,5,6,7];
+var ATarIncon = [8,9,10,11];
+
+var AttenTCong = []; //array for storing target congruency type
+var ACueOrder = []; //final cue order variable for cue images
+var ACorCount = 0; //total number of correct responses
+var ANNCount=0;//Neutral no cue counter
+var ANCCount=0;//Neutral center cue counter
+var ANDCount=0;//Neutral double cue counter
+var ANSCount=0;//Neutral spatial cue counter
+var ACNCount=0;//cong no cue counter
+var ACCCount=0;//cong center cue counter
+var ACDCount=0;//cong double cue counter
+var ACSCount=0;//cong spatial cue counter
+var AINCount=0;//incong no cue counter
+var AICCount=0;//incong center cue counter
+var AIDCount=0;//incong double cue counter
+var AISCount=0;//incong spatial cue counter
+var D1 = 0; //variable for trial timing variance
+var neutBool = false;
+var congBool = false;
+var inconBool = false;
+var ACRand = 0;
+
+//clearTimeout useful for cancelling a wait function early (for instance in the case of a response...)
+
+for (var qq=0; qq<300; qq++){
+    if((ATOrder[qq] == 0)||(ATOrder[qq] == 1)||(ATOrder[qq] == 2)||(ATOrder[qq]==3)){//Neutral conditions
+//while loop
+        do{
+            ACRand = Math.floor(5 * Math.random());
+
+            if((ACRand == 0)&&(ANNCount <25)){
+                ACueOrder[qq] = ACRand;
+                ANNCount = ANNCount +1;
+                neutBool = true;
+            }else if((ACRand == 1)&&(ANCCount < 25)){
+                ACueOrder[qq] = ACRand;
+                ANCCount = ANCCount +1;
+                neutBool = true;
+            }else if((ACRand == 2)&&(ANDCount < 25)){
+                ACueOrder[qq] = ACRand;
+                ANDCount = ANDCount +1;
+                neutBool = true;
+            }else if(((ACRand == 3)||(ACRand == 4))&&(ANSCount < 25)){
+                ACueOrder[qq] = ACRand;
+                ANSCount = ANSCount +1;
+                neutBool = true;
+            }
+
+        }while(neutBool==false);
+//while loop end (+boolean reset)
+    }else if((ATOrder[qq] == 4)||(ATOrder[qq] == 5)||(ATOrder[qq] == 6)||(ATOrder[qq]==7)){//Congruent conditions
+//while loop start
+        do{
+            ACRand = Math.floor(5 * Math.random());
+
+            if((ACRand == 0)&&(ACNCount <25)){
+                ACueOrder[qq] = ACRand;
+                ACNCount = ACNCount +1;
+                congBool = true;
+            }else if((ACRand == 1)&&(ACCCount < 25)){
+                ACueOrder[qq] = ACRand;
+                ACCCount = ACCCount +1;
+                congBool = true;
+            }else if((ACRand == 2)&&(ACDCount < 25)){
+                ACueOrder[qq] = ACRand;
+                ACDCount = ACDCount +1;
+                congBool = true;
+            }else if(((ACRand == 3)||(ACRand == 4))&&(ACSCount < 25)){
+                ACueOrder[qq] = ACRand;
+                ACSCount = ACSCount +1;
+                congBool = true;
+            }
+        }while(congBool==false);
+        //while loop end
+    }else if((ATOrder[qq] == 8)||(ATOrder[qq] == 9)||(ATOrder[qq] == 10)||(ATOrder[qq]==11)){//Incongruent conditions
+        //while loop start
+        do{
+            ACRand = Math.floor(5 * Math.random());
+
+            if((ACRand == 0)&&(AINCount <25)){
+                ACueOrder[qq] = ACRand;
+                AINCount = AINCount +1;
+                inconBool = true;
+            }else if((ACRand == 1)&&(AICCount < 25)){
+                ACueOrder[qq] = ACRand;
+                AICCount = AICCount +1;
+                inconBool = true;
+            }else if((ACRand == 2)&&(AIDCount < 25)){
+                ACueOrder[qq] = ACRand;
+                AIDCount = AIDCount +1;
+                inconBool = true;
+            }else if(((ACRand == 3)||(ACRand == 4))&&(AISCount < 25)){
+                ACueOrder[qq] = ACRand;
+                AISCount = AISCount +1;
+                inconBool = true;
+            }
+        }while(inconBool==false);
+    }//while loop end
+    neutBool = false;
+    congBool = false;
+    inconBool = false;
+}
+
+function PressedRight() {
+	if (!trialRunning) {
+        return;
+    }
+    if (!respReady){
+        return;
+    }
+	respVar.push(2);
+    if (img2set[ATOrder[currentTrial]].indexOf("left")>=0) {
+        respCor.push(0);
+    }else if (img2set[ATOrder[currentTrial]].indexOf("right")>=0) {
+        ACorCount++;
+        respCor.push(1);
+    }
+    //GiveFeedbackA();
+    if (respReady){
+        respReady = false;
+        NextTrial();
+    }
+}
+
+function PressedLeft() {
+	if (!trialRunning) {
+		return;
+	}
+    if (!respReady){
+        return;
+    }
+	respVar.push(1);
+    if (img2set[ATOrder[currentTrial]].indexOf("left")>=0) {
+        ACorCount++;
+        respCor.push(1);
+    }else if (img2set[ATOrder[currentTrial]].indexOf("right")>=0) {
+        respCor.push(0);
+    }
+    //GiveFeedbackA();
+    if (respReady){
+        respReady = false;
+        NextTrial();
+    }
+
+}
+
+function NextTrial() {
+    if (!trialRunning) {
+        return;
+    }
+    trialRunning = false;
+
+	var currentTime = new Date().getTime();
+	var RT = currentTime - startTrialTime;
+	AIti = 1700 - RT;
+	//$('#t' + currentTrial + '_rt').val(RT);
+	AttenReact.push(RT);
+    targCong();
+	if (AIti <0){
+        $('#t1_d2').hide();
+        $('#LImg').hide();
+        $('#RImg').hide();
+        $('#fix').show();
+        setTimeout(function () {
+            currentTrial++;
+            StartTrial();
+        }, 3500 - RT - D1);
+	}else if (AIti > 0){
+		setTimeout(function () {
+            $('#t1_d2').hide();
+            $('#LImg').hide();
+            $('#RImg').hide();
+            $('#fix').show();
+        }, AIti);
+        setTimeout(function () {
+            currentTrial++;
+            StartTrial();
+        },AIti + 3500 - RT - D1);
+	}
+}
+
+function Continue(){
+    if (instCount==1){
+        $('#inst1').hide();
+        $('#inst2a').show();
+        instCount++;
+    }else if (instCount==2){
+        $('#inst2a').hide();
+        $('#inst2b').show();
+        instCount++;
+    }else if (instCount==3){
+        $('#inst2b').hide();
+        $('#startTrial').show();
+        $('#inst3').show();
+        $('#contButton').hide();
+        instCount++;
+    }
+    //Can add in the submit function here if continue is re-shown once trials end
+}
+
+function Submit() {
+    //In here needs to be the relevant submission aspects, and window closure / re-directs
+    $('#submitting').hide();
+    var Tag = "ANT";
+    var datOne;
+    var DatScore = String(Av_EZ);
+    datOne = String(respVar) + "," + String(AttenReact) + "," + String(respCor) + "," + String(ATOrder) + "," + String(ACueOrder) + "," + String(AttenTCong) + "," + String(ACorCount) + "," + String(ACorProp) + "," + String(APc) + "," + String(AMRT) + "," + String(AVRT) + "," + String(Av_EZ);
+    //var datObj = {};
+    //datObj = {task: "Atten", values: datOne};
+
+    $.ajax({
+        url: '/taskinputjs',
+        type: 'post',
+        data: {taskName: Tag, taskScore: DatScore, taskData: datOne}
+    }).done(function (data) {
+        console.log(data);
+        Redirect('/results')
+    });
+
+}
+
+function getData(){
+    //var url = "http://example.com/script.php?var1=value2&var2=value2";
+    //var www : WWW = new WWW (url);
+
+// wait for request to complete yield www;
+
+// and check for errors
+// if (www.error == null) {
+// request completed! }
+// else {
+// something wrong!
+// Debug.Log("WWW Error: "+ www.error); }
+}
+
+function StartCount(){
+    $('#inst3').hide();
+    $('#startTrial').hide();
+    $('#p3').show();
+    setTimeout(function () {
+        $('#p3').hide();
+        $('#p2').show();
+    }, 1000);
+    setTimeout(function () {
+        $('#p2').hide();
+        $('#p1').show();
+    }, 2000);
+    setTimeout(function () {
+        $('#p1').hide();
+        StartTrial();
+        $('#Tinst').show();
+    }, 3000);
+}
+
+function StartTrial() {
+	if (trialRunning) {
+		return;
+	}
+    if (respReady){
+        return;
+    }
+
+	D1 = Math.floor(400 + (1600 - 400) * Math.random());
+
+    if(currentTrial >= numTrials){//end of trials
+        ACorProp = ACorCount/currentTrial;
+        EZCalc();
+        document.getElementById("Score").innerHTML = "Your Score: "+String(EZ_Disp);
+        $('#Tinst').hide();
+        $('#Score').show();
+        $('#fix').hide();
+		$('#submitting').show();
+        $('#ty').show();
+    }else {
+		$('#fix').show();
+		$('#inst3').hide();
+        $('#startTrial').hide();
+        $('#t1_d1').attr('src', img1set[ACueOrder[currentTrial]]);
+        $('#t1_d2').attr('src', img2set[ATOrder[currentTrial]]);
+		setTimeout(function () {
+            $('#fix').hide();
+			$('#t1_d1').show();
+        }, D1);//ITI
+
+        setTimeout(function () {
+            $('#t1_d1').hide();
+            $('#fix').show();
+        }, D1+100);
+
+        setTimeout(function() {
+        $('#fix').hide();
+		$('#t1_d2').show();
+        $('#LImg').show();
+        $('#RImg').show();
+        startTrialTime = new Date().getTime();
+        trialRunning = true;
+        respReady = true;
+		},D1+500);
+
+    }
+}
+
+function GiveFeedbackA() {
+    if (img2set[ATOrder[currentTrial]].indexOf("left")>=0) {
+        if (respVar[respVar.length - 1] == 1) {
+            ACorCount += 1;
+            respCor.push(1);
+        } else if (respVar[respVar.length - 1] == 2) {
+            respCor.push(0);
+        }
+    }else if (img2set[ATOrder[currentTrial]].indexOf("right")>=0) {
+        if (respVar[respVar.length - 1] == 2) {
+            ACorCount += 1;
+            respCor.push(1);
+        } else if (respVar[respVar.length - 1] == 1) {
+            respCor.push(0);
+        }
+    }
+}
+
+function targCong() {
+    if (img2set[ATOrder[currentTrial]].indexOf("cong")>=0) { //Target was congruent
+        AttenTCong.push(1);
+    }
+    else if (img2set[ATOrder[currentTrial]].indexOf("neut")>=0) { //Target was neutral
+        AttenTCong.push(2);
+    }
+    else if (img2set[ATOrder[currentTrial]].indexOf("incon")>=0){ //Target was incongruent
+        AttenTCong.push(3);
+    }
+}
+
+function EZCalc(){
+    RTtotal1 = 0;
+    RTtotal1count=0;
+    RTtotal2 = 0;
+    RTtotal2count=0;
+//Proportion of responses correct
+    Pc = ACorProp;
+//Mean RT calc
+    for (var i=0; i<(AttenReact.length-1); i++){
+        if (AttenReact[i] < 2000){
+            RTtotal1 = RTtotal1 + AttenReact[i];
+            RTtotal1count++;
+        }
+    }
+    MRT1 = (RTtotal1 / RTtotal1count);
+    MRT = MRT1 / 1000;
+//Reaction time variance
+    for (var ii=0; ii<(AttenReact.length-1); ii++){
+        if (AttenReact[ii] < 2000){
+            RTtotal2 = RTtotal2 + (((AttenReact[ii]) - MRT1)*((AttenReact[ii]) - MRT1));
+            RTtotal2count++;
+        }
+    }
+    VRT1 = (RTtotal2/(RTtotal2count-1));
+    VRT = VRT1 / 1000;
+//Now ready to start diffusion model calculations
+//Sign value
+    if((Pc-0.5)>0){
+        ezsign = 1;
+    }else if((Pc-0.5)==0){
+        ezsign = 0;
+    }else if((Pc-0.5)<0){
+        ezsign = -1;
+    }
+//Edge correction
+    if(Pc==1){
+        Pc = (1 - (1/(2 * AttenReact.length)));
+    }
+//Central Calc
+    var s = 0.1;
+    var s2 = s * s;
+    var L = Math.log((Pc / (1-Pc)));
+    var xx = L * ((L * (Pc * Pc))-(L * Pc) + Pc-0.5) / VRT;
+    var v = ezsign * s * Math.pow(xx,(1 / 4));
+    var a = s2 * Math.log(Pc / (1-Pc)) / v;
+    var yy = -v * a / s2;
+    var MDT = (a / (2 * v)) * (1 - Math.exp(yy)) / (1 + Math.exp(yy));
+    var Ter = (MRT-MDT);
+    v_EZ = v;
+//Final variable assignments
+    APc = Pc;
+    AVRT = VRT;
+    AMRT = MRT;
+    Av_EZ = v_EZ;
+    EZ_Disp = (Math.round((v_EZ*1000)))/1000;//displayed drift rate
+}
+
+function Redirect (url) {
+    var ua        = navigator.userAgent.toLowerCase(),
+            isIE      = ua.indexOf('msie') !== -1,
+            version   = parseInt(ua.substr(4, 2), 10);
+
+    // Internet Explorer 8 and lower
+    if (isIE && version < 9) {
+        var link = document.createElement('a');
+        link.href = url;
+        document.body.appendChild(link);
+        link.click();
+    }
+
+    // All other browsers
+    else { window.location.href = url; }
+}
+
+</script>
+<style>
+
+#container {
+	position: relative;
+    background-color: #999999;
+    width: 100%;
+    height: 100%;
+    vertical-align:middle;
+}
+
+.displays {
+	position: relative;
+	display: none;
+    top:calc(50% - 400px/2);
+    left:calc(50% - 401px/2);
+    vertical-align:middle;
+    text-align:center;
+}
+
+.displayed {
+    position: relative;
+    display: none;
+    top:calc(50% - 500px/2);
+    left:calc(50% - 601px/2);
+    vertical-align:middle;
+}
+
+.lftImg {
+    position: absolute;
+    display: none;
+    bottom:10%;
+    left:20%;
+}
+
+.rightImg {
+    position: absolute;
+    display: none;
+    bottom:10%;
+    right:20%;
+}
+
+#startTrial {
+	position: absolute;
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    bottom:5%;
+    right:5%;
+	font-weight: bold;
+	color: black;
+	font-size: 14pt;
+}
+
+#submitting {
+    position: absolute;
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    bottom:5%;
+    right:5%;
+    font-weight: bold;
+    color: black;
+    font-size: 14pt;
+}
+
+#contButton {
+    position: absolute;
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    bottom:5%;
+    right:5%;
+    font-weight: bold;
+    color: black;
+    font-size: 14pt;
+}
+
+.p3 {
+    position: absolute;
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    top:calc(50% - 105px/2);
+    left:calc(50% - 395px/2);
+    width:401px;
+    height:20px;
+    font-weight: bold;
+    text-align: center;
+    vertical-align:middle;
+    color: black;
+    font-size: 30pt;
+}
+
+.p4 {
+     position: absolute;
+     font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+     left: 50%;
+     bottom: 10%;
+     width:200px;
+     height:20px;
+     font-weight: bold;
+     text-align: center;
+     vertical-align:middle;
+     color: black;
+     font-size: 20pt;
+ }
+
+.p6 {
+    position: absolute;
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    left: calc(50% - 420px/2);
+    top: 10%;
+    width:420px;
+    height:20px;
+    text-align: center;
+    vertical-align:middle;
+    color: white;
+    font-size: 18pt;
+}
+
+</style>
+<body style="background-color:#999999;">
+<div id="container">
+ <input id="contButton" type="button" name="contButton" value="Continue" onclick="Continue();">
+ <input id="startTrial" type="button" name="startTrial" value="Start" onclick="StartCount();">
+ <input id="submitting" type="button" name="submitting" value="Next" onclick="Submit();">
+ <img class="displays" id="t1_d1" src="" style="width:401px;height:400px;">
+ <img class="displays" id="t1_d2" src="" style="width:401px;height:400px;">
+ <img class="displayed" id="inst1" src="instfiles/AinstA.JPG" style="width:601px;height:432px;">
+ <img class="displayed" id="inst2a" src="instfiles/Ainst2a.JPG" style="width:601px;height:445px;">
+ <img class="displayed" id="inst2b" src="instfiles/Ainst2b.JPG" style="width:601px;height:440px;">
+ <img class="displayed" id="inst3" src="instfiles/Pinst3.JPG" style="width:601px;height:254px;">
+ <img class="displayed" id="ty" src="instfiles/TY.JPG" style="width:601px;height:279px;">
+ <img class="displays" id="fix" src="instfiles/fixation.jpg" style="width:401px;height:400px;">
+ <img class="lftImg" id="LImg" src="instfiles/ALeft.jpg" style="width:94px;height:94px;">
+ <img class="rightImg" id="RImg" src="instfiles/ARight.jpg" style="width:94px;height:94px;">
+ <img class="preload" style="display:none"/>
+ <p class="p3" id="p3">3</p>
+ <p class="p3" id="p2">2</p>
+ <p class="p3" id="p1">1</p>
+ <p class="p4" id="Score"></p>
+ <p class="p6" id="Tinst">Which direction is the center arrow?</p>
+</div>
+</body>

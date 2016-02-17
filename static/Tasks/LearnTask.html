@@ -1,0 +1,1550 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script>
+var currentTrial = 0;
+var startTrialTime = 0;
+var trialRunning = false;
+var respReady = false;
+var LearnQImg = ['Learnimages/Qsymbols/archer.png',
+    'Learnimages/Qsymbols/jeep.png',
+    'Learnimages/Qsymbols/plane.png',
+    'Learnimages/Qsymbols/theatre.png',
+    'Learnimages/Qsymbols/umbrella.png',
+    'Learnimages/Qsymbols/bicycle.png',
+    'Learnimages/Qsymbols/boat.png',
+    'Learnimages/Qsymbols/bus.png',
+    'Learnimages/Qsymbols/campfire.png',
+    'Learnimages/Qsymbols/campv.png']; //Cue image set
+var LearnQStoreSet = [101,102,103,104,105,106,107,108,109,110];
+var LQStore = [];
+var LearnTImg = ['Learnimages/Asymbols/aid.png',
+    'Learnimages/Asymbols/canoe.png',
+    'Learnimages/Asymbols/climb.png',
+    'Learnimages/Asymbols/court.png',
+    'Learnimages/Asymbols/Dski.png',
+    'Learnimages/Asymbols/fishing.png',
+    'Learnimages/Asymbols/handrail.png',
+    'Learnimages/Asymbols/hike.png',
+    'Learnimages/Asymbols/hospital.png',
+    'Learnimages/Asymbols/iskate.png']; //Target image set
+var LearnTStoreSet = [201,202,203,204,205,206,207,208,209,210];
+var LTOne = [];
+var LTTwo = [];
+var LTThree = [];
+var LTFour = [];
+var LTFive = [];
+var LTSix = [];
+var LTSeven = [];
+var LTEight = [];
+var LTNine = [];
+var LTTen = [];
+var LAStore = [];//correct responses for each trial
+
+var NonProCount = 0;
+var ProCount = 0;
+var respTotal = 0;
+
+var respVar = []; //answer array for responses
+var rtVar = [];  //RT response array
+var respCor = []; // correct response array
+var instCount = 1;
+var numTrials = 80; //total trial number
+var AIti = 0;
+
+$(document).ready(function() {
+    w = window.innerWidth;//total width in pixels
+    h = window.innerHeight;//total height in pixels
+    $('#body').width(w + 'em').height(h + 'em');//fixing body to screen size (and container as it's 100% of body)
+    $('#submitButton').hide();
+    $('#inst1').show();
+    $('#startTrial').hide();
+    $('#contButton').hide();
+    preLoad(LearnQImg);
+    preLoad(LearnTImg);
+    if(ticker==2){
+        $('#contButton').show();
+    }
+    $('#submitting').hide();
+    $('#CorTxt').hide();
+    $('#InCorTxt').hide();
+    $('#CorMsg').hide();
+    $('#p3').hide();
+    $('#p2').hide();
+    $('#p1').hide();
+    $('#Tinst').hide();
+});
+
+function shuffle(array) {
+    var counter = array.length, temp, index;
+
+    // While there are elements in the array
+    while (counter > 0) {
+        // Pick a random index
+        index = Math.floor(Math.random() * counter);
+
+        // Decrease counter by 1
+        counter--;
+
+        // And swap the last element with it
+        temp = array[counter];
+        array[counter] = array[index];
+        array[index] = temp;
+    }
+
+    return array;
+}
+var ticker = 0;
+function preLoad(arrayOfImages) {
+    $(arrayOfImages).each(function(){
+        $('.preload').attr('src', this); 
+		//$('<img/>')[0].src = this;
+        // Alternatively you could use:
+        // (new Image()).src = this;
+    });
+    ticker++;
+}
+
+
+//Set up for Learning randomization
+//Question block set up
+var LQOrderOrig = [0,1,2,3,4,5,6,7,8,9];
+var LQOrderOrig1 = [0,1,2,3,4,5,6,7,8,9];
+var LQOrderOrig2 = [0,1,2,3,4,5,6,7,8,9];
+var LQOrderOrig3 = [0,1,2,3,4,5,6,7,8,9];
+var LQOrderOrig4 = [0,1,2,3,4,5,6,7,8,9];
+var LQOrderOrig5 = [0,1,2,3,4,5,6,7,8,9];
+var LQOrderOrig6 = [0,1,2,3,4,5,6,7,8,9];
+var LQOrderOrig7 = [0,1,2,3,4,5,6,7,8,9];
+shuffle(LQOrderOrig);
+shuffle(LQOrderOrig1);
+shuffle(LQOrderOrig2);
+shuffle(LQOrderOrig3);
+shuffle(LQOrderOrig4);
+shuffle(LQOrderOrig5);
+shuffle(LQOrderOrig6);
+shuffle(LQOrderOrig7);
+var LQOrder = LQOrderOrig.concat(LQOrderOrig1,LQOrderOrig2,LQOrderOrig3,LQOrderOrig4,LQOrderOrig5,LQOrderOrig6,LQOrderOrig7);
+// Creating variable to decide which row is static
+var LStaticRow = Math.floor(1 + (2 - 1) * Math.random());
+//Setting up correct image association
+var LCorOrder = [0,1,2,3,4,5,6,7,8,9];
+shuffle(LCorOrder);
+var LCorSymb = [];
+var LCorSymNum = [];
+for (var j=0; j<10; j++){
+    LCorSymb[j]=LearnTImg[LCorOrder[j]];
+    LCorSymNum[j]=LearnTStoreSet[LCorOrder[j]];//array for storage
+} //now that "correct images are randomized, can use LQOrder as the selection variable for which is correct
+
+//Randomization of target images by block
+
+//FIRST BLOCK
+var tar1i = [0,1,2,3,4,5,6,7,8,9];
+shuffle(tar1i);
+var tar1f = [];
+for (var t=0; t<5; t++){
+    tar1f[t]=tar1i[t];
+}
+var tar1v1i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar1v2i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar1v3i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar1v4i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar1v5i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar1v6i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar1v7i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar1v8i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar1v9i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar1v10i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+shuffle(tar1v1i);
+shuffle(tar1v2i);
+shuffle(tar1v3i);
+shuffle(tar1v4i);
+shuffle(tar1v5i);
+shuffle(tar1v6i);
+shuffle(tar1v7i);
+shuffle(tar1v8i);
+shuffle(tar1v9i);
+shuffle(tar1v10i);
+var tar1v1 = tar1v1i;
+var tar1v2 = tar1v2i;
+var tar1v3 = tar1v3i;
+var tar1v4 = tar1v4i;
+var tar1v5 = tar1v5i;
+var tar1v6 = tar1v6i;
+var tar1v7 = tar1v7i;
+var tar1v8 = tar1v8i;
+var tar1v9 = tar1v9i;
+var tar1v10 = tar1v10i;
+var tar1Array1 = [];
+var tar1Array2 = [];
+var tar1Array3 = [];
+var tar1Array4 = [];
+var tar1Array5 = [];
+var tar1Array6 = [];
+var tar1Array7 = [];
+var tar1Array8 = [];
+var tar1Array9 = [];
+var tar1Array10 = [];
+if(LStaticRow==1){//top row static
+    tar1Array1 = tar1Array1.concat(tar1f,tar1v1);
+    tar1Array2 = tar1Array2.concat(tar1f,tar1v2);
+    tar1Array3 = tar1Array3.concat(tar1f,tar1v3);
+    tar1Array4 = tar1Array4.concat(tar1f,tar1v4);
+    tar1Array5 = tar1Array5.concat(tar1f,tar1v5);
+    tar1Array6 = tar1Array6.concat(tar1f,tar1v6);
+    tar1Array7 = tar1Array7.concat(tar1f,tar1v7);
+    tar1Array8 = tar1Array8.concat(tar1f,tar1v8);
+    tar1Array9 = tar1Array9.concat(tar1f,tar1v9);
+    tar1Array10 = tar1Array10.concat(tar1f,tar1v10);
+}else if(LStaticRow==2){
+    tar1Array1 = tar1Array1.concat(tar1v1,tar1f);
+    tar1Array2 = tar1Array2.concat(tar1v2,tar1f);
+    tar1Array3 = tar1Array3.concat(tar1v3,tar1f);
+    tar1Array4 = tar1Array4.concat(tar1v4,tar1f);
+    tar1Array5 = tar1Array5.concat(tar1v5,tar1f);
+    tar1Array6 = tar1Array6.concat(tar1v6,tar1f);
+    tar1Array7 = tar1Array7.concat(tar1v7,tar1f);
+    tar1Array8 = tar1Array8.concat(tar1v8,tar1f);
+    tar1Array9 = tar1Array9.concat(tar1v9,tar1f);
+    tar1Array10 = tar1Array10.concat(tar1v10,tar1f);
+}
+//SECOND BLOCK
+var tar2i = [0,1,2,3,4,5,6,7,8,9];
+shuffle(tar2i);
+var tar2f = [];
+for (t=0; t<5; t++){
+    tar2f[t]=tar2i[t];
+}
+var tar2v1i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar2v2i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar2v3i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar2v4i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar2v5i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar2v6i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar2v7i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar2v8i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar2v9i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar2v10i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+shuffle(tar2v1i);
+shuffle(tar2v2i);
+shuffle(tar2v3i);
+shuffle(tar2v4i);
+shuffle(tar2v5i);
+shuffle(tar2v6i);
+shuffle(tar2v7i);
+shuffle(tar2v8i);
+shuffle(tar2v9i);
+shuffle(tar2v10i);
+var tar2v1 = tar2v1i;
+var tar2v2 = tar2v2i;
+var tar2v3 = tar2v3i;
+var tar2v4 = tar2v4i;
+var tar2v5 = tar2v5i;
+var tar2v6 = tar2v6i;
+var tar2v7 = tar2v7i;
+var tar2v8 = tar2v8i;
+var tar2v9 = tar2v9i;
+var tar2v10 = tar2v10i;
+var tar2Array1 = [];
+var tar2Array2 = [];
+var tar2Array3 = [];
+var tar2Array4 = [];
+var tar2Array5 = [];
+var tar2Array6 = [];
+var tar2Array7 = [];
+var tar2Array8 = [];
+var tar2Array9 = [];
+var tar2Array10 = [];
+if(LStaticRow==1){//top row static
+    tar2Array1 = tar2Array1.concat(tar1f,tar2v1);
+    tar2Array2 = tar2Array2.concat(tar1f,tar2v2);
+    tar2Array3 = tar2Array3.concat(tar1f,tar2v3);
+    tar2Array4 = tar2Array4.concat(tar1f,tar2v4);
+    tar2Array5 = tar2Array5.concat(tar1f,tar2v5);
+    tar2Array6 = tar2Array6.concat(tar1f,tar2v6);
+    tar2Array7 = tar2Array7.concat(tar1f,tar2v7);
+    tar2Array8 = tar2Array8.concat(tar1f,tar2v8);
+    tar2Array9 = tar2Array9.concat(tar1f,tar2v9);
+    tar2Array10 = tar2Array10.concat(tar1f,tar2v10);
+}else if(LStaticRow==2){
+    tar2Array1 = tar2Array1.concat(tar2v1,tar1f);
+    tar2Array2 = tar2Array2.concat(tar2v2,tar1f);
+    tar2Array3 = tar2Array3.concat(tar2v3,tar1f);
+    tar2Array4 = tar2Array4.concat(tar2v4,tar1f);
+    tar2Array5 = tar2Array5.concat(tar2v5,tar1f);
+    tar2Array6 = tar2Array6.concat(tar2v6,tar1f);
+    tar2Array7 = tar2Array7.concat(tar2v7,tar1f);
+    tar2Array8 = tar2Array8.concat(tar2v8,tar1f);
+    tar2Array9 = tar2Array9.concat(tar2v9,tar1f);
+    tar2Array10 = tar2Array10.concat(tar2v10,tar1f);
+}
+//THIRD BLOCK
+var tar3i = [0,1,2,3,4,5,6,7,8,9];
+shuffle(tar3i);
+var tar3f = [];
+for (t=0; t<5; t++){
+    tar3f[t]=tar3i[t];
+}
+var tar3v1i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar3v2i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar3v3i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar3v4i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar3v5i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar3v6i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar3v7i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar3v8i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar3v9i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar3v10i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+shuffle(tar3v1i);
+shuffle(tar3v2i);
+shuffle(tar3v3i);
+shuffle(tar3v4i);
+shuffle(tar3v5i);
+shuffle(tar3v6i);
+shuffle(tar3v7i);
+shuffle(tar3v8i);
+shuffle(tar3v9i);
+shuffle(tar3v10i);
+var tar3v1 = tar3v1i;
+var tar3v2 = tar3v2i;
+var tar3v3 = tar3v3i;
+var tar3v4 = tar3v4i;
+var tar3v5 = tar3v5i;
+var tar3v6 = tar3v6i;
+var tar3v7 = tar3v7i;
+var tar3v8 = tar3v8i;
+var tar3v9 = tar3v9i;
+var tar3v10 = tar3v10i;
+var tar3Array1 = [];
+var tar3Array2 = [];
+var tar3Array3 = [];
+var tar3Array4 = [];
+var tar3Array5 = [];
+var tar3Array6 = [];
+var tar3Array7 = [];
+var tar3Array8 = [];
+var tar3Array9 = [];
+var tar3Array10 = [];
+if(LStaticRow==1){//top row static
+    tar3Array1 = tar3Array1.concat(tar1f,tar3v1);
+    tar3Array2 = tar3Array2.concat(tar1f,tar3v2);
+    tar3Array3 = tar3Array3.concat(tar1f,tar3v3);
+    tar3Array4 = tar3Array4.concat(tar1f,tar3v4);
+    tar3Array5 = tar3Array5.concat(tar1f,tar3v5);
+    tar3Array6 = tar3Array6.concat(tar1f,tar3v6);
+    tar3Array7 = tar3Array7.concat(tar1f,tar3v7);
+    tar3Array8 = tar3Array8.concat(tar1f,tar3v8);
+    tar3Array9 = tar3Array9.concat(tar1f,tar3v9);
+    tar3Array10 = tar3Array10.concat(tar1f,tar3v10);
+}else if(LStaticRow==2){
+    tar3Array1 = tar3Array1.concat(tar3v1,tar1f);
+    tar3Array2 = tar3Array2.concat(tar3v2,tar1f);
+    tar3Array3 = tar3Array3.concat(tar3v3,tar1f);
+    tar3Array4 = tar3Array4.concat(tar3v4,tar1f);
+    tar3Array5 = tar3Array5.concat(tar3v5,tar1f);
+    tar3Array6 = tar3Array6.concat(tar3v6,tar1f);
+    tar3Array7 = tar3Array7.concat(tar3v7,tar1f);
+    tar3Array8 = tar3Array8.concat(tar3v8,tar1f);
+    tar3Array9 = tar3Array9.concat(tar3v9,tar1f);
+    tar3Array10 = tar3Array10.concat(tar3v10,tar1f);
+}
+//FOURTH BLOCK
+var tar4i = [0,1,2,3,4,5,6,7,8,9];
+shuffle(tar4i);
+var tar4f = [];
+for (t=0; t<5; t++){
+    tar4f[t]=tar4i[t];
+}
+var tar4v1i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar4v2i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar4v3i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar4v4i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar4v5i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar4v6i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar4v7i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar4v8i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar4v9i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar4v10i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+shuffle(tar4v1i);
+shuffle(tar4v2i);
+shuffle(tar4v3i);
+shuffle(tar4v4i);
+shuffle(tar4v5i);
+shuffle(tar4v6i);
+shuffle(tar4v7i);
+shuffle(tar4v8i);
+shuffle(tar4v9i);
+shuffle(tar4v10i);
+var tar4v1 = tar4v1i;
+var tar4v2 = tar4v2i;
+var tar4v3 = tar4v3i;
+var tar4v4 = tar4v4i;
+var tar4v5 = tar4v5i;
+var tar4v6 = tar4v6i;
+var tar4v7 = tar4v7i;
+var tar4v8 = tar4v8i;
+var tar4v9 = tar4v9i;
+var tar4v10 = tar4v10i;
+var tar4Array1 = [];
+var tar4Array2 = [];
+var tar4Array3 = [];
+var tar4Array4 = [];
+var tar4Array5 = [];
+var tar4Array6 = [];
+var tar4Array7 = [];
+var tar4Array8 = [];
+var tar4Array9 = [];
+var tar4Array10 = [];
+if(LStaticRow==1){//top row static
+    tar4Array1 = tar4Array1.concat(tar1f,tar4v1);
+    tar4Array2 = tar4Array2.concat(tar1f,tar4v2);
+    tar4Array3 = tar4Array3.concat(tar1f,tar4v3);
+    tar4Array4 = tar4Array4.concat(tar1f,tar4v4);
+    tar4Array5 = tar4Array5.concat(tar1f,tar4v5);
+    tar4Array6 = tar4Array6.concat(tar1f,tar4v6);
+    tar4Array7 = tar4Array7.concat(tar1f,tar4v7);
+    tar4Array8 = tar4Array8.concat(tar1f,tar4v8);
+    tar4Array9 = tar4Array9.concat(tar1f,tar4v9);
+    tar4Array10 = tar4Array10.concat(tar1f,tar4v10);
+}else if(LStaticRow==2){
+    tar4Array1 = tar4Array1.concat(tar4v1,tar1f);
+    tar4Array2 = tar4Array2.concat(tar4v2,tar1f);
+    tar4Array3 = tar4Array3.concat(tar4v3,tar1f);
+    tar4Array4 = tar4Array4.concat(tar4v4,tar1f);
+    tar4Array5 = tar4Array5.concat(tar4v5,tar1f);
+    tar4Array6 = tar4Array6.concat(tar4v6,tar1f);
+    tar4Array7 = tar4Array7.concat(tar4v7,tar1f);
+    tar4Array8 = tar4Array8.concat(tar4v8,tar1f);
+    tar4Array9 = tar4Array9.concat(tar4v9,tar1f);
+    tar4Array10 = tar4Array10.concat(tar4v10,tar1f);
+}
+//FIFTH BLOCK
+var tar5i = [0,1,2,3,4,5,6,7,8,9];
+shuffle(tar5i);
+var tar5f = [];
+for (t=0; t<5; t++){
+    tar5f[t]=tar5i[t];
+}
+var tar5v1i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar5v2i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar5v3i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar5v4i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar5v5i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar5v6i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar5v7i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar5v8i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar5v9i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar5v10i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+shuffle(tar5v1i);
+shuffle(tar5v2i);
+shuffle(tar5v3i);
+shuffle(tar5v4i);
+shuffle(tar5v5i);
+shuffle(tar5v6i);
+shuffle(tar5v7i);
+shuffle(tar5v8i);
+shuffle(tar5v9i);
+shuffle(tar5v10i);
+var tar5v1 = tar5v1i;
+var tar5v2 = tar5v2i;
+var tar5v3 = tar5v3i;
+var tar5v4 = tar5v4i;
+var tar5v5 = tar5v5i;
+var tar5v6 = tar5v6i;
+var tar5v7 = tar5v7i;
+var tar5v8 = tar5v8i;
+var tar5v9 = tar5v9i;
+var tar5v10 = tar5v10i;
+var tar5Array1 = [];
+var tar5Array2 = [];
+var tar5Array3 = [];
+var tar5Array4 = [];
+var tar5Array5 = [];
+var tar5Array6 = [];
+var tar5Array7 = [];
+var tar5Array8 = [];
+var tar5Array9 = [];
+var tar5Array10 = [];
+if(LStaticRow==1){//top row static
+    tar5Array1 = tar5Array1.concat(tar1f,tar5v1);
+    tar5Array2 = tar5Array2.concat(tar1f,tar5v2);
+    tar5Array3 = tar5Array3.concat(tar1f,tar5v3);
+    tar5Array4 = tar5Array4.concat(tar1f,tar5v4);
+    tar5Array5 = tar5Array5.concat(tar1f,tar5v5);
+    tar5Array6 = tar5Array6.concat(tar1f,tar5v6);
+    tar5Array7 = tar5Array7.concat(tar1f,tar5v7);
+    tar5Array8 = tar5Array8.concat(tar1f,tar5v8);
+    tar5Array9 = tar5Array9.concat(tar1f,tar5v9);
+    tar5Array10 = tar5Array10.concat(tar1f,tar5v10);
+}else if(LStaticRow==2){
+    tar5Array1 = tar5Array1.concat(tar5v1,tar1f);
+    tar5Array2 = tar5Array2.concat(tar5v2,tar1f);
+    tar5Array3 = tar5Array3.concat(tar5v3,tar1f);
+    tar5Array4 = tar5Array4.concat(tar5v4,tar1f);
+    tar5Array5 = tar5Array5.concat(tar5v5,tar1f);
+    tar5Array6 = tar5Array6.concat(tar5v6,tar1f);
+    tar5Array7 = tar5Array7.concat(tar5v7,tar1f);
+    tar5Array8 = tar5Array8.concat(tar5v8,tar1f);
+    tar5Array9 = tar5Array9.concat(tar5v9,tar1f);
+    tar5Array10 = tar5Array10.concat(tar5v10,tar1f);
+}
+//SIXTH BLOCK
+var tar6i = [0,1,2,3,4,5,6,7,8,9];
+shuffle(tar6i);
+var tar6f = [];
+for (t=0; t<5; t++){
+    tar6f[t]=tar6i[t];
+}
+var tar6v1i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar6v2i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar6v3i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar6v4i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar6v5i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar6v6i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar6v7i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar6v8i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar6v9i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar6v10i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+shuffle(tar6v1i);
+shuffle(tar6v2i);
+shuffle(tar6v3i);
+shuffle(tar6v4i);
+shuffle(tar6v5i);
+shuffle(tar6v6i);
+shuffle(tar6v7i);
+shuffle(tar6v8i);
+shuffle(tar6v9i);
+shuffle(tar6v10i);
+var tar6v1 = tar6v1i;
+var tar6v2 = tar6v2i;
+var tar6v3 = tar6v3i;
+var tar6v4 = tar6v4i;
+var tar6v5 = tar6v5i;
+var tar6v6 = tar6v6i;
+var tar6v7 = tar6v7i;
+var tar6v8 = tar6v8i;
+var tar6v9 = tar6v9i;
+var tar6v10 = tar6v10i;
+var tar6Array1 = [];
+var tar6Array2 = [];
+var tar6Array3 = [];
+var tar6Array4 = [];
+var tar6Array5 = [];
+var tar6Array6 = [];
+var tar6Array7 = [];
+var tar6Array8 = [];
+var tar6Array9 = [];
+var tar6Array10 = [];
+if(LStaticRow==1){//top row static
+    tar6Array1 = tar6Array1.concat(tar1f,tar6v1);
+    tar6Array2 = tar6Array2.concat(tar1f,tar6v2);
+    tar6Array3 = tar6Array3.concat(tar1f,tar6v3);
+    tar6Array4 = tar6Array4.concat(tar1f,tar6v4);
+    tar6Array5 = tar6Array5.concat(tar1f,tar6v5);
+    tar6Array6 = tar6Array6.concat(tar1f,tar6v6);
+    tar6Array7 = tar6Array7.concat(tar1f,tar6v7);
+    tar6Array8 = tar6Array8.concat(tar1f,tar6v8);
+    tar6Array9 = tar6Array9.concat(tar1f,tar6v9);
+    tar6Array10 = tar6Array10.concat(tar1f,tar6v10);
+}else if(LStaticRow==2){
+    tar6Array1 = tar6Array1.concat(tar6v1,tar1f);
+    tar6Array2 = tar6Array2.concat(tar6v2,tar1f);
+    tar6Array3 = tar6Array3.concat(tar6v3,tar1f);
+    tar6Array4 = tar6Array4.concat(tar6v4,tar1f);
+    tar6Array5 = tar6Array5.concat(tar6v5,tar1f);
+    tar6Array6 = tar6Array6.concat(tar6v6,tar1f);
+    tar6Array7 = tar6Array7.concat(tar6v7,tar1f);
+    tar6Array8 = tar6Array8.concat(tar6v8,tar1f);
+    tar6Array9 = tar6Array9.concat(tar6v9,tar1f);
+    tar6Array10 = tar6Array10.concat(tar6v10,tar1f);
+}
+//SEVENTH BLOCK
+var tar7i = [0,1,2,3,4,5,6,7,8,9];
+shuffle(tar7i);
+var tar7f = [];
+for (t=0; t<5; t++){
+    tar7f[t]=tar7i[t];
+}
+var tar7v1i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar7v2i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar7v3i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar7v4i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar7v5i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar7v6i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar7v7i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar7v8i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar7v9i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar7v10i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+shuffle(tar7v1i);
+shuffle(tar7v2i);
+shuffle(tar7v3i);
+shuffle(tar7v4i);
+shuffle(tar7v5i);
+shuffle(tar7v6i);
+shuffle(tar7v7i);
+shuffle(tar7v8i);
+shuffle(tar7v9i);
+shuffle(tar7v10i);
+var tar7v1 = tar7v1i;
+var tar7v2 = tar7v2i;
+var tar7v3 = tar7v3i;
+var tar7v4 = tar7v4i;
+var tar7v5 = tar7v5i;
+var tar7v6 = tar7v6i;
+var tar7v7 = tar7v7i;
+var tar7v8 = tar7v8i;
+var tar7v9 = tar7v9i;
+var tar7v10 = tar7v10i;
+var tar7Array1 = [];
+var tar7Array2 = [];
+var tar7Array3 = [];
+var tar7Array4 = [];
+var tar7Array5 = [];
+var tar7Array6 = [];
+var tar7Array7 = [];
+var tar7Array8 = [];
+var tar7Array9 = [];
+var tar7Array10 = [];
+if(LStaticRow==1){//top row static
+    tar7Array1 = tar7Array1.concat(tar1f,tar7v1);
+    tar7Array2 = tar7Array2.concat(tar1f,tar7v2);
+    tar7Array3 = tar7Array3.concat(tar1f,tar7v3);
+    tar7Array4 = tar7Array4.concat(tar1f,tar7v4);
+    tar7Array5 = tar7Array5.concat(tar1f,tar7v5);
+    tar7Array6 = tar7Array6.concat(tar1f,tar7v6);
+    tar7Array7 = tar7Array7.concat(tar1f,tar7v7);
+    tar7Array8 = tar7Array8.concat(tar1f,tar7v8);
+    tar7Array9 = tar7Array9.concat(tar1f,tar7v9);
+    tar7Array10 = tar7Array10.concat(tar1f,tar7v10);
+}else if(LStaticRow==2){
+    tar7Array1 = tar7Array1.concat(tar7v1,tar1f);
+    tar7Array2 = tar7Array2.concat(tar7v2,tar1f);
+    tar7Array3 = tar7Array3.concat(tar7v3,tar1f);
+    tar7Array4 = tar7Array4.concat(tar7v4,tar1f);
+    tar7Array5 = tar7Array5.concat(tar7v5,tar1f);
+    tar7Array6 = tar7Array6.concat(tar7v6,tar1f);
+    tar7Array7 = tar7Array7.concat(tar7v7,tar1f);
+    tar7Array8 = tar7Array8.concat(tar7v8,tar1f);
+    tar7Array9 = tar7Array9.concat(tar7v9,tar1f);
+    tar7Array10 = tar7Array10.concat(tar7v10,tar1f);
+}
+//EIGHTH BLOCK
+var tar8i = [0,1,2,3,4,5,6,7,8,9];
+shuffle(tar8i);
+var tar8f = [];
+for (t=0; t<5; t++){
+    tar8f[t]=tar8i[t];
+}
+var tar8v1i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar8v2i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar8v3i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar8v4i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar8v5i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar8v6i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar8v7i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar8v8i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar8v9i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+var tar8v10i = [tar1i[5],tar1i[6],tar1i[7],tar1i[8],tar1i[9]];
+shuffle(tar8v1i);
+shuffle(tar8v2i);
+shuffle(tar8v3i);
+shuffle(tar8v4i);
+shuffle(tar8v5i);
+shuffle(tar8v6i);
+shuffle(tar8v7i);
+shuffle(tar8v8i);
+shuffle(tar8v9i);
+shuffle(tar8v10i);
+var tar8v1 = tar8v1i;
+var tar8v2 = tar8v2i;
+var tar8v3 = tar8v3i;
+var tar8v4 = tar8v4i;
+var tar8v5 = tar8v5i;
+var tar8v6 = tar8v6i;
+var tar8v7 = tar8v7i;
+var tar8v8 = tar8v8i;
+var tar8v9 = tar8v9i;
+var tar8v10 = tar8v10i;
+var tar8Array1 = [];
+var tar8Array2 = [];
+var tar8Array3 = [];
+var tar8Array4 = [];
+var tar8Array5 = [];
+var tar8Array6 = [];
+var tar8Array7 = [];
+var tar8Array8 = [];
+var tar8Array9 = [];
+var tar8Array10 = [];
+if(LStaticRow==1){//top row static
+    tar8Array1 = tar8Array1.concat(tar1f,tar8v1);
+    tar8Array2 = tar8Array2.concat(tar1f,tar8v2);
+    tar8Array3 = tar8Array3.concat(tar1f,tar8v3);
+    tar8Array4 = tar8Array4.concat(tar1f,tar8v4);
+    tar8Array5 = tar8Array5.concat(tar1f,tar8v5);
+    tar8Array6 = tar8Array6.concat(tar1f,tar8v6);
+    tar8Array7 = tar8Array7.concat(tar1f,tar8v7);
+    tar8Array8 = tar8Array8.concat(tar1f,tar8v8);
+    tar8Array9 = tar8Array9.concat(tar1f,tar8v9);
+    tar8Array10 = tar8Array10.concat(tar1f,tar8v10);
+}else if(LStaticRow==2){
+    tar8Array1 = tar8Array1.concat(tar8v1,tar1f);
+    tar8Array2 = tar8Array2.concat(tar8v2,tar1f);
+    tar8Array3 = tar8Array3.concat(tar8v3,tar1f);
+    tar8Array4 = tar8Array4.concat(tar8v4,tar1f);
+    tar8Array5 = tar8Array5.concat(tar8v5,tar1f);
+    tar8Array6 = tar8Array6.concat(tar8v6,tar1f);
+    tar8Array7 = tar8Array7.concat(tar8v7,tar1f);
+    tar8Array8 = tar8Array8.concat(tar8v8,tar1f);
+    tar8Array9 = tar8Array9.concat(tar8v9,tar1f);
+    tar8Array10 = tar8Array10.concat(tar8v10,tar1f);
+}
+//Creating multidimensional array
+var TarOverall = [];
+/*for (var qb = 0; qb < 9; qb++) {
+    TarOverall[(10*qb)] = 'tar'+[qb+1]+'Array1';
+    TarOverall[(10*qb)+1] = 'tar'+[qb+1]+'Array2';
+    TarOverall[(10*qb)+2] = 'tar'+[qb+1]+'Array3';
+    TarOverall[(10*qb)+3] = 'tar'+[qb+1]+'Array4';
+    TarOverall[(10*qb)+4] = 'tar'+[qb+1]+'Array5';
+    TarOverall[(10*qb)+5] = 'tar'+[qb+1]+'Array6';
+    TarOverall[(10*qb)+6] = 'tar'+[qb+1]+'Array7';
+    TarOverall[(10*qb)+7] = 'tar'+[qb+1]+'Array8';
+    TarOverall[(10*qb)+8] = 'tar'+[qb+1]+'Array9';
+    TarOverall[(10*qb)+9] = 'tar'+[qb+1]+'Array10';
+}*/
+//first block
+TarOverall[0] = tar1Array1;
+TarOverall[1] = tar1Array2;
+TarOverall[2] = tar1Array3;
+TarOverall[3] = tar1Array4;
+TarOverall[4] = tar1Array5;
+TarOverall[5] = tar1Array6;
+TarOverall[6] = tar1Array7;
+TarOverall[7] = tar1Array8;
+TarOverall[8] = tar1Array9;
+TarOverall[9] = tar1Array10;
+//second block
+TarOverall[10] = tar2Array1;
+TarOverall[11] = tar2Array2;
+TarOverall[12] = tar2Array3;
+TarOverall[13] = tar2Array4;
+TarOverall[14] = tar2Array5;
+TarOverall[15] = tar2Array6;
+TarOverall[16] = tar2Array7;
+TarOverall[17] = tar2Array8;
+TarOverall[18] = tar2Array9;
+TarOverall[19] = tar2Array10;
+//third block
+TarOverall[20] = tar3Array1;
+TarOverall[21] = tar3Array2;
+TarOverall[22] = tar3Array3;
+TarOverall[23] = tar3Array4;
+TarOverall[24] = tar3Array5;
+TarOverall[25] = tar3Array6;
+TarOverall[26] = tar3Array7;
+TarOverall[27] = tar3Array8;
+TarOverall[28] = tar3Array9;
+TarOverall[29] = tar3Array10;
+//fourth block
+TarOverall[30] = tar4Array1;
+TarOverall[31] = tar4Array2;
+TarOverall[32] = tar4Array3;
+TarOverall[33] = tar4Array4;
+TarOverall[34] = tar4Array5;
+TarOverall[35] = tar4Array6;
+TarOverall[36] = tar4Array7;
+TarOverall[37] = tar4Array8;
+TarOverall[38] = tar4Array9;
+TarOverall[39] = tar4Array10;
+//fifth block
+TarOverall[40] = tar5Array1;
+TarOverall[41] = tar5Array2;
+TarOverall[42] = tar5Array3;
+TarOverall[43] = tar5Array4;
+TarOverall[44] = tar5Array5;
+TarOverall[45] = tar5Array6;
+TarOverall[46] = tar5Array7;
+TarOverall[47] = tar5Array8;
+TarOverall[48] = tar5Array9;
+TarOverall[49] = tar5Array10;
+//sixth block
+TarOverall[50] = tar6Array1;
+TarOverall[51] = tar6Array2;
+TarOverall[52] = tar6Array3;
+TarOverall[53] = tar6Array4;
+TarOverall[54] = tar6Array5;
+TarOverall[55] = tar6Array6;
+TarOverall[56] = tar6Array7;
+TarOverall[57] = tar6Array8;
+TarOverall[58] = tar6Array9;
+TarOverall[59] = tar6Array10;
+//seventh block
+TarOverall[60] = tar7Array1;
+TarOverall[61] = tar7Array2;
+TarOverall[62] = tar7Array3;
+TarOverall[63] = tar7Array4;
+TarOverall[64] = tar7Array5;
+TarOverall[65] = tar7Array6;
+TarOverall[66] = tar7Array7;
+TarOverall[67] = tar7Array8;
+TarOverall[68] = tar7Array9;
+TarOverall[69] = tar7Array10;
+//eighth block
+TarOverall[70] = tar8Array1;
+TarOverall[71] = tar8Array2;
+TarOverall[72] = tar8Array3;
+TarOverall[73] = tar8Array4;
+TarOverall[74] = tar8Array5;
+TarOverall[75] = tar8Array6;
+TarOverall[76] = tar8Array7;
+TarOverall[77] = tar8Array8;
+TarOverall[78] = tar8Array9;
+TarOverall[79] = tar8Array10;
+//document.write(TarOverall);
+//clearTimeout useful for cancelling a wait function early (for instance in the case of a response...)
+
+function Continue(){
+    if (instCount==1){
+        $('#inst1').hide();
+        $('#inst2a').show();
+        instCount++;
+    }else if (instCount==2){
+        $('#inst2a').hide();
+        $('#startTrial').show();
+        $('#inst3').show();
+        $('#contButton').hide();
+        instCount++;
+    }
+    //Can add in the submit function here if continue is re-shown once trials end
+}
+
+function LA1Click(){
+    if (!trialRunning) {
+        return;
+    }
+    if (!respReady){
+        return;
+    }
+    respVar.push(1);
+    GiveFeedback(LearnTImg[TarOverall[currentTrial][0]]);
+    if (respReady){
+        respReady = false;
+        NextTrial();
+    }
+}
+
+function LA2Click(){
+    if (!trialRunning) {
+        return;
+    }
+    if (!respReady){
+        return;
+    }
+    respVar.push(2);
+    GiveFeedback(LearnTImg[TarOverall[currentTrial][1]]);
+    if (respReady){
+        respReady = false;
+        NextTrial();
+    }
+}
+
+function LA3Click(){
+    if (!trialRunning) {
+        return;
+    }
+    if (!respReady){
+        return;
+    }
+    respVar.push(3);
+    GiveFeedback(LearnTImg[TarOverall[currentTrial][2]]);
+    if (respReady){
+        respReady = false;
+        NextTrial();
+    }
+}
+
+function LA4Click(){
+    if (!trialRunning) {
+        return;
+    }
+    if (!respReady){
+        return;
+    }
+    respVar.push(4);
+    GiveFeedback(LearnTImg[TarOverall[currentTrial][3]]);
+    if (respReady){
+        respReady = false;
+        NextTrial();
+    }
+}
+
+function LA5Click(){
+    if (!trialRunning) {
+        return;
+    }
+    if (!respReady){
+        return;
+    }
+    respVar.push(5);
+    GiveFeedback(LearnTImg[TarOverall[currentTrial][4]]);
+    if (respReady){
+        respReady = false;
+        NextTrial();
+    }
+}
+
+function LA6Click(){
+    if (!trialRunning) {
+        return;
+    }
+    if (!respReady){
+        return;
+    }
+    respVar.push(6);
+    GiveFeedback(LearnTImg[TarOverall[currentTrial][5]]);
+    if (respReady){
+        respReady = false;
+        NextTrial();
+    }
+}
+
+function LA7Click(){
+    if (!trialRunning) {
+        return;
+    }
+    if (!respReady){
+        return;
+    }
+    respVar.push(7);
+    GiveFeedback(LearnTImg[TarOverall[currentTrial][6]]);
+    if (respReady){
+        respReady = false;
+        NextTrial();
+    }
+}
+
+function LA8Click(){
+    if (!trialRunning) {
+        return;
+    }
+    if (!respReady){
+        return;
+    }
+    respVar.push(8);
+    GiveFeedback(LearnTImg[TarOverall[currentTrial][7]]);
+    if (respReady){
+        respReady = false;
+        NextTrial();
+    }
+}
+
+function LA9Click(){
+    if (!trialRunning) {
+        return;
+    }
+    if (!respReady){
+        return;
+    }
+    respVar.push(9);
+    GiveFeedback(LearnTImg[TarOverall[currentTrial][8]]);
+    if (respReady){
+        respReady = false;
+        NextTrial();
+    }
+}
+
+function LA10Click(){
+    if (!trialRunning) {
+        return;
+    }
+    if (!respReady){
+        return;
+    }
+    respVar.push(10);
+    GiveFeedback(LearnTImg[TarOverall[currentTrial][9]]);
+    if (respReady){
+        respReady = false;
+        NextTrial();
+    }
+}
+
+function NextTrial() {
+    if (!trialRunning) {
+        return;
+    }
+    trialRunning = false;
+
+	var currentTime = new Date().getTime();
+	var RT = currentTime - startTrialTime;
+	//AIti = 1700 - RT;
+	//$('#t' + currentTrial + '_rt').val(RT);
+	rtVar.push(RT);
+    imgDisp();
+    $('#CorMsg').show();
+    setTimeout(function () {
+            $('#LQ').hide();
+            $('#CorTxt').hide();
+            $('#InCorTxt').hide();
+            $('#CorMsg').hide();
+            currentTrial++;
+            StartTrial();
+    },2000);
+
+}
+
+function Submit() {
+    //In here needs to be the relevant submission aspects, and window closure / re-directs
+    $('#submitting').hide();
+    var Tag = "LRN";
+    var datOne;
+    var DatScore = String(LOverall);
+    datOne = String(respVar) + "," + String(rtVar) + "," + String(respCor) + "," + String(LQStore) + "," + String(LAStore) + "," + String(LTOne) + "," + String(LTTwo) + "," + String(LTThree) + "," + String(LTFour) + "," + String(LTFive) + "," + String(LTSix) + "," + String(LTSeven) + "," + String(LTEight) + "," + String(LTNine) + "," + String(LTTen) + "," + String(respCor) + "," + String(LStaticRow) + "," + String(ProCount) + "," + String(LPPrcnt) + "," + String(NonProCount) + "," + String(LNPPrcnt) + "," + String(LOverall);
+
+    $.ajax({
+        url: '/taskinputjs',
+        type: 'post',
+        data: {taskName: Tag, taskScore: DatScore, taskData: datOne}
+    }).done(function (data) {
+        console.log(data);
+        Redirect('/results')
+    });
+
+}
+
+function getData(){
+    //var url = "http://example.com/script.php?var1=value2&var2=value2";
+    //var www : WWW = new WWW (url);
+
+// wait for request to complete yield www;
+
+// and check for errors
+// if (www.error == null) {
+// request completed! }
+// else {
+// something wrong!
+// Debug.Log("WWW Error: "+ www.error); }
+}
+
+function StartCount(){
+    $('#inst3').hide();
+    $('#startTrial').hide();
+    $('#p3').show();
+    setTimeout(function () {
+        $('#p3').hide();
+        $('#p2').show();
+    }, 1000);
+    setTimeout(function () {
+        $('#p2').hide();
+        $('#p1').show();
+    }, 2000);
+    setTimeout(function () {
+        $('#p1').hide();
+        StartTrial();
+        $('#Tinst').show();
+    }, 3000);
+}
+
+function StartTrial() {
+	if (trialRunning) {
+		return;
+	}
+    if (respReady){
+        return;
+    }
+    $('#LQ').hide();
+    $('#LA1').hide();
+    $('#LA2').hide();
+    $('#LA3').hide();
+    $('#LA4').hide();
+    $('#LA5').hide();
+    $('#LA6').hide();
+    $('#LA7').hide();
+    $('#LA8').hide();
+    $('#LA9').hide();
+    $('#LA10').hide();
+
+    if(currentTrial >= numTrials){//end of trials
+        $('#submitting').show();
+        $('#ty').show();
+        $('#Tinst').hide();
+        LOverall = (respTotal/numTrials)*100;
+        LNPPrcnt = (NonProCount/(numTrials/2))*100;
+        LPPrcnt = (ProCount/(numTrials/2))*100;
+        document.getElementById("Score").innerHTML = "Your Score: "+String((Math.round(LOverall*10)/10))+"%";
+        $('#Score').show();
+    }else {
+		$('#inst3').hide();
+        $('#startTrial').hide();
+        $('#LQ').attr('src', LearnQImg[LQOrder[currentTrial]]);
+        $('#LA1').attr('src', LearnTImg[TarOverall[currentTrial][0]]);
+        $('#LA2').attr('src', LearnTImg[TarOverall[currentTrial][1]]);
+        $('#LA3').attr('src', LearnTImg[TarOverall[currentTrial][2]]);
+        $('#LA4').attr('src', LearnTImg[TarOverall[currentTrial][3]]);
+        $('#LA5').attr('src', LearnTImg[TarOverall[currentTrial][4]]);
+        $('#LA6').attr('src', LearnTImg[TarOverall[currentTrial][5]]);
+        $('#LA7').attr('src', LearnTImg[TarOverall[currentTrial][6]]);
+        $('#LA8').attr('src', LearnTImg[TarOverall[currentTrial][7]]);
+        $('#LA9').attr('src', LearnTImg[TarOverall[currentTrial][8]]);
+        $('#LA10').attr('src', LearnTImg[TarOverall[currentTrial][9]]);
+
+        LQStore.push(LearnQStoreSet[LQOrder[currentTrial]]);
+        LAStore.push(LCorSymNum[LQOrder[currentTrial]]);
+        LTOne.push(LearnTStoreSet[TarOverall[currentTrial][0]]);
+        LTTwo.push(LearnTStoreSet[TarOverall[currentTrial][1]]);
+        LTThree.push(LearnTStoreSet[TarOverall[currentTrial][2]]);
+        LTFour.push(LearnTStoreSet[TarOverall[currentTrial][3]]);
+        LTFive.push(LearnTStoreSet[TarOverall[currentTrial][4]]);
+        LTSix.push(LearnTStoreSet[TarOverall[currentTrial][5]]);
+        LTSeven.push(LearnTStoreSet[TarOverall[currentTrial][6]]);
+        LTEight.push(LearnTStoreSet[TarOverall[currentTrial][7]]);
+        LTNine.push(LearnTStoreSet[TarOverall[currentTrial][8]]);
+        LTTen.push(LearnTStoreSet[TarOverall[currentTrial][9]]);
+
+        setTimeout(function() {
+		$('#LQ').show();
+        $('#LA1').show();
+        $('#LA2').show();
+        $('#LA3').show();
+        $('#LA4').show();
+        $('#LA5').show();
+        $('#LA6').show();
+        $('#LA7').show();
+        $('#LA8').show();
+        $('#LA9').show();
+        $('#LA10').show();
+        //$('#CorTxt').show();
+        startTrialTime = new Date().getTime();
+        trialRunning = true;
+        respReady = true;
+		},100);
+
+    }
+}
+
+function GiveFeedback(target) {
+    if (target==LCorSymb[LQOrder[currentTrial]]) { //if target matches correct image
+        respCor.push(1);
+        respTotal = respTotal + 1;
+        if ((respVar[currentTrial]>5)&&(LStaticRow==1)){//if top row static, but got correct response on bottom row
+            NonProCount += 1;
+        }else if((respVar[currentTrial]>5)&&(LStaticRow==2)){//if bottom static and got correct on bottom
+            ProCount += 1;
+        }else if((respVar[currentTrial]<=5)&&(LStaticRow==1)){//chose top when top static
+            ProCount += 1;
+        }else if((respVar[currentTrial]<=5)&&(LStaticRow==2)){//chose top when bottom static
+            NonProCount += 1;
+        }
+        $('#CorTxt').show();
+    }
+    else {
+        respCor.push(0);
+        $('#InCorTxt').show();
+    }
+}
+
+function imgDisp() {
+    if (LearnTImg[TarOverall[currentTrial][0]]==LCorSymb[LQOrder[currentTrial]]) { //if target 1 correct
+        $('#LA1').show();
+        $('#LA2').hide();
+        $('#LA3').hide();
+        $('#LA4').hide();
+        $('#LA5').hide();
+        $('#LA6').hide();
+        $('#LA7').hide();
+        $('#LA8').hide();
+        $('#LA9').hide();
+        $('#LA10').hide();
+    } else if (LearnTImg[TarOverall[currentTrial][1]]==LCorSymb[LQOrder[currentTrial]]) { //if target 2 correct
+        $('#LA1').hide();
+        $('#LA2').show();
+        $('#LA3').hide();
+        $('#LA4').hide();
+        $('#LA5').hide();
+        $('#LA6').hide();
+        $('#LA7').hide();
+        $('#LA8').hide();
+        $('#LA9').hide();
+        $('#LA10').hide();
+    } else if (LearnTImg[TarOverall[currentTrial][2]]==LCorSymb[LQOrder[currentTrial]]){ //if target 3 correct
+        $('#LA1').hide();
+        $('#LA2').hide();
+        $('#LA3').show();
+        $('#LA4').hide();
+        $('#LA5').hide();
+        $('#LA6').hide();
+        $('#LA7').hide();
+        $('#LA8').hide();
+        $('#LA9').hide();
+        $('#LA10').hide();
+    }else if (LearnTImg[TarOverall[currentTrial][3]]==LCorSymb[LQOrder[currentTrial]]){ //if target 4 correct
+        $('#LA1').hide();
+        $('#LA2').hide();
+        $('#LA3').hide();
+        $('#LA4').show();
+        $('#LA5').hide();
+        $('#LA6').hide();
+        $('#LA7').hide();
+        $('#LA8').hide();
+        $('#LA9').hide();
+        $('#LA10').hide();
+    }else if (LearnTImg[TarOverall[currentTrial][4]]==LCorSymb[LQOrder[currentTrial]]){ //if target 5 correct
+        $('#LA1').hide();
+        $('#LA2').hide();
+        $('#LA3').hide();
+        $('#LA4').hide();
+        $('#LA5').show();
+        $('#LA6').hide();
+        $('#LA7').hide();
+        $('#LA8').hide();
+        $('#LA9').hide();
+        $('#LA10').hide();
+    }else if (LearnTImg[TarOverall[currentTrial][5]]==LCorSymb[LQOrder[currentTrial]]){ //if target 6 correct
+        $('#LA1').hide();
+        $('#LA2').hide();
+        $('#LA3').hide();
+        $('#LA4').hide();
+        $('#LA5').hide();
+        $('#LA6').show();
+        $('#LA7').hide();
+        $('#LA8').hide();
+        $('#LA9').hide();
+        $('#LA10').hide();
+    }else if (LearnTImg[TarOverall[currentTrial][6]]==LCorSymb[LQOrder[currentTrial]]){ //if target 7 correct
+        $('#LA1').hide();
+        $('#LA2').hide();
+        $('#LA3').hide();
+        $('#LA4').hide();
+        $('#LA5').hide();
+        $('#LA6').hide();
+        $('#LA7').show();
+        $('#LA8').hide();
+        $('#LA9').hide();
+        $('#LA10').hide();
+    }else if (LearnTImg[TarOverall[currentTrial][7]]==LCorSymb[LQOrder[currentTrial]]){ //if target 8 correct
+        $('#LA1').hide();
+        $('#LA2').hide();
+        $('#LA3').hide();
+        $('#LA4').hide();
+        $('#LA5').hide();
+        $('#LA6').hide();
+        $('#LA7').hide();
+        $('#LA8').show();
+        $('#LA9').hide();
+        $('#LA10').hide();
+    }else if (LearnTImg[TarOverall[currentTrial][8]]==LCorSymb[LQOrder[currentTrial]]){ //if target 9 correct
+        $('#LA1').hide();
+        $('#LA2').hide();
+        $('#LA3').hide();
+        $('#LA4').hide();
+        $('#LA5').hide();
+        $('#LA6').hide();
+        $('#LA7').hide();
+        $('#LA8').hide();
+        $('#LA9').show();
+        $('#LA10').hide();
+    }else if (LearnTImg[TarOverall[currentTrial][9]]==LCorSymb[LQOrder[currentTrial]]){ //if target 10 correct
+        $('#LA1').hide();
+        $('#LA2').hide();
+        $('#LA3').hide();
+        $('#LA4').hide();
+        $('#LA5').hide();
+        $('#LA6').hide();
+        $('#LA7').hide();
+        $('#LA8').hide();
+        $('#LA9').hide();
+        $('#LA10').show();
+    }
+}
+
+function Redirect (url) {
+    var ua        = navigator.userAgent.toLowerCase(),
+            isIE      = ua.indexOf('msie') !== -1,
+            version   = parseInt(ua.substr(4, 2), 10);
+
+    // Internet Explorer 8 and lower
+    if (isIE && version < 9) {
+        var link = document.createElement('a');
+        link.href = url;
+        document.body.appendChild(link);
+        link.click();
+    }
+
+    // All other browsers
+    else { window.location.href = url; }
+}
+
+</script>
+<style>
+
+#container {
+	position: relative;
+	background-color: #999999;
+	width: 600px;
+	height: 500px;
+    top:calc(50% - 500px/2);
+    left:calc(50% - 601px/2);
+    vertical-align:middle;
+}
+
+.displays {
+	position: absolute;
+    margin-left:100px;
+    margin-right:100px;
+    margin-top:50px;
+	display: none;
+    vertical-align:middle;
+    text-align:center;
+}
+
+.LQI {
+    position: absolute;
+    margin-left:250px;
+    margin-top:70px;
+    display: none;
+    vertical-align:middle;
+    text-align:center;
+}
+
+.LA1I {
+    position: absolute;
+    margin-left:25px;
+    margin-top:195px;
+    display: none;
+    vertical-align:middle;
+    text-align:center;
+}
+
+.LA2I {
+    position: absolute;
+    margin-left:140px;
+    margin-top:195px;
+    display: none;
+    vertical-align:middle;
+    text-align:center;
+}
+
+.LA3I {
+    position: absolute;
+    margin-left:255px;
+    margin-top:195px;
+    display: none;
+    vertical-align:middle;
+    text-align:center;
+}
+
+.LA4I {
+    position: absolute;
+    margin-left:370px;
+    margin-top:195px;
+    display: none;
+    vertical-align:middle;
+    text-align:center;
+}
+
+.LA5I {
+    position: absolute;
+    margin-left:485px;
+    margin-top:195px;
+    display: none;
+    vertical-align:middle;
+    text-align:center;
+}
+
+.LA6I {
+    position: absolute;
+    margin-left:25px;
+    margin-top:310px;
+    display: none;
+    vertical-align:middle;
+    text-align:center;
+}
+
+.LA7I {
+    position: absolute;
+    margin-left:140px;
+    margin-top:310px;
+    display: none;
+    vertical-align:middle;
+    text-align:center;
+}
+
+.LA8I {
+    position: absolute;
+    margin-left:255px;
+    margin-top:310px;
+    display: none;
+    vertical-align:middle;
+    text-align:center;
+}
+
+.LA9I {
+    position: absolute;
+    margin-left:370px;
+    margin-top:310px;
+    display: none;
+    vertical-align:middle;
+    text-align:center;
+}
+
+.LA10I {
+    position: absolute;
+    margin-left:485px;
+    margin-top:310px;
+    display: none;
+    vertical-align:middle;
+    text-align:center;
+}
+
+.displayed {
+    position: relative;
+    margin:0 auto;
+    display: none;
+    vertical-align:middle;
+}
+
+.lftImg {
+    position: absolute;
+    margin-left:0;
+    margin-top:404px;
+    display: none;
+}
+
+.rightImg {
+    position: absolute;
+    margin-left:505px;
+    margin-top:404px;
+    display: none;
+}
+
+#startTrial {
+	position: absolute;
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    top: 470px;
+    left:500px;
+	font-weight: bold;
+	color: black;
+	font-size: 14pt;
+}
+
+#submitting {
+    position: absolute;
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    top: 470px;
+    left:500px;
+    font-weight: bold;
+    color: black;
+    font-size: 14pt;
+}
+
+#contButton {
+    position: absolute;
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    top: 470px;
+    left:500px;
+    font-weight: bold;
+    color: black;
+    font-size: 14pt;
+}
+
+.pTxtC {
+    position: absolute;
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    margin-top: 440px;
+    left: 265px;
+    font-weight: bold;
+    color: green;
+    font-size: 14pt;
+}
+.pTxtI {
+    position: absolute;
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    margin-top: 440px;
+    left: 255px;
+    font-weight: bold;
+    color: red;
+    font-size: 14pt;
+}
+.pTxt {
+    position: absolute;
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    margin-top: 465px;
+    left: 190px;
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 14pt;
+}
+.p3 {
+    position: absolute;
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    top:calc(50% - 105px/2);
+    left:calc(50% - 395px/2);
+    width:401px;
+    height:20px;
+    font-weight: bold;
+    text-align: center;
+    vertical-align:middle;
+    color: black;
+    font-size: 30pt;
+}
+
+.p4 {
+    position: absolute;
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    left: 50%;
+    bottom: 10%;
+    width:200px;
+    height:20px;
+    font-weight: bold;
+    text-align: center;
+    vertical-align:middle;
+    color: black;
+    font-size: 20pt;
+}
+
+.p6 {
+    position: absolute;
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    left: calc(50% - 500px/2);
+    top: 10%;
+    width:500px;
+    height:20px;
+    text-align: center;
+    vertical-align:middle;
+    color: white;
+    font-size: 18pt;
+}
+
+</style>
+<body style="background-color:#999999">
+<div id="container">
+ <input id="contButton" type="button" name="contButton" value="Continue" onclick="Continue();">
+ <input id="startTrial" type="button" name="startTrial" value="Start" onclick="StartCount();">
+ <input id="submitting" type="button" name="submitting" value="Next" onclick="Submit();">
+ <img class="LQI" id="LQ" src="" style="width:100px;height:100px;">
+ <a href="javascript:LA1Click()"><img class="LA1I" id="LA1" src="" style="width:90px;height:90px;"></a>
+ <a href="javascript:LA2Click()"><img class="LA2I" id="LA2" src="" style="width:90px;height:90px;"></a>
+ <a href="javascript:LA3Click()"><img class="LA3I" id="LA3" src="" style="width:90px;height:90px;"></a>
+ <a href="javascript:LA4Click()"><img class="LA4I" id="LA4" src="" style="width:90px;height:90px;"></a>
+ <a href="javascript:LA5Click()"><img class="LA5I" id="LA5" src="" style="width:90px;height:90px;"></a>
+ <a href="javascript:LA6Click()"><img class="LA6I" id="LA6" src="" style="width:90px;height:90px;"></a>
+ <a href="javascript:LA7Click()"><img class="LA7I" id="LA7" src="" style="width:90px;height:90px;"></a>
+ <a href="javascript:LA8Click()"><img class="LA8I" id="LA8" src="" style="width:90px;height:90px;"></a>
+ <a href="javascript:LA9Click()"><img class="LA9I" id="LA9" src="" style="width:90px;height:90px;"></a>
+ <a href="javascript:LA10Click()"><img class="LA10I" id="LA10" src="" style="width:90px;height:90px;"></a>
+ <img class="displayed" id="inst1" src="instfiles/LinstA.JPG" style="width:600px;height:399px;">
+ <img class="displayed" id="inst2a" src="instfiles/Linst2a.JPG" style="width:600px;height:373px;">
+ <img class="displayed" id="inst3" src="instfiles/Pinst3.JPG" style="width:600px;height:254px;">
+ <img class="displayed" id="ty" src="instfiles/TY.JPG" style="width:600px;height:279px;">
+ <img class="displays" id="fix" src="filterimages/fixation.jpg" style="width:401px;height:400px;">
+ <img class="lftImg" id="LImg" src="instfiles/ALeft.JPG">
+ <img class="rightImg" id="RImg" src="instfiles/ARight.JPG">
+ <img class="preload" style="display:none"/>
+ <p class="pTxtC" id="CorTxt">Correct</p>
+ <p class="pTxtI" id="InCorTxt">Incorrect</p>
+ <p class="pTxt" id="CorMsg">This was the correct image</p>
+ <p class="p3" id="p3">3</p>
+ <p class="p3" id="p2">2</p>
+ <p class="p3" id="p1">1</p>
+ <p class="p4" id="Score"></p>
+ </div>
+<p class="p6" id="Tinst">Which symbol is associated with the top symbol?</p>
+</body>
