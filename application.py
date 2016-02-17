@@ -36,7 +36,7 @@ application.config['MTURKCODES']=['MTURK14303803','MTURK77921264']
 application.config['BATTLENETLEAGUES']=['OTHER','Grandmaster','Master','Diamond','Platinum','Gold','Silver','Bronze']
 application.config['COUNTERSTRIKESKILLGROUP']=['OTHER','Silver I','Silver II','Silver III','Silver IV','Silver Elite','Silver Elite Master','Gold Nova I','Gold Nova II','Gold Nova III','Gold Nova Master','Master Guardian I','Master Guardian II','Master Guardian Elite','Distinguished Master Guardian','Legendary Eagle','Legendary Eagle Master','Supreme Master First Class','The Global Elite']
 
-application.config['KICKSTARTERDONORS']=['toigaroun@gmail.com','redmooonman@yahoo.com','efepnr@gmail.com','collie_dogg@hotmail.com','runal@me.com','facebook@iandocherty.com','reseauaumodem@hotmail.com','sarushton107@gmail.com','mattisonenloe@summaxr.com','lmdyble@hotmail.com','robinwebb25@live.co.uk','schoenbaechler.kevin@hotmail.ch','papero91@hotmail.it','4msaustin4@gmail.com','adglass15@gmail.com','kenglass@alumni.upenn.edu','juliecharles@yahoo.com','jake-hartman@hotmail.com','jdblake100@gmail.com','Jessie.sefulu@gmail.com','curlyBJS@hotmail.com','lbcottler@ufl.edu','mrckirkwood@aol.com','cynthia.mundt@gmail.com','briglass2@gmail.com']
+application.config['KICKSTARTERDONORS']=['']
 
 application.config.from_object('config.email')
 
@@ -518,10 +518,6 @@ def assignroles():
                         print "not a role"
                 else:
                     print "not a button"
-            
-                #user_datastore.add_role_to_user(user_datastore.get_user('bradley.c.love@gmail.com'), admin_role)
-                #user_datastore.add_role_to_user(user_datastore.get_user('bradley.c.love@gmail.com'), fulluser_role)
-                #user_datastore.add_role_to_user(user_datastore.get_user('playiq.user@gmail.com'), fulluser_role)
             
                 db.session.commit()
             
