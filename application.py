@@ -21,7 +21,6 @@ application = Flask(__name__)
 application.config['DEBUG'] = True
 application.config['SECRET_KEY'] = 'super-secret'
 application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.db')
-#application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://playiqdbinstance.ck2yn3omqkaf.eu-west-1.rds.amazonaws.com:3306/playiqdb?user=playiqdbadmin&password=playiqaws27'
 
 application.config['DEFAULT_MAIL_SENDER'] = 'info@site.com'
 application.config['SECURITY_REGISTERABLE'] = True
