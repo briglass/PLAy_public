@@ -290,22 +290,27 @@ def taskinputjs():
     return render_template('index.html')
 
 
-@application.route('/DBbackup')
+@application.route('/DBbackup', methods=['GET', 'POST'])
 @login_required
 @roles_required('Admin')
 def DBbackup():
-	
-	print "TRYING TO UPLOAD DB TO S3"
-	flash('Attempted to upload DB to AWS S3 bucket: playiqdbstore')
+    if request.method == 'POST':
+        submitButton = request.form['submitButton']	
+        if submitButton == 'Backup Database':
+            aws_access_key = request.form['aws_access_key']
+            aws_secret_key = request.form['aws_secret_key']
+            
+            print "TRYING TO UPLOAD DB TO S3"
+            flash('Attempted to upload DB to AWS S3 bucket: playiqdbstore')
 		
-	do_DBbackup()
+            do_DBbackup(aws_access_key, aws_secret_key)
 		
 	return render_template('account.html')
 
-def do_DBbackup():
+def do_DBbackup(aws_access_key, aws_secret_key):
 	# Creating a simple connection
 	print "inside do_DBbackup"
-	conn = tinys3.Connection('AKIAJ4JQZZAXHPCIWPYQ','C46OJZXhrqdZCKOdx26D1p0vF9ag6JZj4qhlHreN', tls=True, endpoint='s3-eu-west-1.amazonaws.com') #access key, secret key
+	conn = tinys3.Connection(aws_access_key,aws_secret_key, tls=True, endpoint='s3-eu-west-1.amazonaws.com') #access key, secret key
 	
 	fileattempt = os.path.join(basedir, 'app.db')
 	nowdate = datetime.datetime.strftime(datetime.datetime.now(), '%Y_%m_%d_%H_%M_%S')

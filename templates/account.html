@@ -92,8 +92,16 @@ TH{font-family: Arial; font-size: 8pt;}
         <input type="submit" name="submitButton" class="btn-success" value="Create User"></input>
         <input type="submit" name="submitButton" class="btn-danger" value="Delete User"></input>
     </form>
+        <form  id="bigform" action="/DBbackup" method="post" >
+        <input type="password" class="form-control" name="aws_access_key" placeholder="access key"> </input>
+        <input type="password" class="form-control" name="aws_secret_key" placeholder="secret key"> </input>
+        
+        <p>Backup Database to Amazon AWS S3 bucket:</p>
+        <input type="submit" name="submitButton" class="btn-danger" value="Backup Database"></input>        
+        
+    </form>
     <ul>
-        <li><a href="/DBbackup">Backup Database to Amazon AWS S3 bucket</a></li>
+        
         <li><a href="/assignroles">Assign roles (only use locally)</a></li>
         <li><a href="/createroles">Create roles (only use locally)</a></li>
     </ul>
